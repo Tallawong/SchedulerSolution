@@ -1,4 +1,5 @@
 #nullable enable
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 using System.Net.Http;
@@ -23,11 +24,13 @@ namespace Backend.Services
         private static readonly ILog log = LogManager.GetLogger(typeof(EmailService));
         private readonly AppSettings _appSettings;
         private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
 
-        public EmailService(IOptions<AppSettings> appSettings, IHttpClientFactory httpClientFactory)
+        public EmailService(IOptions<AppSettings> appSettings, IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _appSettings = appSettings.Value;
             _httpClient = httpClientFactory.CreateClient();
+            _configuration = configuration;
         }
 
         public void Send(string to, string subject, string html, string? from = null)
@@ -41,12 +44,12 @@ namespace Backend.Services
             {
                 var fromEmail = from ?? _appSettings.EmailFrom;
 
-                // Brevo API endpoint - prefer environment variable for security, fallback to appsettings
-                var apiKey = Environment.GetEnvironmentVariable("BREVO_API_KEY") ;
+                // Read from configured providers, including user secrets and environment variables.
+                var apiKey = _configuration["AppSettings:BrevoApiKey"];
                 
                 if (string.IsNullOrWhiteSpace(apiKey))
                 {
-                    log.Error("Brevo API key is not configured in environment variable or appsettings");
+                    log.Error("Brevo API key is not configured at AppSettings:BrevoApiKey");
                     throw new InvalidOperationException("Email service is not properly configured. Brevo API key is missing.");
                 }
 

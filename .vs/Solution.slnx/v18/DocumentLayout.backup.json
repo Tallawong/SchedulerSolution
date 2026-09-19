@@ -1,12 +1,155 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\SchedulerSolution\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C4447535-BD7C-FDD9-5F44-32DAB67E47C8}|ScheduleMeBackEnd\\scheduleme.server.csproj|c:\\schedulersolution\\schedulemebackend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C4447535-BD7C-FDD9-5F44-32DAB67E47C8}|ScheduleMeBackEnd\\scheduleme.server.csproj|solutionrelative:schedulemebackend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C4447535-BD7C-FDD9-5F44-32DAB67E47C8}|ScheduleMeBackEnd\\scheduleme.server.csproj|c:\\schedulersolution\\schedulemebackend\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C4447535-BD7C-FDD9-5F44-32DAB67E47C8}|ScheduleMeBackEnd\\scheduleme.server.csproj|solutionrelative:schedulemebackend\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C4447535-BD7C-FDD9-5F44-32DAB67E47C8}|ScheduleMeBackEnd\\scheduleme.server.csproj|c:\\schedulersolution\\schedulemebackend\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C4447535-BD7C-FDD9-5F44-32DAB67E47C8}|ScheduleMeBackEnd\\scheduleme.server.csproj|solutionrelative:schedulemebackend\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Janusz\\AppData\\Roaming\\Microsoft\\UserSecrets\\d9cd5486-1312-4296-b63a-f4a566600d0f\\secrets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C4447535-BD7C-FDD9-5F44-32DAB67E47C8}|ScheduleMeBackEnd\\scheduleme.server.csproj|c:\\schedulersolution\\schedulemebackend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{C4447535-BD7C-FDD9-5F44-32DAB67E47C8}|ScheduleMeBackEnd\\scheduleme.server.csproj|solutionrelative:schedulemebackend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C4447535-BD7C-FDD9-5F44-32DAB67E47C8}|ScheduleMeBackEnd\\scheduleme.server.csproj|c:\\schedulersolution\\schedulemebackend\\helpers\\appsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C4447535-BD7C-FDD9-5F44-32DAB67E47C8}|ScheduleMeBackEnd\\scheduleme.server.csproj|solutionrelative:schedulemebackend\\helpers\\appsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|c:\\schedulersolution\\schedulemefrontend\\src\\app\\services\\account\\account.service.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|solutionrelative:schedulemefrontend\\src\\app\\services\\account\\account.service.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|c:\\schedulersolution\\schedulemefrontend\\src\\app\\account\\login.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|solutionrelative:schedulemefrontend\\src\\app\\account\\login.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\SchedulerSolution\\ScheduleMeBackEnd\\Program.cs",
+              "RelativeDocumentMoniker": "ScheduleMeBackEnd\\Program.cs",
+              "ToolTip": "C:\\SchedulerSolution\\ScheduleMeBackEnd\\Program.cs",
+              "RelativeToolTip": "ScheduleMeBackEnd\\Program.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-19T17:38:59.197Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Startup.cs",
+              "DocumentMoniker": "C:\\SchedulerSolution\\ScheduleMeBackEnd\\Startup.cs",
+              "RelativeDocumentMoniker": "ScheduleMeBackEnd\\Startup.cs",
+              "ToolTip": "C:\\SchedulerSolution\\ScheduleMeBackEnd\\Startup.cs",
+              "RelativeToolTip": "ScheduleMeBackEnd\\Startup.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-19T17:38:56.112Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\SchedulerSolution\\ScheduleMeBackEnd\\appsettings.json",
+              "RelativeDocumentMoniker": "ScheduleMeBackEnd\\appsettings.json",
+              "ToolTip": "C:\\SchedulerSolution\\ScheduleMeBackEnd\\appsettings.json",
+              "RelativeToolTip": "ScheduleMeBackEnd\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-09-19T17:03:18.043Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AppSettings.cs",
+              "DocumentMoniker": "C:\\SchedulerSolution\\ScheduleMeBackEnd\\Helpers\\AppSettings.cs",
+              "RelativeDocumentMoniker": "ScheduleMeBackEnd\\Helpers\\AppSettings.cs",
+              "ToolTip": "C:\\SchedulerSolution\\ScheduleMeBackEnd\\Helpers\\AppSettings.cs",
+              "RelativeToolTip": "ScheduleMeBackEnd\\Helpers\\AppSettings.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA4AAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-19T16:40:07.215Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "EmailService.cs",
+              "DocumentMoniker": "C:\\SchedulerSolution\\ScheduleMeBackEnd\\Services\\EmailService.cs",
+              "RelativeDocumentMoniker": "ScheduleMeBackEnd\\Services\\EmailService.cs",
+              "ToolTip": "C:\\SchedulerSolution\\ScheduleMeBackEnd\\Services\\EmailService.cs",
+              "RelativeToolTip": "ScheduleMeBackEnd\\Services\\EmailService.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAzwDAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-19T15:54:38.912Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "secrets.json",
+              "DocumentMoniker": "C:\\Users\\Janusz\\AppData\\Roaming\\Microsoft\\UserSecrets\\d9cd5486-1312-4296-b63a-f4a566600d0f\\secrets.json",
+              "RelativeDocumentMoniker": "..\\Users\\Janusz\\AppData\\Roaming\\Microsoft\\UserSecrets\\d9cd5486-1312-4296-b63a-f4a566600d0f\\secrets.json",
+              "ToolTip": "C:\\Users\\Janusz\\AppData\\Roaming\\Microsoft\\UserSecrets\\d9cd5486-1312-4296-b63a-f4a566600d0f\\secrets.json",
+              "RelativeToolTip": "..\\Users\\Janusz\\AppData\\Roaming\\Microsoft\\UserSecrets\\d9cd5486-1312-4296-b63a-f4a566600d0f\\secrets.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-09-19T15:52:45.271Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "login.component.ts",
+              "DocumentMoniker": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\account\\login.component.ts",
+              "RelativeDocumentMoniker": "ScheduleMeFrontEnd\\src\\app\\account\\login.component.ts",
+              "ToolTip": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\account\\login.component.ts",
+              "RelativeToolTip": "ScheduleMeFrontEnd\\src\\app\\account\\login.component.ts",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAADkAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-09-19T15:13:38.296Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "account.service.ts",
+              "DocumentMoniker": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\services\\account\\account.service.ts",
+              "RelativeDocumentMoniker": "ScheduleMeFrontEnd\\src\\app\\services\\account\\account.service.ts",
+              "ToolTip": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\services\\account\\account.service.ts",
+              "RelativeToolTip": "ScheduleMeFrontEnd\\src\\app\\services\\account\\account.service.ts",
+              "ViewState": "AgIAAAEBAAAAAAAAAAAvwCgBAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-09-19T15:12:28.56Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
