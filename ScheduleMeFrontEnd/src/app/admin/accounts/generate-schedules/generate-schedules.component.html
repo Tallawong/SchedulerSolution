@@ -1,0 +1,75 @@
+<fieldset>
+  <legend>View/Edit Schedules for Date:</legend>
+  <div class="mb-3">
+    <form [formGroup]="form">
+      <div class="row">
+        <div class="col-3">
+          <app-schedule-date-time
+            formControlName="scheduledDateTime"
+            (dateChange)="onChangeDateTime($event)"
+            (keydown.enter)="onKeydown($event)"
+          >
+          </app-schedule-date-time>
+        </div>
+
+        @if (advancedButtonsVisibility) {
+          <div class="col-2">
+            <button
+              [ngClass]="{ disabled: !enableCopyButton }"
+              #button
+              type="button"
+              (click)="onCopy($event, button)"
+              class="btn btn-primary"
+            >
+              Copy To Buffer
+            </button>
+          </div>
+          <div class="col-2">
+            <button
+              [ngClass]="{ disabled: !enablePasteButton }"
+              #button
+              type="button"
+              (click)="onPaste($event, button)"
+              class="btn btn-primary"
+            >
+              Paste From Buffer
+            </button>
+          </div>
+          <div class="col-2">
+            <button #button type="button" (click)="onClear($event, button)" class="btn btn-primary">
+              Clear Buffer
+            </button>
+          </div>
+
+          <div class="col-3">
+            <input
+              type="text"
+              class="no-outline"
+              formControlName="information"
+              id="Info"
+              name="Name"
+            />
+          </div>
+        }
+      </div>
+    </form>
+  </div>
+  <div class="mb-3 mx-0">
+    @if (functionsLoaded) {
+      @for (
+        item of functions | orderByDateOrFunction: 'userFunction' : 'asc';
+        track item.agentTaskStr;
+        let index = $index
+      ) {
+        <div>
+          <app-function-schedule
+            (schedulesUpdatedEmitter)="onSchedulesUpdated($event)"
+            #functionSchedule
+            [functionStr]="item.agentTaskStr"
+            [dateTimeStr]="getDateTimeStr()"
+          ></app-function-schedule>
+        </div>
+      }
+    }
+  </div>
+</fieldset>

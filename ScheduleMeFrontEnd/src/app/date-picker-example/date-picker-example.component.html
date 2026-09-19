@@ -1,0 +1,28 @@
+<section aria-labelledby="date-picker-example-heading">
+  <h2 id="date-picker-example-heading">Date picker example</h2>
+  <p>Type a date or open the calendar to select one.</p>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Choose a date</mat-label>
+    <!-- The same picker reference connects the input, toggle, and calendar. -->
+    <input
+      matInput
+      [matDatepicker]="picker"
+      [formControl]="selectedDate"
+      placeholder="MM/DD/YYYY"
+    />
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    @if (selectedDate.hasError('matDatepickerParse')) {
+      <mat-error>Enter a valid date in MM/DD/YYYY format.</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- This preview demonstrates reading and formatting the Luxon DateTime value. -->
+  <p aria-live="polite">
+    Selected date: <strong>{{ formattedDate }}</strong>
+  </p>
+  <button type="button" (click)="selectedDate.reset()">Clear date</button>
+  <p class="note">Example only: this date is not saved or sent to the server.</p>
+</section>

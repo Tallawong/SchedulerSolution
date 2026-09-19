@@ -1,0 +1,35 @@
+<form class="login-form" [formRoot]="form">
+  <div class="row">
+    <div class="col-6">
+      <label class="form-label">
+        First Name
+        <input type="text" class="form-control" [formField]="form.first" />
+      </label>
+      @if (form.first().invalid() && form.first().touched()) {
+        <div class="error">
+          @for (error of form.first().errors(); track error.kind) {
+            <span>{{ error.message }}</span>
+          }
+        </div>
+      }
+    </div>
+    <div class="col-6">
+      <label class="form-label">
+        Last Name
+        <input type="text" class="form-control" [formField]="form.last" />
+      </label>
+      @if (form.last().invalid() && form.last().touched()) {
+        <div class="error">
+          @for (error of form.last().errors(); track error.kind) {
+            <span>{{ error.message }}</span>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</form>
+<!--div class="form-debug">
+  <h3>Current Form Values:</h3>
+  <p>First Name: {{ form.first().value() }}</p>
+  <p>Last Name: {{ form.last().value() }}</p>
+</div-->

@@ -1,0 +1,11 @@
+<div class="mb-3 form-check">
+  <input type="checkbox" class="form-check-input" id="acceptTerms" [formField]="form.acceptTerms" />
+  <label class="form-check-label" for="acceptTerms"> I accept the terms </label>
+</div>
+@if (form.acceptTerms().invalid() && form.acceptTerms().touched()) {
+  <div class="error">
+    @for (error of form.acceptTerms().errors(); track error.kind) {
+      <span>{{ error.message }}</span>
+    }
+  </div>
+}

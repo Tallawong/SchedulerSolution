@@ -1,0 +1,127 @@
+@if (isLoaded) {
+  <form [formGroup]="form">
+    <fieldset>
+      <legend>Date & Tasks:</legend>
+      <div class="container">
+        <div class="row">
+          <div class="mb-3 col-3">
+            <app-schedule-date-time
+              formControlName="scheduledDate"
+              (dateChange)="onChangeDateTime($event)"
+            >
+            </app-schedule-date-time>
+          </div>
+          <div class="mb-3 col-sm">
+            <mat-label style="font-size: 32px">{{ getDayStrFromDate }}</mat-label>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid">
+        @for (task of newTasksArr; track task; let index = $index) {
+          <div class="row">
+            @for (col of newTasksArr[index]; track col; let index = $index) {
+              <div class="col-sm-2">
+                <div class="mb-3 me-1 col-1">
+                  <label>{{ col.agentTaskStr }}:</label>
+                  <input
+                    formControlName="{{ col.agentTaskStr }}"
+                    type="Number"
+                    min="0"
+                    max="10"
+                    step="1"
+                    value="6"
+                    size="6"
+                  />
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+      <div class="mb-3">
+        <button
+          type="button"
+          (click)="onAddUpdateTimeSlot()"
+          class="btn3d btn btn-primary"
+          [ngClass]="{ disabled: !form.valid }"
+        >
+          @if (isAdding) {
+            <span class="spinner-border spinner-border-sm mr-1"></span>
+          }
+          Add/Update
+        </button>
+        &nbsp;
+      </div>
+    </fieldset>
+  </form>
+}
+
+<div class="row">
+  <div class="col-12">
+    <fieldset style="overflow: auto">
+      <legend>Time Slot Dates</legend>
+      <mat-table
+        #table
+        class="lessons-table mat-elevation-z8"
+        [dataSource]="dataSource"
+        matSort
+        (matSortChange)="sortData($event)"
+      >
+        <ng-container matColumnDef="{{ displayedColumns[0] }}">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ displayedLabels[0] }}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <input type="text" matInput [value]="row.date" readonly />
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="{{ displayedColumns[1] }}">
+          <mat-header-cell *matHeaderCellDef> {{ displayedLabels[1] }} </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <input type="text" matInput [value]="row.tasks.join(' ')" readonly />
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="delete">
+          <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button
+              class="btn3d btn btn-sm btn-danger btn-delete-account"
+              type="button"
+              #button
+              (click)="onDeleteTimeSlotTasks($event, row)"
+              [ngClass]="{ disabled: row.isDeleting }"
+            >
+              @if (row.isDeleting) {
+                <span class="spinner-border spinner-border-sm mr-1"></span>
+              }
+              Delete
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row
+          *matRowDef="let row; columns: displayedColumns; let i = index"
+          [ngClass]="{ hovered: row.hovered, highlighted: row.highlighted }"
+          #tr
+          (click)="onRowSelected(row, tr, i, $event)"
+          (mouseover)="row.hovered = true"
+          (mouseout)="row.hovered = false"
+        ></mat-row>
+      </mat-table>
+      <mat-paginator
+        #paginator
+        class="lessons-table mat-elevation-z8"
+        [length]="timeSlots().length"
+        [pageSizeOptions]="[5, 10, 20, 50, 100]"
+        pageSize="{{ pageSize }}"
+        (page)="onChangePageProperties($event)"
+        showFirstLastButtons
+      >
+      </mat-paginator>
+    </fieldset>
+  </div>
+</div>
+<div class="col px-md-2">
+  <a routerLink="../" class="btn3d btn btn-primary">Back</a>
+</div>

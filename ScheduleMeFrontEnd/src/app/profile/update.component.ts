@@ -1,0 +1,123 @@
+import { Component, OnInit, inject } from '@angular/core';
+import { AbstractControlOptions, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { first } from 'rxjs/operators';
+
+import { toDateTime } from '../core/helpers/date-time';
+import { MustMatch } from '../core/helpers';
+import { Schedule } from '../entities/schedule';
+import { AccountService, AlertService } from '../services';
+import { Constants } from '../core/helpers/constants';
+import { TimeHandler } from '../core/helpers/time.handler';
+import { CustomValidators } from '../core/helpers/custom-validators';
+
+@Component({
+  standalone: false,
+  templateUrl: 'update.component.html',
+  styleUrls: ['./update.component.less'],
+})
+export class UpdateComponent implements OnInit {
+  DATE_FORMAT = Constants.dateFormat;
+
+  private accountService = inject(AccountService);
+  account = this.accountService.accountValue;
+  form!: FormGroup;
+  loading = false;
+  submitted = false;
+  deleting = false;
+  schedules: Schedule[] = [];
+  id: string = this.account?.id ?? '';
+  countryCodes: number[] = [];
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private alertService: AlertService,
+  ) {}
+
+  ngOnInit() {
+    if (!this.account) {
+      this.router.navigate(['/account/login']);
+      return;
+    }
+    this.form = this.formBuilder.group(
+      {
+        title: [this.account.title, Validators.required],
+        firstName: [this.account.firstName, Validators.required],
+        lastName: [this.account.lastName, Validators.required],
+        email: [this.account.email, [Validators.required, Validators.email]],
+        dob: [toDateTime(this.account.dob, Constants.dateFormat), [Validators.required]],
+        password: [
+          '',
+          [Validators.minLength(8), CustomValidators.createPasswordStrengthValidator()],
+        ],
+        confirmPassword: ['', [Validators.minLength(6)]],
+        phoneNumber: [this.account.phoneNumber], // Phone number is optional
+      },
+      {
+        validators: [MustMatch('password', 'confirmPassword')],
+      },
+    );
+  }
+
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.form.controls;
+  }
+
+  onSubmit() {
+    this.submitted = true;
+
+    // reset alerts on submit
+    this.alertService.clear();
+
+    // stop here if form is invalid
+    if (!this.account || !this.form || this.form.invalid) {
+      return;
+    }
+
+    this.loading = true;
+
+    // Update account from this controls
+    this.account.title = this.form.controls['title'].value;
+    this.account.firstName = this.form.controls['firstName'].value;
+    this.account.lastName = this.form.controls['lastName'].value;
+    this.account.email = this.form.controls['email'].value;
+
+    this.account.phoneNumber = this.f['phoneNumber'].value;
+
+    this.account.password = this.form.controls['password'].value;
+    this.account.confirmPassword = this.form.controls['confirmPassword'].value;
+    this.account.dob = toDateTime(this.f['dob'].value).toFormat(Constants.dateFormat);
+    this.account.schedules = this.schedules;
+
+    this.accountService
+      .update(this.account.id, this.account)
+      .pipe(first())
+      .subscribe({
+        next: () => {
+          this.alertService.success('Data Saved', { keepAfterRouteChange: true });
+          this.loading = false;
+          //this.router.navigate(['../'], { relativeTo: this.route });
+        },
+        error: (error) => {
+          this.alertService.error(error);
+          this.loading = false;
+        },
+      });
+  }
+
+  onDelete() {
+    if (!this.account) return;
+    if (confirm('Are you sure?')) {
+      this.deleting = true;
+      this.accountService
+        .delete(this.account.id)
+        .pipe(first())
+        .subscribe(() => {
+          this.alertService.success('Account deleted successfully', { keepAfterRouteChange: true });
+        });
+    }
+  }
+}

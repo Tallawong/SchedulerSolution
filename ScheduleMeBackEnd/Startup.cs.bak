@@ -1,0 +1,237 @@
+using AutoMapper;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using WebApi.Helpers;
+using WebApi.Middleware;
+using WebApi.Services;
+using Microsoft.Extensions.Hosting;
+
+using log4net;
+using log4net.Config;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Google.Apis.Auth.AspNetCore3;
+using Google.Apis.Auth.OAuth2;
+using MailKit.Net.Imap;
+using MailKit.Security;
+using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using System.Threading.Tasks;
+using Google.Apis.Drive.v3;
+using System.Collections.Generic;
+using Google.Apis.Gmail.v1.Data;
+using WebApi.Hub;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Identity;
+using WebApi.Entities;
+using Google;
+using Microsoft.AspNetCore.Authentication.Negotiate;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.AspNetCore.Http;
+using Scalar.AspNetCore;
+using Backend.Services;
+
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config", Watch = true)]
+namespace WebApi
+{
+    public class Startup
+    {
+        #region log4net
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        #endregion //log4net
+
+        public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+            //BasicConfigurator.Configure();
+            log.Info("\n\n######################################## PROGRAM STARTED ########################################");
+        }
+
+        // add services to the DI container
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddHttpClient();
+
+            services.AddDbContext<DataContext>();
+
+            services.AddIdentity<Account, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = false;
+            })
+            .AddEntityFrameworkStores<DataContext>()
+            .AddDefaultTokenProviders();
+
+            services.AddCors();
+            //services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.IgnoreNullValues = true);
+            services.AddControllers(config =>
+            {
+                config.Filters.Add(typeof(WebApiActionFilter));
+            }).AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            });
+
+            services.AddAutoMapper(cfg => cfg.AddMaps(AppDomain.CurrentDomain.GetAssemblies()));
+            services.AddOpenApi();
+
+            services.AddSignalR();
+
+            /* Add authenticate */
+            //services.AddAuthentication(options =>
+            //{
+            //    // This forces challenge results to be handled by Google OpenID Handler, so there's no
+            //    // need to add an AccountController that emits challenges for Login.
+            //    options.DefaultChallengeScheme = GoogleOpenIdConnectDefaults.AuthenticationScheme;
+
+            //    // This forces forbid results to be handled by Google OpenID Handler, which checks if
+            //    // extra scopes are required and does automatic incremental auth.
+            //    options.DefaultForbidScheme = GoogleOpenIdConnectDefaults.AuthenticationScheme;
+
+            //    // Default scheme that will handle everything else.
+            //    // Once a user is authenticated, the OAuth2 token info is stored in cookies.
+            //    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //})
+            //.AddCookie(options =>
+            //{
+            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+            //})
+            //.AddGoogleOpenIdConnect(options =>
+            //{
+            //    var secrets = GoogleClientSecrets.FromFile("client_secret.json").Secrets;
+            //    options.ClientId = secrets.ClientId;
+            //    options.ClientSecret = secrets.ClientSecret;
+            //});
+
+            /* End authenticate */
+
+
+            // configure strongly typed settings object
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            // configure DI for application services
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ISpryngSmsService, SpryngSmsService>();
+            services.AddScoped<IMfaService, MfaService>();
+
+
+            //
+            //services.AddIdentity<Account, IdentityRole>(options =>
+            //{
+            //    options.User.RequireUniqueEmail = false;
+
+            //})
+            //.AddEntityFrameworkStores<DataContext>()
+            //.AddDefaultTokenProviders();
+
+            //services.Configure<IdentityOptions>(options =>
+            //{
+            //    // Default User settings.
+            //    options.User.RequireUniqueEmail = false;
+
+            //});
+
+            /* JD experiment start */
+            //services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>,
+            //        AdditionalUserClaimsPrincipalFactory>();
+
+            //services.AddAuthorization(options =>
+            //    options.AddPolicy("TwoFactorEnabled", x => x.RequireClaim("amr", "mfa")));
+            /* JD experiment end */
+            services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
+.AddNegotiate();
+            services.AddAuthorization(options =>
+            {
+                options.FallbackPolicy = options.DefaultPolicy;
+            });
+
+        }
+
+        // configure the HTTP request pipeline
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context, IHostApplicationLifetime lifetime)
+        {
+            // migrate database changes on startup (includes initial db creation)
+            context.Database.Migrate();
+
+            app.UseRouting();
+
+            // global cors policy
+            app.UseCors(x => x
+                .SetIsOriginAllowed(origin => true)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            // global error handler
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+
+            // custom jwt auth middleware
+            app.UseMiddleware<JwtMiddleware>();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<MessageHub>("/update");
+
+                if (env.IsDevelopment())
+                {
+                    endpoints.MapScalarApiReference(options =>
+                    {
+                        options
+                        .WithTheme(ScalarTheme.None);
+                        options.HideDarkModeToggle = true;
+                        options.HideClientButton = true;
+                    }).AllowAnonymous();
+                    endpoints.MapOpenApi().AllowAnonymous();
+                    endpoints.MapGet("/", () => Results.Redirect("/scalar/v1")).AllowAnonymous();
+                }
+            });
+
+            try
+            {
+                using var scope = app.ApplicationServices.CreateScope();
+                var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+                var canConnect = db.Database.CanConnect();
+                log.Info($"Database connectivity check: CanConnect={canConnect}");
+            }
+            catch (Exception ex)
+            {
+                log.Error("Database connectivity check failed.", ex);
+            }
+
+            lifetime.ApplicationStarted.Register(() =>
+            {
+                try
+                {
+                    var addresses = app.ServerFeatures.Get<IServerAddressesFeature>()?.Addresses;
+                    var urls = addresses != null && addresses.Count > 0
+                        ? string.Join(";", addresses)
+                        : "unknown";
+
+                    log.Info($"Listening on: {urls}");
+                }
+                catch (Exception ex)
+                {
+                    log.Warn("Failed to determine server listening addresses.", ex);
+                }
+            });
+
+            log.Info($"ASPNETCORE_URLS={Environment.GetEnvironmentVariable("ASPNETCORE_URLS")}");
+            log.Info($"ASPNETCORE_HTTP_PORTS={Environment.GetEnvironmentVariable("ASPNETCORE_HTTP_PORTS")}");
+            log.Info($"ASPNETCORE_HTTPS_PORTS={Environment.GetEnvironmentVariable("ASPNETCORE_HTTPS_PORTS")}");
+
+        }
+    }
+}

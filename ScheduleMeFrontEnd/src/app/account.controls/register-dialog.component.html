@@ -1,0 +1,22 @@
+<app-registration-form
+  [title]="title()"
+  [message]="message()"
+  [errorMessage]="errorMessage()"
+  [successMessage]="successMessage()"
+  [loading]="loading"
+  (cancel)="onCancel()"
+  (register)="onRegister()"
+  ><div reg-body>
+    <div class="row">
+      <div class="col-6">
+        <app-honorifics [(model)]="salutationValue"></app-honorifics>
+      </div>
+      <div class="col-6">
+        <app-mobile-number [(model)]="mobileNumberValue"></app-mobile-number>
+      </div>
+    </div>
+    <app-first-last [(model)]="firstLastValue"></app-first-last>
+    <app-email-and-dob [(model)]="emailDobValue"></app-email-and-dob>
+    <app-password [(model)]="passwordConfirmValue"></app-password>
+    <app-accept-terms [(model)]="acceptTermsValue"></app-accept-terms></div
+></app-registration-form>

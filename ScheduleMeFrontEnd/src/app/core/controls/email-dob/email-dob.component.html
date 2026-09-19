@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-6 mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input id="email" type="email" class="form-control" [formField]="form.email" />
+    @if (form.email().invalid() && form.email().touched()) {
+      <div class="error">
+        @for (error of form.email().errors(); track error.kind) {
+          <span>{{ error.message }}</span>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="col-6 mb-3">
+    <label for="dob" class="form-label">DOB</label>
+    <input id="dob" type="date" class="form-control" [formField]="form.dob" />
+    @if (form.dob().invalid() && form.dob().touched()) {
+      <div class="error">
+        @for (error of form.dob().errors(); track error.kind) {
+          <span>{{ error.message }}</span>
+        }
+      </div>
+    }
+  </div>
+</div>

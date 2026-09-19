@@ -1,0 +1,16 @@
+export class Schedule {
+  accountId!: string;
+  scheduleId?: number;
+  date!: string;
+  newDate!: string;
+  required!: boolean;
+  userAvailability!: boolean;
+  dob!: string;
+  email!: string;
+  userFunction!: string;
+  scheduleGroup!: string;
+  newUserFunction!: string;
+  deleting!: boolean;
+  hovered?: boolean;
+  highlighted?: boolean;
+}

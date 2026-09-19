@@ -1,0 +1,9 @@
+<h1>My Profile</h1>
+@if (account; as currentAccount) {
+  <p>
+    <strong>Name: </strong> {{ currentAccount.title }} {{ currentAccount.firstName }}
+    {{ currentAccount.lastName }}<br />
+    <strong>Email: </strong> {{ currentAccount.email }}
+  </p>
+  <p><a routerLink="update">Update Profile</a></p>
+}

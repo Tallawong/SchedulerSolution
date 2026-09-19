@@ -1,0 +1,11 @@
+<div class="mb-3">
+  <label for="phoneNumber" class="form-label">Phone</label>
+  <input id="phoneNumber" type="tel" class="form-control" [formField]="form.phoneNumber" />
+  @if (form.phoneNumber().invalid() && form.phoneNumber().touched()) {
+    <div class="error">
+      @for (error of form.phoneNumber().errors(); track error.kind) {
+        <span>{{ error.message }}</span>
+      }
+    </div>
+  }
+</div>

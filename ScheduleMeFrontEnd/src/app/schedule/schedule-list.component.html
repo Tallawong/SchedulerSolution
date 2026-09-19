@@ -1,0 +1,26 @@
+﻿<h1>User Properties</h1>
+<div class="mb-3 col">
+  @if (account) {
+    <label>Choose Property for {{ account.firstName }}</label>
+  }
+</div>
+<table class="table table-striped">
+  <tbody>
+    <tr>
+      @if (account) {
+        <td style="white-space: nowrap">
+          <a routerLink="function/{{ account.id }}" class="btn3d btn btn-sm btn-primary mr-2"
+            >Tasks</a
+          >
+          &nbsp;
+          <a routerLink="schedules/{{ account.id }}" class="btn3d btn btn-sm btn-primary mr-2"
+            >Schedules</a
+          >
+        </td>
+      }
+    </tr>
+  </tbody>
+  <div class="mb-3">
+    <a routerLink="/profile" class="btn btn-link">Back</a>
+  </div>
+</table>

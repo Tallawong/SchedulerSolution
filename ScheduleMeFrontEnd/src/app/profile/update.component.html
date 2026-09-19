@@ -1,0 +1,189 @@
+@if (account && form) {
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <fieldset>
+      <legend>Update Profile</legend>
+      <div class="mb-3 row">
+        <div class="col-4">
+          <label>Title*</label>
+          <select
+            formControlName="title"
+            class="form-select"
+            [ngClass]="{ 'is-invalid': submitted && f['title'].errors }"
+          >
+            <option value=""></option>
+            <option value="Mr">Mr</option>
+            <option value="Mrs">Mrs</option>
+            <option value="Miss">Miss</option>
+            <option value="Ms">Ms</option>
+          </select>
+          @if (submitted && f['title'].errors) {
+            <div class="invalid-feedback">
+              @if (f['title'].errors['required']) {
+                <div>Title is required</div>
+              }
+            </div>
+          }
+        </div>
+        <div class="col-4">
+          <label>First Name*</label>
+          <input
+            type="text"
+            formControlName="firstName"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }"
+          />
+          @if (submitted && f['firstName'].errors) {
+            <div class="invalid-feedback">
+              @if (f['firstName'].errors['required']) {
+                <div>First Name is required</div>
+              }
+            </div>
+          }
+        </div>
+        <div class="col-4">
+          <label>Last Name*</label>
+          <input
+            type="text"
+            formControlName="lastName"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }"
+          />
+          @if (submitted && f['lastName'].errors) {
+            <div class="invalid-feedback">
+              @if (f['lastName'].errors['required']) {
+                <div>Last Name is required</div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <div class="col">
+          <label>Email*</label>
+          <input
+            type="text"
+            formControlName="email"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          />
+          @if (submitted && f['email'].errors) {
+            <div class="invalid-feedback">
+              @if (f['email'].errors['required']) {
+                <div>Email is required</div>
+              }
+              @if (f['email'].errors['email']) {
+                <div>Email must be a valid email address</div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label>Phone</label>
+          <div>
+            <input
+              type="text"
+              formControlName="phoneNumber"
+              class="form-control"
+              autocomplete="off"
+              autofocus="true"
+              placeholder="Phone number"
+              [maxlength]="10"
+              [minlength]="10"
+              [ngClass]="{
+                'is-invalid': form.controls['phoneNumber'].hasError('phoneNumberInvalid'),
+              }"
+            />
+          </div>
+          @if (form.controls['phoneNumber'].hasError('phoneNumberInvalid')) {
+            <ng-container class="mb-3">
+              <div
+                class="input-warning text-danger mt-1 error robot_register_invalidPhoneNumberError"
+              >
+                Wrong phone number
+              </div>
+            </ng-container>
+          }
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <div class="col">
+          <mat-form-field appearance="outline">
+            <mat-label>DOB</mat-label>
+            <input
+              formControlName="dob"
+              #ref
+              matInput
+              [min]="DATE_FORMAT.length"
+              [max]="DATE_FORMAT.length"
+              [matDatepicker]="picker"
+              placeholder="Choose a date"
+              required
+            />
+            <mat-hint>{{ DATE_FORMAT }}</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            @if (f['dob'].errors) {
+              <mat-error>Invalid DOB</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <h3 class="pt-3">Change Password</h3>
+      <p>Leave blank to keep the same password</p>
+      <div class="mb-3 row">
+        <div class="col">
+          <label>Password</label>
+          <input
+            type="password"
+            formControlName="password"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          />
+          @if (submitted && f['password'].errors) {
+            <div class="invalid-feedback">
+              @if (f['password'].errors['required']) {
+                <div>Password is required</div>
+              }
+              @if (f['password'].errors['minlength']) {
+                <div>Password must be at least 8 characters</div>
+              }
+              @if (f['password'].errors?.['passwordStrength']) {
+                <div>Your password must have lower case, upper case and numeric characters.</div>
+              }
+            </div>
+          }
+        </div>
+        <div class="col">
+          <label>Confirm Password</label>
+          <input
+            type="password"
+            formControlName="confirmPassword"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }"
+          />
+          @if (submitted && f['confirmPassword'].errors) {
+            <div class="invalid-feedback">
+              @if (f['confirmPassword'].errors['required']) {
+                <div>Confirm Password is required</div>
+              }
+              @if (f['confirmPassword'].errors['mustMatch']) {
+                <div>Passwords must match</div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </fieldset>
+    <div class="mb-3 ms-1">
+      <button type="submit" [disabled]="loading" class="btn3d btn btn-primary mr-2">
+        @if (loading) {
+          <span class="spinner-border spinner-border-sm mr-1"></span>
+        }
+        Update
+      </button>
+      <a routerLink="../" href="" class="btn3d btn btn-primary ms-2">Back</a>
+    </div>
+  </form>
+}

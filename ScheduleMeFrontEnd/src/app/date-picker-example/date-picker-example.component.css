@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  margin-top: 2rem;
+}
+
+section {
+  padding: 1rem;
+  border: 1px solid var(--mat-sys-outline-variant, #ccc);
+  border-radius: 0.75rem;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.note {
+  font-size: 0.875rem;
+}

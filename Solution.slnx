@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="ScheduleMeBackEnd/scheduleme.server.csproj" />
+  <Project Path="ScheduleMeFrontEnd/scheduleme.client.esproj"
+           Id="9b5919ad-e587-44c9-b020-2a80605cbb37">
+    <Build />
+    <Deploy />
+  </Project>
+</Solution>

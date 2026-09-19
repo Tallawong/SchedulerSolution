@@ -1,0 +1,14 @@
+@if (alerts().length) {
+  <div class="container">
+    <div class="m-3">
+      @for (alert of alerts(); track alert) {
+        <div class="{{ cssClasses(alert) }}">
+          <a class="close" (click)="removeAlert(alert)">
+            <img src="./assets/images/x.png" alt="" /> </a
+          >&nbsp;
+          <span>{{ alert.message }}</span>
+        </div>
+      }
+    </div>
+  </div>
+}

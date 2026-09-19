@@ -1,0 +1,82 @@
+<h3 class="card-header">Login</h3>
+<div class="card-body">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="mb-3">
+        <label id="emailLabel">Email</label>
+        <input
+          id="emailInput"
+          type="text"
+          formControlName="email"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          required
+        />
+        @if (submitted && f['email'].errors) {
+          <div class="invalid-feedback">
+            @if (f['email'].errors['required']) {
+              <div>Email is required</div>
+            }
+            @if (f['email'].errors['email']) {
+              <div>Email is invalid</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="mb-3">
+        <mat-form-field appearance="outline">
+          <mat-label>DOB</mat-label>
+          <input
+            formControlName="dob"
+            #ref
+            matInput
+            [matDatepicker]="picker"
+            placeholder="Choose a date"
+            required
+          />
+          <mat-hint>{{ DATE_FORMAT }}</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          @if (submitted && f['dob'].errors) {
+            <mat-error>Invalid DOB</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="mb-3">
+        <label id="passwordLabel">Password</label>
+        <input
+          type="password"
+          formControlName="password"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+        />
+        @if (f['password'].errors?.['passwordStrength']) {
+          <div class="invalid-feedback">
+            Your password must have lower case, upper case and numeric characters.
+          </div>
+        }
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        <button [disabled]="loading()" class="btn3d btn btn-primary">
+          @if (loading()) {
+            <span class="spinner-border spinner-border-sm mr-1"></span>
+          }
+          Login
+        </button>
+      </div>
+      <div class="col-3">
+        <a routerLink="../register" class="btn btn-link">Register</a>
+      </div>
+      <div class="col-5">
+        <a routerLink="../forgot-password" class="btn btn-link pr-0">Forgot Password?</a>
+      </div>
+    </div>
+  </form>
+</div>

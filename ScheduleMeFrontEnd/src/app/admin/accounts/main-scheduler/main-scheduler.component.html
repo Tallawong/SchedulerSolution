@@ -1,0 +1,97 @@
+<div class="container-fluid">
+  <form [formGroup]="form">
+    <div class="col mx-md-2">
+      <a routerLink="../" class="btn3d btn btn-primary">Back</a>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <fieldset style="overflow: auto">
+          <legend>Schedule Dates</legend>
+          <div class="ml-3">
+            <label for="dates" class="me-2">Dates:</label>
+            <input
+              type="checkbox"
+              checked
+              (change)="onCheckboxChange($event)"
+              formControlName="allDates"
+              id="allDates"
+              name="allDates"
+              value=""
+              class="ms-5"
+            />
+            <label for="allDates" class="ps-2">All</label><br />
+          </div>
+          <mat-table
+            #table
+            class="lessons-table mat-elevation-z8"
+            [dataSource]="dataSource"
+            matSort
+            (matSortChange)="sortData($event)"
+          >
+            <ng-container matColumnDef="scheduleDate">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                <input type="text" matInput [value]="row.date" readonly />
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="day">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> Day </mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                <input type="text" matInput [value]="row.day" readonly />
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="delete">
+              <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                <button
+                  class="btn3d btn btn-sm btn-danger btn-delete-account"
+                  type="button"
+                  #button
+                  (click)="onDeleteSchedules($event, row)"
+                  [ngClass]="{ disabled: row.isDeleting }"
+                >
+                  @if (row.isDeleting) {
+                    <span class="spinner-border spinner-border-sm mr-1"></span>
+                  }
+                  Delete
+                </button>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row
+              *matRowDef="let row; columns: displayedColumns; let i = index"
+              [ngClass]="{ hovered: row.hovered, highlighted: row.highlighted }"
+              #tr
+              (click)="onRowSelected(row, tr, i, $event)"
+              (mouseover)="row.hovered = true"
+              (mouseout)="row.hovered = false"
+            ></mat-row>
+          </mat-table>
+          <mat-paginator
+            #paginator
+            class="lessons-table mat-elevation-z8"
+            [length]="futureScheduleDateStrings.length"
+            [pageSizeOptions]="[5, 10, 20, 50, 100]"
+            showFirstLastButtons
+            pageSize="{{ pageSize }}"
+            (page)="onChangePageProperties($event)"
+          >
+          </mat-paginator>
+        </fieldset>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <app-generate-schedules
+          (dateTimeChangedEmitter)="dateTimeChanged($event)"
+          (schedulesUpdatedEmitter)="onSchedulesUpdated($event)"
+          #scheduleDate
+        ></app-generate-schedules>
+      </div>
+    </div>
+    <div class="col px-md-2">
+      <a routerLink="../" class="btn3d btn btn-primary">Back</a>
+    </div>
+  </form>
+</div>

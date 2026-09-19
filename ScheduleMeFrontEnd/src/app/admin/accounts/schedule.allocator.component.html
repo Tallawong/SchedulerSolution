@@ -1,0 +1,194 @@
+@if (isLoaded && !isAdmin) {
+  <form [formGroup]="form">
+    <div class="row">
+      <div class="mb-3 col-5">
+        <label>Define schedules for {{ account.firstName }} {{ account.lastName }}</label>
+      </div>
+    </div>
+    <fieldset>
+      <legend>Date & Tasks:</legend>
+      <div class="container">
+        <div class="row">
+          <div class="mb-3 col-6">
+            <app-schedule-date-time
+              formControlName="scheduledDate"
+              (dateChange)="onDateChanged($event)"
+            >
+            </app-schedule-date-time>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row equal">
+          <div class="mb-3 col-3">
+            <mat-form-field appearance="outline">
+              <mat-label>Task</mat-label>
+              <mat-select
+                formControlName="function"
+                [ngClass]="{ 'is-invalid': submitted && f['function'].errors }"
+                required
+                (selectionChange)="onUserFunctionChanged($event)"
+              >
+                @for (item of uniqueTasks; track item) {
+                  <mat-option [value]="item">
+                    {{ item }}
+                  </mat-option>
+                }
+              </mat-select>
+              @if (submitted && form.controls['function'].hasError('invalidFunction')) {
+                <mat-error class="alert alert-danger"> Task can't be empty </mat-error>
+              }
+            </mat-form-field>
+          </div>
+          @if (isGroupTaskSelected) {
+            <div class="mb-3 col-3">
+              <mat-form-field appearance="outline">
+                <mat-label>Group</mat-label>
+                <mat-select
+                  formControlName="groupTask"
+                  [ngClass]="{ 'is-invalid': submitted && f['groupTask'].errors }"
+                  [disabled]="true"
+                  required
+                >
+                  @for (item of uniqueGroups; track item) {
+                    <mat-option [value]="item" #groupDataCtrl>
+                      {{ item }}
+                    </mat-option>
+                  }
+                </mat-select>
+                @if (f['groupTask'].enabled && f['groupTask'].hasError('required')) {
+                  <mat-error>The field is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          }
+        </div>
+      </div>
+      @if (isLoggedAsAdmin) {
+        <div class="mb-3">
+          <button
+            type="button"
+            (click)="onAddSchedule()"
+            #add
+            class="btn3d btn btn-primary"
+            [ngClass]="{ disabled: !form.controls['scheduledDate'].valid }"
+          >
+            @if (isAdding) {
+              <span class="spinner-border spinner-border-sm mr-1"></span>
+            }
+            Add
+          </button>
+          &nbsp;
+        </div>
+      }
+    </fieldset>
+  </form>
+}
+
+<fieldset>
+  <legend>Schedules:</legend>
+
+  <div class="container">
+    <mat-form-field appearance="outline">
+      <mat-label>Filter</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event.target, input)"
+        placeholder="Search columns"
+        #input
+      />
+    </mat-form-field>
+  </div>
+
+  <mat-table
+    matSort
+    #table
+    class="lessons-table mat-elevation-z8"
+    [dataSource]="dataSource"
+    (matSortChange)="sortData($event)"
+  >
+    <ng-container matColumnDef="{{ displayedColumns[0] }}">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
+      <mat-cell *matCellDef="let schedule">
+        <input type="text" matInput [value]="schedule.date" readonly />
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="userFunction">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Task </mat-header-cell>
+      <mat-cell *matCellDef="let schedule">
+        <input
+          type="text"
+          #data
+          matInput
+          placeholder="None"
+          [value]="schedule.userFunction"
+          readonly
+        />
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="scheduleGroup">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Group </mat-header-cell>
+      <mat-cell *matCellDef="let i = index; let schedule">
+        @if (schedule.scheduleGroup != undefined) {
+          <span>
+            <input
+              type="text"
+              #data
+              matInput
+              placeholder="None"
+              [value]="schedule.scheduleGroup"
+              (keydown.enter)="onGroupButtonEntered($event)"
+              readonly
+            />
+          </span>
+        }
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+      <mat-cell *matCellDef="let rowIndex = index; let schedule">
+        <button
+          mat-raised-button
+          color="warn"
+          (click)="onDeleteSchedule(rowIndex, schedule)"
+          class="btn3d btn btn-sm btn-danger btn-delete-account"
+        >
+          @if (schedule.deleting) {
+            <span class="spinner-border spinner-border-sm mr-1"></span>
+          }
+          Delete
+        </button>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row
+      *matRowDef="let row; columns: displayedColumns; let i = index"
+      [ngClass]="{ highlighted: row.highlighted }"
+      #tr
+      (click)="onRowSelected(row, tr, i, $event)"
+      (mouseover)="row.hovered = true"
+      (mouseout)="row.hovered = false"
+    ></mat-row>
+  </mat-table>
+
+  <mat-paginator
+    #paginator
+    class="lessons-table mat-elevation-z8"
+    [length]="schedules.length"
+    [pageSizeOptions]="[5, 30, 50, 100]"
+    showFirstLastButtons
+  >
+  </mat-paginator>
+</fieldset>
+
+@if (isLoaded) {
+  <div type="button" class="mb-3 ms-2">
+    <a routerLink="/admin/accounts/add-edit/edit/{{ account.id }}" class="btn3d btn btn-primary"
+      >Back</a
+    >
+  </div>
+}
+<div class="row mt-3"></div>

@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\SchedulerSolution\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|c:\\schedulersolution\\schedulemefrontend\\src\\app\\account\\login.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|solutionrelative:schedulemefrontend\\src\\app\\account\\login.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|c:\\schedulersolution\\schedulemefrontend\\src\\app\\services\\account\\account.service.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|solutionrelative:schedulemefrontend\\src\\app\\services\\account\\account.service.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "login.component.ts",
+              "DocumentMoniker": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\account\\login.component.ts",
+              "RelativeDocumentMoniker": "ScheduleMeFrontEnd\\src\\app\\account\\login.component.ts",
+              "ToolTip": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\account\\login.component.ts",
+              "RelativeToolTip": "ScheduleMeFrontEnd\\src\\app\\account\\login.component.ts",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAADkAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-09-19T15:13:38.296Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "account.service.ts",
+              "DocumentMoniker": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\services\\account\\account.service.ts",
+              "RelativeDocumentMoniker": "ScheduleMeFrontEnd\\src\\app\\services\\account\\account.service.ts",
+              "ToolTip": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\services\\account\\account.service.ts",
+              "RelativeToolTip": "ScheduleMeFrontEnd\\src\\app\\services\\account\\account.service.ts",
+              "ViewState": "AgIAAAMBAAAAAAAAAAA0wCgBAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-09-19T15:12:28.56Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

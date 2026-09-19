@@ -1,0 +1,29 @@
+.flex-container {
+  width: 80%;
+  min-height: 300px;
+  margin: 0 auto;
+  display: -webkit-flex; /* Safari */
+  display: flex; /* Standard syntax */
+}
+
+// Defs for fieldset & legend
+fieldset {
+  margin: 8px;
+  border: 1px solid silver;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+legend {
+  background-color: #000;
+  color: #fff;
+  padding: 3px 6px;
+}
+
+// Defs for highlight selected row in material table
+:host {
+  --bg-color: rgba(100, 100, 100, 0.5);
+}
+.highlighted {
+  background: var(--bg-color);
+}

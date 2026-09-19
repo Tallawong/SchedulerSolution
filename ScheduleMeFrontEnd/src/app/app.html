@@ -1,0 +1,48 @@
+<div class="app-container" [ngClass]="{ 'bg-light': account }">
+  <!-- main nav -->
+
+  @if (account) {
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <div class="navbar-nav nav-underline">
+        <a
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item nav-link"
+          role="presentation"
+          >Home</a
+        >
+        <a routerLink="/profile" routerLinkActive="active" class="nav-item nav-link">Profile</a>
+        @if (account.role === Role.Admin) {
+          <a routerLink="/admin" routerLinkActive="active" class="nav-item nav-link">Admin</a>
+        }
+        @if (account.role === Role.User) {
+          <a routerLink="/schedule" routerLinkActive="active" class="nav-item nav-link">User</a>
+        }
+        @if (account.role === Role.Admin) {
+          <a routerLink="/floating" routerLinkActive="active" class="nav-item nav-link"
+            >Unattended</a
+          >
+        }
+        <a routerLink="/logout" (click)="logout()" class="nav-item nav-link">Logout</a>
+      </div>
+    </nav>
+  }
+  @if (!account && !isLoaded) {
+    <div class="d-flex justify-content-center">
+      <span class="spinner-border spinner-border-lg align-center"></span>
+    </div>
+  }
+
+  <!-- subnav router outlet -->
+  <router-outlet name="subnav"></router-outlet>
+  <!--router-outlet name="schedule-nav"></router-outlet-->
+
+  <div id="pageStart"></div>
+
+  <!-- global alert -->
+  <alert></alert>
+
+  <!-- main router outlet -->
+  <router-outlet></router-outlet>
+</div>

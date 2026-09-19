@@ -1,0 +1,117 @@
+@if (!accountsLoaded) {
+  <!-- <div class="loader">
+    <mat-progress-spinner diameter="60" [value]="0" mode="indeterminate">
+    </mat-progress-spinner>
+</div> -->
+}
+@if (!isInitializing) {
+  <fieldset>
+    <legend>{{ titlePrefix }}{{ functionStr }}</legend>
+    <form [formGroup]="form" novalidate>
+      <div class="row mb-4">
+        <div class="col-5 form-group">
+          <label>{{ functionStr }}</label>
+          <select
+            #element
+            formControlName="selectedUser"
+            class="form-select"
+            (change)="onChangeUser($event)"
+          >
+            @for (str of possibleUserStrings; track str; let index = $index) {
+              <option [value]="str">{{ str }}</option>
+            }
+          </select>
+        </div>
+      </div>
+    </form>
+    <!-- <div class="container">
+        <mat-form-field appearance="outline">
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="onApplyFilter($event.target, input)" placeholder="Search columns" #input>
+        </mat-form-field>
+    </div> -->
+    <mat-table #table class="lessons-table mat-elevation-z8" [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="firstName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <input type="text" matInput [value]="user.firstName" readonly />
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="secondName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Second Name </mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <input type="text" matInput [value]="user.lastName" readonly />
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> E-mail </mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <input type="text" matInput [value]="user.email" readonly />
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="dob">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> DOB </mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <input type="text" matInput [value]="user.dob" readonly />
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="group">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Group </mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <input type="text" matInput [value]="user.scheduleGroup" readonly />
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+        <mat-cell *matCellDef="let i = index; let user">
+          <button
+            class="btn3d btn btn-sm btn-danger btn-delete-account"
+            type="button"
+            (click)="onDeleteSchedule($event, user)"
+            [ngClass]="{ disabled: user.isDeleting }"
+          >
+            @if (user.isDeleting) {
+              <span class="spinner-border spinner-border-sm mr-1"></span>
+            }
+            Delete
+          </button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row
+        *matRowDef="let row; columns: displayedColumns; let i = index"
+        [ngClass]="{ hovered: row.hovered, highlighted: row.highlighted }"
+        #tr
+        (click)="onRowSelected(row, tr, i, $event)"
+        (mouseover)="row.hovered = true"
+        (mouseout)="row.hovered = false"
+      ></mat-row>
+    </mat-table>
+
+    <mat-paginator
+      #paginator
+      class="lessons-table mat-elevation-z8"
+      [length]="accounts4DateAndFunction.length"
+      [pageSizeOptions]="[5, 10, 30, 50]"
+      showFirstLastButtons
+      pageSize="{{ pageSize }}"
+      (page)="onChangePageProperties($event)"
+    >
+    </mat-paginator>
+
+    <button
+      #button
+      type="button"
+      [ngClass]="{
+        disabled: f['selectedUser'].value == null || f['selectedUser'].value.length <= 0,
+      }"
+      (click)="onAddSchedule($event, button)"
+      class="btn3d btn btn-primary"
+    >
+      @if (isAdding) {
+        <span class="spinner-border spinner-border-sm mr-1"></span>
+      }
+      Add {{ functionStr }}
+    </button>
+  </fieldset>
+}
