@@ -57,3 +57,10 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+JD
+We have installed  ngxsmk-datepicker package.ngxsmk-datepicker is a high-performance, enterprise-ready date and range picker engineered for the modern Angular ecosystem (v17+). Built from the ground up with Angular Signals, it delivers a seamless, zoneless-ready experience for both desktop and mobile (Ionic) applications. (https://github.com/toozuuu/ngxsmk-datepicker#usage)
+Hopefully it uses a highly requested feature called segmented keyboard entry:
+	* The date/time layout is broken down into semantic visual segments (e.g., MM, DD, YYYY or hh, mm, aa).
+	* Auto-advancing cursor: When a user types a complete, valid value into one segment (for instance, typing 1 then 2 for December, or 2 and 0 for the day), the cursor automatically advances focus to the next logical segment without forcing the user to type a slash / or press the arrow keys.

@@ -35,6 +35,7 @@
     <PackageJsonDependenciesLuxon Condition="$(PackageJsonDependenciesLuxon) == ''">^3.7.2</PackageJsonDependenciesLuxon>
     <PackageJsonDependenciesNgxCookieService Condition="$(PackageJsonDependenciesNgxCookieService) == ''">^22.0.0</PackageJsonDependenciesNgxCookieService>
     <PackageJsonDependenciesNgxMaterialTimepicker Condition="$(PackageJsonDependenciesNgxMaterialTimepicker) == ''">^13.1.1</PackageJsonDependenciesNgxMaterialTimepicker>
+    <PackageJsonDependenciesNgxsmkDatepicker Condition="$(PackageJsonDependenciesNgxsmkDatepicker) == ''">^3.0.5</PackageJsonDependenciesNgxsmkDatepicker>
     <PackageJsonDependenciesRxjs Condition="$(PackageJsonDependenciesRxjs) == ''">~7.8.0</PackageJsonDependenciesRxjs>
     <PackageJsonDependenciesTslib Condition="$(PackageJsonDependenciesTslib) == ''">^2.3.0</PackageJsonDependenciesTslib>
     <PackageJsonDevdependenciesAngularBuild Condition="$(PackageJsonDevdependenciesAngularBuild) == ''">^22.0.4</PackageJsonDevdependenciesAngularBuild>

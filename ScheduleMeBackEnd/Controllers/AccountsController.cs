@@ -116,7 +116,7 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpPost("verify-mfa")]
+        [HttpPost("verify-mfa", Name = "verifyMfa")]
         public async Task<IActionResult> VerifyMfa(VerifyMfaRequest model)
         {
             try

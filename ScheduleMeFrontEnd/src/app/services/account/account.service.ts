@@ -337,4 +337,21 @@ export class AccountService {
   private stopRefreshTokenTimer() {
     clearTimeout(this.refreshTokenTimeout);
   }
+
+  verifyMfa(email: string, code: string) {
+    return this.asLegacyResponse<Account>(
+      this.api.verifyMfa(
+        { email, mfaCode: code },
+        'body',
+        false,
+        accountApiOptions({ withCredentials: true }),
+      ),
+    ).pipe(
+      map((account) => {
+        this.accountSubject.next(account);
+        this.startRefreshTokenTimer();
+        return account;
+      }),
+    );
+  }
 }

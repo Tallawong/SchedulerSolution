@@ -108,6 +108,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "verifyMfa",
         "requestBody": {
           "content": {
             "application/json": {
