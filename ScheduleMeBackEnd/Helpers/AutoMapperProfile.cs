@@ -29,6 +29,9 @@ namespace WebApi.Helpers
             CreateMap<Account, AuthenticateResponse>();
                 //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.AccountId));
 
+            CreateMap<Account, MfaResponse>()
+                .IncludeBase<Account, AuthenticateResponse>();
+
             CreateMap<RegisterRequest, Account>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
 

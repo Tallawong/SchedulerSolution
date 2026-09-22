@@ -1,7 +1,7 @@
 import { HttpEvent } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 //import { environment } from '@environments/environment';
@@ -9,8 +9,9 @@ import { Account, Role } from '../../entities';
 import { RegisterRequest } from '../../dto/requests/register-request';
 import { ForgotPasswordRequest } from '../../dto/requests/forgot-password-request';
 import { ResetPasswordRequest } from '../../dto/requests/reset-password-request';
+import { MfaResponse } from '../../dto/responses/mfa-response';
+import { isAuthenticateResponse, isMfaResponse } from '../../core/helpers/auth-response';
 //import { JwtHelperService } from '@auth0/angular-jwt';
-import { CookieService } from 'ngx-cookie-service';
 
 //import { environment } from '../environments/environment';
 import { AgentTaskConfig } from '../../entities/agenttaskconfig';
@@ -22,13 +23,13 @@ import { Task } from '../../entities/task';
 import { DateFunctionTeams } from '../../entities/teams';
 import { TimeSlotsTasksDTO } from '../../entities/timeslotstasksDTO';
 import { AccountsService } from '../../shared/openapi-api-client/api/accounts.service';
+import { AuthenticateResponse } from '../../shared/openapi-api-client/model/authenticateResponse';
 import { accountApiOptions } from './account-api.interceptor';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
   private accountSubject: BehaviorSubject<Account | null>;
   public account: Observable<Account | null>;
-  private cookieService = inject(CookieService);
   private api = inject(AccountsService);
   private router = inject(Router);
 
@@ -41,23 +42,26 @@ export class AccountService {
     return this.accountSubject.value;
   }
 
-  login(email: string, password: string, dob: string) {
-    return this.asLegacyResponse<Account>(
-      this.api.accountsAuthenticatePost(
+  login(email: string, password: string, dob: string): Observable<MfaResponse | AuthenticateResponse> {
+    return this.asLegacyResponse<MfaResponse | AuthenticateResponse>(
+      this.api.accountsAuthenticateMfaPost(
         { email, password, dob },
         'body',
         false,
         accountApiOptions({ withCredentials: true }),
       ),
-    ).pipe(
-      map((account) => {
-        //const body = account.body;
-        var cookieValue = this.cookieService.getAll(); // Just for experiment JD
-        this.accountSubject.next(account);
-        this.startRefreshTokenTimer();
-        return account;
-      }),
-    );
+    ).pipe(tap((response) => this.setAuthenticatedAccount(response)));
+  }
+
+  verifyMfa(email: string, mfaCode: string): Observable<AuthenticateResponse> {
+    return this.asLegacyResponse<AuthenticateResponse>(
+      this.api.verifyMfa(
+        { email, mfaCode },
+        'body',
+        false,
+        accountApiOptions({ withCredentials: true }),
+      ),
+    ).pipe(tap((response) => this.setAuthenticatedAccount(response)));
   }
 
   logout() {
@@ -286,6 +290,15 @@ export class AccountService {
     return response as Observable<T>;
   }
 
+  private setAuthenticatedAccount(response: unknown): void {
+    if (!isAuthenticateResponse(response) || !response.jwtToken?.trim()) return;
+    if (isMfaResponse(response) && response.mfaRequired) return;
+
+    this.accountSubject.next(response as Account);
+    this.stopRefreshTokenTimer();
+    this.startRefreshTokenTimer();
+  }
+
   private refreshTokenTimeout: ReturnType<typeof setTimeout> | undefined;
 
   private startRefreshTokenTimer() {
@@ -336,22 +349,5 @@ export class AccountService {
   // }
   private stopRefreshTokenTimer() {
     clearTimeout(this.refreshTokenTimeout);
-  }
-
-  verifyMfa(email: string, code: string) {
-    return this.asLegacyResponse<Account>(
-      this.api.verifyMfa(
-        { email, mfaCode: code },
-        'body',
-        false,
-        accountApiOptions({ withCredentials: true }),
-      ),
-    ).pipe(
-      map((account) => {
-        this.accountSubject.next(account);
-        this.startRefreshTokenTimer();
-        return account;
-      }),
-    );
   }
 }

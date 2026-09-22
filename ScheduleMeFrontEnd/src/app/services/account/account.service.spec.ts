@@ -20,6 +20,7 @@ import { Schedule } from '../../entities/schedule';
 import { Task } from '../../entities/task';
 import { TimeSlotsTasksDTO } from '../../entities/timeslotstasksDTO';
 import { AgentTaskConfig } from '../../entities/agenttaskconfig';
+import { MfaResponse } from '../../dto/responses/mfa-response';
 
 // Exercise the real generated service, rather than mocking its method names.
 describe('AccountService generated API wrapper', () => {
@@ -36,13 +37,14 @@ describe('AccountService generated API wrapper', () => {
       dob: '2000-01-01',
       role: Role.Admin,
       jwtToken: `${btoa('{}')}.${payload}.signature`,
+      mfaRequired: false,
     };
   }
 
   function login() {
     const account = accountResponse();
     service.login(account.email, 'password', account.dob).subscribe();
-    http.expectOne(`${apiUrl}/authenticate`).flush(account);
+    http.expectOne(`${apiUrl}/authenticate-mfa`).flush(account);
     return account;
   }
 
@@ -79,7 +81,7 @@ describe('AccountService generated API wrapper', () => {
     service.login(account.email, 'password', account.dob).subscribe((value) => {
       expect(value).toEqual(account);
     });
-    const request = http.expectOne(`${apiUrl}/authenticate`);
+    const request = http.expectOne(`${apiUrl}/authenticate-mfa`);
     expect(request.request.method).toBe('POST');
     expect(request.request.body).toEqual({
       email: account.email,
@@ -100,6 +102,114 @@ describe('AccountService generated API wrapper', () => {
     refresh.flush(refreshed);
     expect(service.accountValue).toEqual(refreshed);
     subscription.unsubscribe();
+  });
+
+  it('does not publish a session or refresh a temporary MFA token', () => {
+    const response: MfaResponse = {
+      dob: null,
+      mfaRequired: true,
+      message: 'Verification code sent',
+      tempToken: 'temporary-token',
+    };
+    const states: Array<Account | null> = [];
+    const subscription = service.account.subscribe((value) => states.push(value));
+    service.login('user@example.test', 'password', '01-01-2000').subscribe((value) => {
+      expect(value).toEqual(response);
+    });
+    const request = http.expectOne(`${apiUrl}/authenticate-mfa`);
+    expect(request.request.withCredentials).toBe(true);
+    request.flush(response);
+
+    expect(service.accountValue).toBeNull();
+    expect(states).toEqual([null]);
+    vi.advanceTimersByTime(3600_000);
+    http.expectNone(`${apiUrl}/refresh-token`);
+    service.getAll().subscribe();
+    const accounts = http.expectOne(apiUrl);
+    expect(accounts.request.headers.has('Authorization')).toBe(false);
+    accounts.flush([]);
+    subscription.unsubscribe();
+  });
+
+  it('publishes a plain authentication response without an MFA discriminator', () => {
+    const { mfaRequired: _mfaRequired, ...response } = accountResponse();
+    service.login(response.email, 'password', response.dob).subscribe();
+    http.expectOne(`${apiUrl}/authenticate-mfa`).flush(response);
+
+    expect(service.accountValue).toEqual(response);
+    vi.advanceTimersByTime(3540_000);
+    http.expectOne(`${apiUrl}/refresh-token`).flush(response);
+  });
+
+  it.each([
+    { mfaRequired: 'false' },
+    { mfaRequired: 'true' },
+    { mfaRequired: true },
+    { jwtToken: 123 },
+    { jwtToken: '   ' },
+    { dob: 123 },
+  ])('does not publish a malformed response or MFA challenge: %j', (fields) => {
+    const response = { ...accountResponse(), ...fields };
+    service.login('user@example.test', 'password', '01-01-2000').subscribe();
+    http.expectOne(`${apiUrl}/authenticate-mfa`).flush(response);
+
+    expect(service.accountValue).toBeNull();
+    vi.advanceTimersByTime(3600_000);
+    http.expectNone(`${apiUrl}/refresh-token`);
+  });
+
+  it('handles a null login response without accessing its properties', () => {
+    service.login('user@example.test', 'password', '01-01-2000').subscribe();
+    http.expectOne(`${apiUrl}/authenticate-mfa`).flush(null);
+
+    expect(service.accountValue).toBeNull();
+    vi.advanceTimersByTime(3600_000);
+    http.expectNone(`${apiUrl}/refresh-token`);
+  });
+
+  it('verifies MFA with cookies and publishes the authenticated account', () => {
+    const account = accountResponse();
+    service.verifyMfa(account.email, '123456').subscribe((response) => {
+      expect(response.jwtToken).toBe(account.jwtToken);
+    });
+    const request = http.expectOne(`${apiUrl}/verify-mfa`);
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body).toEqual({ email: account.email, mfaCode: '123456' });
+    expect(request.request.withCredentials).toBe(true);
+    request.flush(account);
+
+    expect(service.accountValue).toEqual(account);
+    vi.advanceTimersByTime(3540_000);
+    const refresh = http.expectOne(`${apiUrl}/refresh-token`);
+    expect(refresh.request.headers.get('Authorization')).toBe(`Bearer ${account.jwtToken}`);
+    refresh.flush(accountResponse());
+  });
+
+  it.each(['login', 'verifyMfa'] as const)('does not establish a session for a tokenless %s response', (operation) => {
+    const response: MfaResponse = { dob: null, mfaRequired: false };
+    const result = operation === 'login'
+      ? service.login('user@example.test', 'password', '01-01-2000')
+      : service.verifyMfa('user@example.test', '123456');
+    result.subscribe();
+    http.expectOne(`${apiUrl}/${operation === 'login' ? 'authenticate-mfa' : 'verify-mfa'}`).flush(response);
+
+    expect(service.accountValue).toBeNull();
+    vi.advanceTimersByTime(3600_000);
+    http.expectNone(`${apiUrl}/refresh-token`);
+  });
+
+  it('keeps the session empty when MFA verification fails', () => {
+    service.verifyMfa('user@example.test', '123456').subscribe({
+      error: (error: unknown) => expect(error).toBeTruthy(),
+    });
+    http.expectOne(`${apiUrl}/verify-mfa`).flush(
+      { message: 'Invalid code' },
+      { status: 400, statusText: 'Bad Request' },
+    );
+
+    expect(service.accountValue).toBeNull();
+    vi.advanceTimersByTime(3600_000);
+    http.expectNone(`${apiUrl}/refresh-token`);
   });
 
   it('revokes with cookies, clears state, redirects, and cancels refresh on logout', () => {

@@ -36,7 +36,6 @@
     "luxon": "^3.7.2",
     "ngx-cookie-service": "^22.0.0",
     "ngx-material-timepicker": "^13.1.1",
-    "ngxsmk-datepicker": "^3.0.5",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

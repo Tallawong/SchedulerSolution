@@ -81,7 +81,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("authenticate-mfa")]
-        public async Task<IActionResult> AuthenticateWithMfa(AuthenticateRequest model)
+        public async Task<ActionResult<MfaResponse>> AuthenticateWithMfa(AuthenticateRequest model)
         {
             try
             {
@@ -94,20 +94,16 @@ namespace WebApi.Controllers
                 if (response.MfaRequired)
                 {
                     log.InfoFormat("MFA required for user {0}", model.Email);
-                    return Ok(new
-                    {
-                        mfaRequired = true,
-                        message = response.Message,
-                        tempToken = response.TempToken
-                    });
                 }
                 else
                 {
                     // MFA not enabled, return tokens directly
                     // Note: This path is less common - typically you'd use /authenticate endpoint if MFA is not enabled
                     log.InfoFormat("MFA not required for user {0}", model.Email);
-                    return Ok(response);
+                    setTokenCookie(response.RefreshToken);
                 }
+
+                return Ok(response);
             }
             catch (Exception ex)
             {

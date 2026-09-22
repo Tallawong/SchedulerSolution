@@ -1,6 +1,6 @@
 namespace WebApi.Models.Accounts
 {
-    public class MfaResponse
+    public class MfaResponse : AuthenticateResponse
     {
         public bool MfaRequired { get; set; }
         public string Message { get; set; }

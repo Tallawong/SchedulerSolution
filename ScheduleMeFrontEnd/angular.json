@@ -37,9 +37,9 @@
             ],
             "styles": [
               "src/material-theme.scss",
-              "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.css"
+              "src/styles.css",
+              "src/styles/dialog-theme.css"
             ],
             "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
           },

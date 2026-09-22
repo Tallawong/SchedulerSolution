@@ -217,7 +217,14 @@ namespace WebApi.Services
             {
                 try
                 {
-                    var account = _context.Accounts.Include(x => x.RefreshTokens).SingleOrDefault(x => x.Email == model.Email && x.DOB == model.Dob);
+                    var account = _context.Accounts
+                        .Include(x => x.RefreshTokens)
+                        .Where(x => x.Email == model.Email)
+                        .AsEnumerable()
+                        .SingleOrDefault(x =>
+                        {
+                            return x.DOB == model.Dob;
+                        });
 
                     if (account == null || !account.IsVerified || !BC.Verify(model.Password, account.PasswordHash))
                         throw new AppException("Email, DOB or password is incorrect");
@@ -3349,15 +3356,13 @@ namespace WebApi.Services
                     _context.Update(account);
                     await _context.SaveChangesAsync();
 
-                    var response = _mapper.Map<AuthenticateResponse>(account);
+                    var response = _mapper.Map<MfaResponse>(account);
                     response.JwtToken = jwtToken;
                     response.RefreshToken = refreshToken.Token;
+                    response.MfaRequired = false;
+                    response.Message = "Authentication successful";
 
-                    return new MfaResponse
-                    {
-                        MfaRequired = false,
-                        Message = "Authentication successful"
-                    };
+                    return response;
                 }
             }
             catch (Exception ex)

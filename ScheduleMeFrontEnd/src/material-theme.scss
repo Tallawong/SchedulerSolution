@@ -17,6 +17,26 @@ html {
       density: 0,
     )
   );
+
+  // Use public Material token overrides rather than setting the input height.
+  // Hint/error space remains independent of the visible control height.
+  @include mat.form-field-overrides(
+    (
+      container-height: var(--app-control-height, 44px),
+      container-vertical-padding: 10px,
+      filled-with-label-container-padding-top: 18px,
+      filled-with-label-container-padding-bottom: 2px,
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      filled-container-height: var(--app-control-height, 44px),
+      outlined-container-height: var(--app-control-height, 44px),
+      protected-container-height: var(--app-control-height, 44px),
+      text-container-height: var(--app-control-height, 44px),
+    )
+  );
 }
 
 body {

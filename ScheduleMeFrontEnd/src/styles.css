@@ -1,1 +1,70 @@
-/* You can add global styles to this file, and also import other style files */
+/* Shared size for single-line controls across Bootstrap and custom components. */
+:root {
+  --app-control-height: 44px;
+  --app-control-line-height: 24px;
+  --app-control-padding-y: calc(
+    (var(--app-control-height) - var(--app-control-line-height) - 2px) / 2
+  );
+}
+
+/* Material input height belongs to its form-field container, not the input.
+   Calendar popup controls, multiline inputs and choice controls are excluded. */
+body input:not(
+    [type='checkbox'],
+    [type='radio'],
+    [type='range'],
+    [type='hidden'],
+    [type='image'],
+    .mat-mdc-input-element,
+    [matInput]
+  ):not(:where(ngxsmk-datepicker-content *, mat-calendar *)),
+body select:not([multiple]):not([size]):not(
+    :where(ngxsmk-datepicker-content *, mat-calendar *)
+  ),
+body select[size='1']:not([multiple]):not(
+    :where(ngxsmk-datepicker-content *, mat-calendar *)
+  ) {
+  box-sizing: border-box;
+  height: var(--app-control-height);
+  min-height: var(--app-control-height);
+  line-height: var(--app-control-line-height);
+  padding-block: var(--app-control-padding-y);
+}
+
+/* Size action buttons, not icon-only controls, calendar cells or popup options. */
+body button:not(
+    .mat-mdc-button-base,
+    [mat-icon-button],
+    [mat-fab],
+    [mat-mini-fab],
+    .btn-close,
+    .navbar-toggler,
+    [role='checkbox'],
+    [role='radio'],
+    [role='switch'],
+    [role='option'],
+    [role='menuitem']
+  ):not(:where(ngxsmk-datepicker *, ngxsmk-datepicker-content *, mat-calendar *)),
+body a.btn {
+  box-sizing: border-box;
+  height: var(--app-control-height);
+  min-height: var(--app-control-height);
+  line-height: var(--app-control-line-height);
+  padding-block: var(--app-control-padding-y);
+}
+
+/* A Bootstrap floating label shares the same 44px field without overlapping text. */
+body .form-floating > input.form-control {
+  padding-top: 16px;
+  padding-bottom: 2px;
+}
+
+/* Calendar-toggle buttons must fit inside the Material field's visible box.
+   This does not affect the buttons inside the calendar popup. */
+body .mat-mdc-form-field .mat-mdc-icon-button {
+  --mdc-icon-button-state-layer-size: var(--app-control-height);
+  --mat-icon-button-state-layer-size: var(--app-control-height);
+  width: var(--app-control-height);
+  height: var(--app-control-height);
+  padding: calc((var(--app-control-height) - 24px) / 2);
+}

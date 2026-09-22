@@ -6,40 +6,49 @@
         <p class="lp-sub">Sign in to continue</p>
       </div>
 
+      <!--form [formGroup]="myForm"-->
       <form (ngSubmit)="onSubmit()" class="lp-form">
         <label for="email">Email</label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          class="lp-input"
-          [(ngModel)]="login.email"
-          required
-        />
+        <input type="email" class="lp-input" [formField]="loginForm.email" />
 
         <label for="password">Password</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          class="lp-input"
-          [(ngModel)]="login.password"
-          required
-        />
+        <input type="password" class="lp-input" [formField]="loginForm.password" />
 
-        <label for="dob">Date of birth (DOB)</label>
-        <input
-          id="dob"
-          name="dob"
-          type="date"
-          class="lp-input"
-          [(ngModel)]="dobInput"
-          (change)="onDobInputChange()"
-          required
-        />
+        <!--label for="dob">Date of birth (DOB)</label>
+  <ngxsmk-datepicker [formField]="loginForm.dateInQuestion"
+               mode="single"
+               placeholder="Select a date">
+  </ngxsmk-datepicker-->
+        <!--mat-form-field appearance="outline">
+    <mat-label>Select Date</mat-label>
 
+  </mat-form-field-->
+        <label for="dob">Choose a date</label>
+        <input [formField]="loginForm.dob"
+               type="date"
+               id="dob" 
+               />
+
+        <!--mat-form-field appearance="outline">
+          <mat-label>Choose a date</mat-label>
+          <input [formField]="loginForm.dateInQuestion" matInput [matDatepicker]="picker" />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field-->
+
+        <!--ngxsmk-datepicker mode="single"
+                     dateFormatPattern="'DD-MM-YYYY'"
+                     displayFormat="'DD-MM-YYYY'"
+                     inputMask="'DD-MM-YYYY'"
+                     placeholder="DD-MM-YYYY"
+                     [showCalendarButton]="true"
+                     [allowTyping]="true"
+                     [formField]="loginForm.dateInQuestion"
+                     locale="en-AU">
+  </ngxsmk-datepicker-->
         @if (errorMessage) {
-          <div class="lp-error">{{ errorMessage }}</div>
+        <div class="lp-error">{{ errorMessage }}</div>
         }
 
         <div class="lp-actions">
@@ -56,12 +65,12 @@
           <button type="button" class="link-btn" (click)="onRegister()">Register</button>
         </div>
       </form>
-      <!-- TODO app-mfa-dialog
-        [visible]="showMfa"
-        (verify)="onMfaVerify($event)"
-        (cancelled)="onMfaCancelled()"
-      >
-      </app-mfa-dialog-->
+      <app-mfa-dialog
+      [visible]="showMfa"
+      (verify)="onMfaVerify($event)"
+      (cancelled)="onMfaCancelled()"
+    >
+    </app-mfa-dialog>
     </div>
   </div>
 }

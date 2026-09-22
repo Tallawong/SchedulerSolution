@@ -5,7 +5,6 @@ export function initializeApp(accountService: AccountService) {
     try {
       await new Promise<void>((resolve) => {
         // attempt to refresh token on app start up to auto authenticate
-        alert('Failed refreshing');
         accountService
           .refreshToken()
           .subscribe({

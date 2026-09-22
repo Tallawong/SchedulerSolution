@@ -6,7 +6,6 @@ import { FormField } from '@angular/forms/signals';
 import { AccountRoutingModule } from './account-routing.module';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { LayoutComponent } from './layout.component';
-import { RegisterComponent } from './register.component';
 import { ResetPasswordComponent } from './reset-password.component';
 import { VerifyEmailComponent } from './verify-email.component';
 
@@ -55,7 +54,6 @@ const CUSTOM_LUXON_FORMATS = {
   ],
   declarations: [
     LayoutComponent,
-    RegisterComponent,
     VerifyEmailComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
