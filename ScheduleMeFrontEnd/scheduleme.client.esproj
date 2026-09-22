@@ -6,6 +6,7 @@
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="obj\" />
     <Folder Include="scripts\" />
     <Folder Include="src\app\core\controls\registration-form\" />
   </ItemGroup>

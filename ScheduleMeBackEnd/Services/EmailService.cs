@@ -15,7 +15,7 @@ namespace Backend.Services
     public interface IEmailService
     {
         void Send(string to, string subject, string html, string? from = null);
-        Task SendAsync(string to, string subject, string html, string? from = null);
+        Task SendEmailAsync(string to, string subject, string html, string? from = null);
     }
 
     public class EmailService : IEmailService
@@ -35,10 +35,10 @@ namespace Backend.Services
 
         public void Send(string to, string subject, string html, string? from = null)
         {
-            SendAsync(to, subject, html, from).ConfigureAwait(false).GetAwaiter().GetResult();
+            SendEmailAsync(to, subject, html, from).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
-        public async Task SendAsync(string to, string subject, string html, string? from = null)
+        public async Task SendEmailAsync(string to, string subject, string html, string? from = null)
         {
             try
             {

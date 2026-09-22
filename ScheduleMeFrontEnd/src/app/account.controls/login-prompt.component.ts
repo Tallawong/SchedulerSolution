@@ -98,6 +98,7 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
 
     this.errorMessage = '';
     this.loading = false;
+    this.modalService.showLogin();
 
     // Sync visibility with shared modal service
     this.subs.push(

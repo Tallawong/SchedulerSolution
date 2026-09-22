@@ -46,34 +46,6 @@ export class VerifyEmailComponent implements OnInit {
       request.dob = dob;
     }
 
-    // this.userService.verifyEmail(request).subscribe({
-    //   next: (res: any) => {
-    //     this.loading = false;
-    //     this.success = true;
-    //     this.message =
-    //       res?.message || 'Your email has been verified successfully. You can now log in.';
-    //     try {
-    //       this.modalService.hideLogin();
-    //     } catch {}
-    //     try {
-    //       setTimeout(() => {
-    //         try {
-    //           this.modalService.showLogin();
-    //         } catch {}
-    //         try {
-    //           this.router.navigate(['/account/login']);
-    //         } catch {}
-    //       }, this.redirectDelayMs);
-    //     } catch {}
-    //   },
-    //   error: (err: any) => {
-    //     console.error('Verification failed:', err);
-    //     this.loading = false;
-    //     this.success = false;
-    //     this.message =
-    //       err?.error?.message || 'Email verification failed. The link may be invalid or expired.';
-    //   },
-    // });
   }
 
   gotoLogin(): void {

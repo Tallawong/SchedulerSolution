@@ -7,7 +7,7 @@ import { AccountRoutingModule } from './account-routing.module';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { LayoutComponent } from './layout.component';
 import { ResetPasswordComponent } from './reset-password.component';
-import { VerifyEmailComponent } from './verify-email.component';
+import { VerifyEmailComponent } from '../account.controls/verify-email.component';
 
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { MatButtonModule } from '@angular/material/button';
@@ -54,7 +54,6 @@ const CUSTOM_LUXON_FORMATS = {
   ],
   declarations: [
     LayoutComponent,
-    VerifyEmailComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
   ],

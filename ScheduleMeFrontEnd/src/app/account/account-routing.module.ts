@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { LayoutComponent } from './layout.component';
 import { RegisterDialogComponent } from '../account.controls/registration-dialog.component';
-import { VerifyEmailComponent } from './verify-email.component';
+import { VerifyEmailComponent } from '../account.controls/verify-email.component';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { ResetPasswordComponent } from './reset-password.component';
 import { LoginPromptComponent } from '../account.controls/login-prompt.component';

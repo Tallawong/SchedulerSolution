@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { RouterModule } from '@angular/router';
-import { of } from 'rxjs';
+import { Router, RouterModule } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { vi } from 'vitest';
 import { App } from './app';
+import { Account, Role } from './entities';
 import { AccountService } from './services/account/account.service';
 
 @Component({ selector: 'alert', standalone: true, template: '' })
@@ -11,9 +13,11 @@ class AlertStubComponent {}
 
 describe('App', () => {
   let logoutCalls: number;
+  let account: BehaviorSubject<Account | null>;
 
   beforeEach(async () => {
     logoutCalls = 0;
+    account = new BehaviorSubject<Account | null>(null);
     await TestBed.configureTestingModule({
       imports: [CommonModule, RouterModule.forRoot([]), AlertStubComponent],
       declarations: [App],
@@ -21,9 +25,12 @@ describe('App', () => {
         {
           provide: AccountService,
           useValue: {
-            account: of(null),
-            accountValue: null,
-            logout: () => logoutCalls++,
+            account: account.asObservable(),
+            get accountValue() { return account.value; },
+            logout: () => {
+              logoutCalls++;
+              account.next(null);
+            },
           },
         },
       ],
@@ -50,5 +57,26 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     fixture.componentInstance.logout();
     expect(logoutCalls).toBe(1);
+  });
+
+  it('logs out from the navigation button without issuing a competing route change', async () => {
+    const signedIn = new Account();
+    signedIn.role = Role.User;
+    account.next(signedIn);
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const navigateByUrl = vi.spyOn(TestBed.inject(Router), 'navigateByUrl');
+    const button: HTMLButtonElement = fixture.nativeElement.querySelector('nav button');
+
+    expect(button).not.toBeNull();
+    expect(button.type).toBe('button');
+    expect(button.textContent).toContain('Logout');
+    button.click();
+    fixture.detectChanges();
+
+    expect(logoutCalls).toBe(1);
+    expect(navigateByUrl).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.querySelector('nav')).toBeNull();
   });
 });

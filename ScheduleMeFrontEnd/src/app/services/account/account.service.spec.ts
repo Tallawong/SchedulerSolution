@@ -21,6 +21,7 @@ import { Task } from '../../entities/task';
 import { TimeSlotsTasksDTO } from '../../entities/timeslotstasksDTO';
 import { AgentTaskConfig } from '../../entities/agenttaskconfig';
 import { MfaResponse } from '../../dto/responses/mfa-response';
+import { RegisterRequest } from '../../dto/requests/register-request';
 
 // Exercise the real generated service, rather than mocking its method names.
 describe('AccountService generated API wrapper', () => {
@@ -234,10 +235,10 @@ describe('AccountService generated API wrapper', () => {
     request.flush([account]);
   });
 
-  it('preserves registration fields and serializes dates', () => {
-    const dob = new Date('2000-01-01T00:00:00Z');
-    const ts = new Date('2026-01-01T00:00:00Z');
-    const account = {
+  it('preserves registration DOB and timestamp strings', () => {
+    const dob = '01-01-2000';
+    const ts = '2026-01-01T00:00:00.000Z';
+    const account: RegisterRequest = {
       email: 'user@example.test',
       password: 'password',
       confirmPassword: 'password',
@@ -246,12 +247,14 @@ describe('AccountService generated API wrapper', () => {
       title: 'Ms',
       dob,
       ts,
+      acceptTerms: true,
       phoneNumber: '+61400000000',
       enableMfa: true,
     };
     service.register(account).subscribe();
     const request = http.expectOne(`${apiUrl}/register`);
-    expect(request.request.body).toEqual({ ...account, dob: dob.toJSON() });
+    expect(request.request.body).toEqual(account);
+    expect(JSON.parse(request.request.serializeBody() as string)).toEqual(account);
     expect(request.request.withCredentials).toBe(false);
     request.flush({});
   });

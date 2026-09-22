@@ -91,11 +91,10 @@ export class AccountService {
   }
 
   register(account: RegisterRequest) {
-    // Preserve additional registration fields while adapting Date to the wire format.
+    // Preserve additional registration fields and their wire-format strings.
     return this.api.accountsRegisterPost({
       ...account,
       title: account.title ?? null,
-      dob: account.dob.toJSON(),
     });
   }
 

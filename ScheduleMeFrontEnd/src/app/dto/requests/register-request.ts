@@ -4,10 +4,11 @@ export interface RegisterRequest {
   confirmPassword: string;
   firstName: string;
   lastName: string;
-  // date of birth
-  dob: Date;
-  // timestamp
-  ts: Date;
+  // date of birth in dd-MM-yyyy format
+  dob: string;
+  // UTC ISO 8601 timestamp
+  ts: string;
+  acceptTerms: boolean;
   // MFA - Optional phone number for two-factor authentication
   phoneNumber?: string;
   // MFA - Enable MFA during registration (requires phoneNumber)
