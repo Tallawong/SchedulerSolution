@@ -1,0 +1,215 @@
+/*
+ * Opt-in dialog theme.
+ * Add host: { class: 'app-dialog-theme' } to a component, or put this class
+ * on an ancestor wrapper. Do not put it on body unless every dialog should opt in.
+ * Tokens inherit into projected/nested controls; no ::ng-deep is necessary.
+ * Consumers may override individual --dialog-* tokens on their themed host.
+ */
+.app-dialog-theme {
+  --dialog-width: 380px;
+  --dialog-radius: 8px;
+  --dialog-overlay-background: rgba(0, 0, 0, 0.5);
+  --dialog-z-index: 9999;
+  --dialog-background: #fff;
+  --dialog-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  --dialog-section-padding: 1rem 1.25rem;
+  --dialog-header-background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+  --dialog-header-color: #fff;
+  --dialog-body-background: linear-gradient(180deg, #fff 0%, #fbfdff 100%);
+  --dialog-label-color: #333;
+  --dialog-field-height: var(--app-control-height, 44px);
+  --dialog-field-background: #fff;
+  --dialog-field-color: #212529;
+  --dialog-field-border: #e0e6f0;
+  --dialog-field-radius: 6px;
+  --dialog-field-padding: 0.6rem 0.75rem;
+  --dialog-field-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --dialog-focus-color: #2575fc;
+  --dialog-button-gap: 0.6rem;
+  --dialog-primary-background: linear-gradient(90deg, #6a11cb, #2575fc);
+  --dialog-primary-color: #fff;
+  --dialog-primary-shadow: 0 6px 18px rgba(37, 117, 252, 0.25);
+  --dialog-secondary-background: transparent;
+  --dialog-secondary-color: #212529;
+  --dialog-secondary-border: #d6dbe8;
+  --dialog-error-background: #ffecec;
+  --dialog-error-color: #a00;
+  --dialog-error-border: #f5c6cb;
+  --dialog-success-background: #d4edda;
+  --dialog-success-color: #155724;
+  --dialog-success-border: #c3e6cb;
+}
+
+.app-dialog-theme .lp-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--dialog-overlay-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: var(--dialog-z-index);
+}
+
+.app-dialog-theme .lp-modal {
+  position: relative;
+  width: var(--dialog-width);
+  max-width: 100%;
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  background: var(--dialog-background);
+  padding: 0;
+  border-radius: var(--dialog-radius);
+  box-shadow: var(--dialog-shadow);
+}
+
+.app-dialog-theme .lp-header {
+  padding: var(--dialog-section-padding);
+  background: var(--dialog-header-background);
+  color: var(--dialog-header-color);
+}
+
+.app-dialog-theme .lp-header h3 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.app-dialog-theme .lp-header .lp-sub {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  opacity: 0.95;
+}
+
+.app-dialog-theme .lp-form {
+  position: relative;
+  padding: var(--dialog-section-padding);
+  background: var(--dialog-body-background);
+}
+
+.app-dialog-theme .lp-form :is(label, .form-label) {
+  display: block;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  color: var(--dialog-label-color);
+  font-weight: 600;
+}
+
+/* Limit form styling to actual single-line fields; preserve checkboxes and textareas.
+   Global selectors reach projected controls without disabling Angular encapsulation. */
+body .app-dialog-theme .lp-form :is(input.lp-input, input.form-control, select.form-select):not([type='checkbox'], [type='radio'], [multiple]) {
+  width: 100%;
+  box-sizing: border-box;
+  height: var(--dialog-field-height);
+  min-height: var(--dialog-field-height);
+  padding: var(--dialog-field-padding);
+  border-radius: var(--dialog-field-radius);
+  border: 1px solid var(--dialog-field-border);
+  background-color: var(--dialog-field-background);
+  color: var(--dialog-field-color);
+  box-shadow: var(--dialog-field-shadow);
+  font: inherit;
+}
+
+.app-dialog-theme .lp-form label > input.form-control {
+  margin-top: 0.25rem;
+}
+
+.app-dialog-theme .lp-form :is(input.lp-input, input.form-control, select.form-select):focus-visible {
+  outline: 2px solid var(--dialog-focus-color);
+  outline-offset: 2px;
+}
+
+.app-dialog-theme .lp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--dialog-button-gap);
+  margin-top: 0.75rem;
+}
+
+body .app-dialog-theme .lp-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: var(--dialog-field-height);
+  min-height: var(--dialog-field-height);
+  padding-block: 0;
+  line-height: normal;
+  border-radius: var(--dialog-field-radius);
+  cursor: pointer;
+}
+
+.app-dialog-theme .lp-actions .btn-primary {
+  background: var(--dialog-primary-background);
+  color: var(--dialog-primary-color);
+  border: none;
+  padding-inline: 0.9rem;
+  font-weight: 600;
+  box-shadow: var(--dialog-primary-shadow);
+}
+
+.app-dialog-theme .lp-actions .btn-secondary {
+  background: var(--dialog-secondary-background);
+  color: var(--dialog-secondary-color);
+  border: 1px solid var(--dialog-secondary-border);
+  padding-inline: 0.8rem;
+}
+
+.app-dialog-theme .lp-actions button:disabled {
+  opacity: 0.7;
+  cursor: default;
+  box-shadow: none;
+}
+
+.app-dialog-theme .lp-actions button:focus-visible {
+  outline: 2px solid var(--dialog-focus-color);
+  outline-offset: 2px;
+}
+
+.app-dialog-theme .lp-secondary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+body .app-dialog-theme .link-btn {
+  background: none;
+  border: none;
+  color: var(--dialog-focus-color);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.app-dialog-theme :is(.lp-error, .lp-success) {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.app-dialog-theme .lp-error {
+  color: var(--dialog-error-color);
+  background: var(--dialog-error-background);
+  border: 1px solid var(--dialog-error-border);
+}
+
+.app-dialog-theme .lp-success {
+  color: var(--dialog-success-color);
+  background: var(--dialog-success-background);
+  border: 1px solid var(--dialog-success-border);
+}
+
+.app-dialog-theme .lp-loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.75);
+  z-index: 10;
+}

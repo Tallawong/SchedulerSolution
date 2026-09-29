@@ -1,0 +1,8 @@
+:host {
+  display: block;
+}
+
+/* Dialog appearance is defined centrally in src/styles/dialog-theme.css.
+   The app-dialog-theme host class also themes projected registration controls. */
+
+/* Preserve any unrelated registration-specific styles below. */
