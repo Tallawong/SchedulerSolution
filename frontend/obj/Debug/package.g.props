@@ -26,7 +26,7 @@
     <PackageJsonDependenciesAngularRouter Condition="$(PackageJsonDependenciesAngularRouter) == ''">^22.0.0</PackageJsonDependenciesAngularRouter>
     <PackageJsonDependenciesAngularSsr Condition="$(PackageJsonDependenciesAngularSsr) == ''">^22.0.4</PackageJsonDependenciesAngularSsr>
     <PackageJsonDependenciesMicrosoftSignalr Condition="$(PackageJsonDependenciesMicrosoftSignalr) == ''">^10.0.11</PackageJsonDependenciesMicrosoftSignalr>
-    <PackageJsonDependenciesNgBootstrapNgBootstrap Condition="$(PackageJsonDependenciesNgBootstrapNgBootstrap) == ''">^21.0.0-rc.0</PackageJsonDependenciesNgBootstrapNgBootstrap>
+    <PackageJsonDependenciesNgBootstrapNgBootstrap Condition="$(PackageJsonDependenciesNgBootstrapNgBootstrap) == ''">^21.0.0</PackageJsonDependenciesNgBootstrapNgBootstrap>
     <PackageJsonDependenciesPopperjsCore Condition="$(PackageJsonDependenciesPopperjsCore) == ''">^2.11.8</PackageJsonDependenciesPopperjsCore>
     <PackageJsonDependenciesBootstrap Condition="$(PackageJsonDependenciesBootstrap) == ''">^5.3.8</PackageJsonDependenciesBootstrap>
     <PackageJsonDependenciesExpress Condition="$(PackageJsonDependenciesExpress) == ''">^5.1.0</PackageJsonDependenciesExpress>
