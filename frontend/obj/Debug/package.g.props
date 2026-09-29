@@ -13,6 +13,7 @@
     <PackageJsonScriptsFormatCheck Condition="$(PackageJsonScriptsFormatCheck) == ''">prettier --check "src/**/*.{ts,html,css,scss,less,json}"</PackageJsonScriptsFormatCheck>
     <PackageJsonScriptsLint Condition="$(PackageJsonScriptsLint) == ''">eslint .</PackageJsonScriptsLint>
     <PackageJsonScriptsLintFix Condition="$(PackageJsonScriptsLintFix) == ''">eslint . --fix</PackageJsonScriptsLintFix>
+    <PackageJsonScriptsCi Condition="$(PackageJsonScriptsCi) == ''">npm run lint &amp;&amp; npm run format:check &amp;&amp; npm run test</PackageJsonScriptsCi>
     <PackageJsonPrivate Condition="$(PackageJsonPrivate) == ''">true</PackageJsonPrivate>
     <PackageJsonPackagemanager Condition="$(PackageJsonPackagemanager) == ''">npm@11.16.0</PackageJsonPackagemanager>
     <PackageJsonDependenciesAngularAnimations Condition="$(PackageJsonDependenciesAngularAnimations) == ''">^22.1.6</PackageJsonDependenciesAngularAnimations>
@@ -52,6 +53,6 @@
     <PackageJsonDevdependenciesPrettier Condition="$(PackageJsonDevdependenciesPrettier) == ''">^3.8.1</PackageJsonDevdependenciesPrettier>
     <PackageJsonDevdependenciesTypescript Condition="$(PackageJsonDevdependenciesTypescript) == ''">~6.0.2</PackageJsonDevdependenciesTypescript>
     <PackageJsonDevdependenciesTypescriptEslint Condition="$(PackageJsonDevdependenciesTypescriptEslint) == ''">^8.71.0</PackageJsonDevdependenciesTypescriptEslint>
-    <PackageJsonDevdependenciesVitest Condition="$(PackageJsonDevdependenciesVitest) == ''">^4.0.8</PackageJsonDevdependenciesVitest>
+    <PackageJsonDevdependenciesVitest Condition="$(PackageJsonDevdependenciesVitest) == ''">^4.1.11</PackageJsonDevdependenciesVitest>
   </PropertyGroup>
 </Project>
