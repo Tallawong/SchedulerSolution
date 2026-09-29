@@ -1,0 +1,40 @@
+<div class="lp-overlay">
+  <div class="lp-modal" role="dialog" aria-modal="true" [attr.aria-label]="title() || 'Registration'">
+    <div class="lp-header">
+      <h3>{{ title() }}</h3>
+      <p class="lp-sub">{{ subTitle() }}</p>
+      <ng-content select="[reg-header]"></ng-content>
+    </div>
+
+    <div class="lp-form" [attr.aria-busy]="loading()">
+      @if (loading()) {
+        <div class="lp-loading-overlay">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      }
+
+      <ng-content select="[reg-body]"></ng-content>
+
+      @if (errMsgAlert()) {
+        <div class="lp-error" role="alert">{{ errMsgAlert() }}</div>
+      }
+      @if (succMsgAlert()) {
+        <div class="lp-success" role="status">{{ succMsgAlert() }}</div>
+      }
+
+      <div class="lp-actions">
+        @if (succMsgAlert()) {
+          <button type="button" class="btn-primary" (click)="onCancel()">Close</button>
+        } @else {
+          <button type="button" class="btn-primary" [disabled]="loading()" (click)="onRegister()">
+            Register
+          </button>
+          <button type="button" class="btn-secondary" (click)="onCancel()">Cancel</button>
+        }
+        <ng-content select=".reg-footer"></ng-content>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.github",
+    "\\.github\\workflows",
+    "\\backend",
+    "\\frontend"
+  ],
+  "SelectedNode": "\\.github\\workflows\\main.yml",
+  "PreviewInSolutionExplorer": false
+}
