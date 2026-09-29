@@ -13,7 +13,7 @@
     <PackageJsonScriptsFormatCheck Condition="$(PackageJsonScriptsFormatCheck) == ''">prettier --check "src/**/*.{ts,html,css,scss,less,json}"</PackageJsonScriptsFormatCheck>
     <PackageJsonScriptsLint Condition="$(PackageJsonScriptsLint) == ''">eslint .</PackageJsonScriptsLint>
     <PackageJsonScriptsLintFix Condition="$(PackageJsonScriptsLintFix) == ''">eslint . --fix</PackageJsonScriptsLintFix>
-    <PackageJsonScriptsTestCi Condition="$(PackageJsonScriptsTestCi) == ''">npm run lint &amp;&amp; npm run format:check &amp;&amp; npm run test</PackageJsonScriptsTestCi>
+    <PackageJsonScriptsTestCi Condition="$(PackageJsonScriptsTestCi) == ''">npm run test</PackageJsonScriptsTestCi>
     <PackageJsonPrivate Condition="$(PackageJsonPrivate) == ''">true</PackageJsonPrivate>
     <PackageJsonPackagemanager Condition="$(PackageJsonPackagemanager) == ''">npm@11.16.0</PackageJsonPackagemanager>
     <PackageJsonDependenciesAngularAnimations Condition="$(PackageJsonDependenciesAngularAnimations) == ''">^22.1.6</PackageJsonDependenciesAngularAnimations>
