@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 //import { UserService } from '../services/user.service';
-import { VerifyEmailRequest } from '../dto/requests/verify-email-request';
+//import { VerifyEmailRequest } from '../requests/verify-email-request';
 import { AccountModalService } from './account-modal.service';
+import { VerifyEmailRequest } from '../dto/requests/verify-email-request';
 import { AccountService } from '../services';
 
 @Component({
   standalone: true,
   selector: 'app-verify-email',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './verify-email.component.html',
   styleUrls: ['./verify-email.component.css'],
 })
@@ -23,7 +24,7 @@ export class VerifyEmailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private userService: AccountService,
+    private accountService: AccountService,
     private modalService: AccountModalService,
   ) {}
 
@@ -35,7 +36,8 @@ export class VerifyEmailComponent implements OnInit {
     if (!token) {
       this.loading = false;
       this.success = false;
-      this.message = 'No verification token provided. Please check your email link.';
+      this.message =
+        'No verification token provided. Please check your email link.';
       return;
     }
 
@@ -46,6 +48,36 @@ export class VerifyEmailComponent implements OnInit {
       request.dob = dob;
     }
 
+    this.accountService.verifyEmail(request).subscribe({
+      next: (res: any) => {
+        this.loading = false;
+        this.success = true;
+        this.message =
+          res?.message ||
+          'Your email has been verified successfully. You can now log in.';
+        try {
+          this.modalService.hideLogin();
+        } catch {}
+        try {
+          setTimeout(() => {
+            try {
+              this.modalService.showLogin();
+            } catch {}
+            try {
+              this.router.navigate(['/account/login']);
+            } catch {}
+          }, this.redirectDelayMs);
+        } catch {}
+      },
+      error: (err: any) => {
+        console.error('Verification failed:', err);
+        this.loading = false;
+        this.success = false;
+        this.message =
+          err?.error?.message ||
+          'Email verification failed. The link may be invalid or expired.';
+      },
+    });
   }
 
   gotoLogin(): void {

@@ -5,14 +5,21 @@ import { AuthGuard } from './core/helpers/auth.guard';
 import { Role } from './entities/role';
 import { FloatingSchedulesComponent } from './floating-schedules/floating-schedules.component';
 
-const accountModule = () => import('./account/account.module').then((x) => x.AccountModule);
+// const accountModule = () => import('./account/account.module').then((x) => x.AccountModule);
 const adminModule = () => import('./admin/admin.module').then((x) => x.AdminModule);
 const profileModule = () => import('./profile/profile.module').then((x) => x.ProfileModule);
-const scheduleModule = () => import('./schedule/schedule.module').then((x) => x.ScheduleModule);
+// const scheduleModule = () => import('./schedule/schedule.module').then((x) => x.ScheduleModule);
 
-const routes: Routes = [
+export const routes: Routes = [
+  //{ path: '', redirectTo: 'login', pathMatch: 'full' },
+
+  // Referencing the account feature router:
+  {
+    path: 'account',
+    loadChildren: () => import('./account.controls/account.routes').then((m) => m.ACCOUNT_ROUTES),
+  },
+  // { path: 'account', loadChildren: accountModule },
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'account', loadChildren: accountModule },
   { path: 'profile', loadChildren: profileModule, canActivate: [AuthGuard] },
   {
     path: 'admin',
@@ -20,7 +27,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin] },
   },
-  { path: 'schedule', loadChildren: scheduleModule },
   { path: 'floating', component: FloatingSchedulesComponent },
 
   // otherwise redirect to home
@@ -28,7 +34,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { enableTracing: true })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

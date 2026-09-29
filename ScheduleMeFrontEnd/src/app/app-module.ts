@@ -8,10 +8,10 @@ import {
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
+import { provideRouter, RouterModule, withDebugTracing } from '@angular/router';
 import { HomeComponent } from './core/controls/home/home.component';
 import { AlertComponent } from './core/components/alert/alert.component';
-import { AppRoutingModule } from './app-routing-module';
+import { AppRoutingModule, routes } from './app-routing-module';
 import { App } from './app';
 import { MaterialModule } from './material.module';
 import { FloatingSchedulesComponent } from './floating-schedules/floating-schedules.component';
@@ -43,10 +43,13 @@ import { DatePickerExampleComponent } from './date-picker-example/date-picker-ex
     HomeComponent,
   ],
   providers: [
+
+    provideRouter(routes, withDebugTracing()),
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptors([jwtInterceptor, errorInterceptor])),
     provideApi({ basePath: environment.apiUrl, withCredentials: true }),
     provideAppInitializer(() => initializeApp(inject(AccountService))()),
+
   ],
   bootstrap: [App],
 })

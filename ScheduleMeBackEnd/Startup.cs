@@ -85,6 +85,7 @@ namespace WebApi
 
             services.AddSignalR();
 
+            services.AddHttpLogging();
             /* Add authenticate */
             //services.AddAuthentication(options =>
             //{
@@ -224,6 +225,12 @@ namespace WebApi
             log.Info($"ASPNETCORE_HTTP_PORTS={Environment.GetEnvironmentVariable("ASPNETCORE_HTTP_PORTS")}");
             log.Info($"ASPNETCORE_HTTPS_PORTS={Environment.GetEnvironmentVariable("ASPNETCORE_HTTPS_PORTS")}");
 
+            app.UseHttpLogging();
+            app.Use(async (context, next) => {
+                Console.WriteLine("Request Path: " + context.Request.Path);
+                await next();
+                Console.WriteLine("Response Status Code: " + context.Response.StatusCode);
+            });
         }
     }
 }

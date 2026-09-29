@@ -1,73 +1,46 @@
-using Backend.Services;
+using Aspose.Cells;
 using AutoMapper;
-using BC = BCrypt.Net.BCrypt;
+using Backend.Services;
+using CliWrap;
+using iText.Kernel.Colors;
+using iText.Kernel.Font;
+using iText.Kernel.Geom;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Layout.Properties;
+using log4net;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
+using System.Net.Mail;
+using System.Runtime.ExceptionServices;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using WebApi.Entities;
 using WebApi.Helpers;
-using WebApi.Models.Accounts;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using Microsoft.AspNetCore.WebUtilities;
-using System.Diagnostics;
-using System.Threading;
-using log4net;
-using Microsoft.EntityFrameworkCore.Storage;
-using System.Security.Policy;
-using Microsoft.AspNetCore.SignalR;
 using WebApi.Hub;
-using System.Runtime.Serialization;
-using System.Security.Principal;
-using Microsoft.AspNetCore.Mvc;
-using System.IO;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Identity;
-using Google.Apis.Drive.v3.Data;
-using User = WebApi.Entities.User;
-using Aspose.Cells;
-using System.Linq.Expressions;
-using static Google.Apis.Requests.BatchRequest;
-using System.Data;
-using static log4net.Appender.RollingFileAppender;
-using Org.BouncyCastle.Ocsp;
-using Aspose.Cells.Timelines;
-using System.Collections;
-using System.Xml;
-using Org.BouncyCastle.Asn1.Ocsp;
-using System.Globalization;
-using Microsoft.Extensions.Primitives;
-using Microsoft.AspNetCore.Components.Forms;
-using System.Runtime.InteropServices;
-using CliWrap;
-using Aspose.Cells.Drawing;
-using System.Net.Mail;
-using static System.Net.Mime.MediaTypeNames;
-using Microsoft.CodeAnalysis.Elfie.Diagnostics;
-using iText.Kernel.Pdf;
-using iText.Layout.Element;
-using iText.Layout.Properties;
-using iText.Layout;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using WebApi.Models.Accounts;
+using BC = BCrypt.Net.BCrypt;
 using Table = iText.Layout.Element.Table;
-using iText.Kernel.Colors;
-using iText.IO.Font;
-using iText.Kernel.Font;
 using Text = iText.Layout.Element.Text;
-using iText.Kernel.Geom;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using static iText.Svg.SvgConstants;
-using System.Diagnostics.Metrics;
-using Aspose.Pdf.Structure;
-using iText.Commons.Actions.Contexts;
-using System.Runtime.ExceptionServices;
+using User = WebApi.Entities.User;
 
 namespace WebApi.Services
 {
@@ -88,57 +61,57 @@ namespace WebApi.Services
 
         AccountResponse GetById(string id);
 
-        public ScheduleDateTimeResponse GetAllDates();
-        public DateFunctionTeamResponse GetTeamsByFunctionForDate(string date);
+        ScheduleDateTimeResponse GetAllDates();
+        DateFunctionTeamResponse GetTeamsByFunctionForDate(string date);
 
         AccountResponse Create(CreateRequest model);
         AccountResponse Update(string id, AccountRequest model);
-        public AccountResponse DeleteSchedule(string id, UpdateScheduleRequest scheduleReq);
+        AccountResponse DeleteSchedule(string id, UpdateScheduleRequest scheduleReq);
         void DeleteSchedules4Date(string dateStr);
 
-        public IEnumerable<UpdateScheduleRequest> DeleteAllSchedules();
-        public Boolean DeleteAllTimeSlots();
+        IEnumerable<UpdateScheduleRequest> DeleteAllSchedules();
+        Boolean DeleteAllTimeSlots();
 
-        public AccountResponse AddSchedule(string id, UpdateScheduleRequest scheduleReq);
-        public AccountResponse UpdateSchedule(string id, UpdateScheduleRequest scheduleReq);
-        public IEnumerable<AccountResponse> GetSchedules4Date(string dateStr);
-        public (AccountResponse, string) DeleteFunction(string id, AgentTask functionReq);
-        public AccountResponse AddFunction(string id, AgentTask functionReq);
-        public IEnumerable<Account> TestAddFunction(string id, AgentTask task);
-        public AccountResponse GetScheduleFromPool(string id, UpdateScheduleRequest scheduleReq);
-        public AccountResponse MoveSchedule2Pool(string id, UpdateScheduleRequest scheduleReq);
+        AccountResponse AddSchedule(string id, UpdateScheduleRequest scheduleReq);
+        AccountResponse UpdateSchedule(string id, UpdateScheduleRequest scheduleReq);
+        IEnumerable<AccountResponse> GetSchedules4Date(string dateStr);
+        (AccountResponse, string) DeleteFunction(string id, AgentTask functionReq);
+        AccountResponse AddFunction(string id, AgentTask functionReq);
+        IEnumerable<Account> TestAddFunction(string id, AgentTask task);
+        AccountResponse GetScheduleFromPool(string id, UpdateScheduleRequest scheduleReq);
+        AccountResponse MoveSchedule2Pool(string id, UpdateScheduleRequest scheduleReq);
 
-        public SchedulePoolElementsResponse GetAvailablePoolElementsForAccount(string id);
-        public SchedulePoolElementsResponse GetAllAvailablePoolElements();
+        SchedulePoolElementsResponse GetAvailablePoolElementsForAccount(string id);
+        SchedulePoolElementsResponse GetAllAvailablePoolElements();
 
-        public SchedulePoolElement RemoveFromPool(int id, string email, string userFunction);
+        SchedulePoolElement RemoveFromPool(int id, string email, string userFunction);
 
         void Delete(string id);
 
-        public List<AgentTaskConfig> GetAllAgentTaskConfigs();
+        List<AgentTaskConfig> GetAllAgentTaskConfigs();
 
-        public AgentTaskConfig[] UpdateAgentTaskConfig(string id, UpdateAgentTaskConfigRequest agentTaskConfigReq);
+        AgentTaskConfig[] UpdateAgentTaskConfig(string id, UpdateAgentTaskConfigRequest agentTaskConfigReq);
 
-        public void DeleteAgentTaskConfig(string id);
+        void DeleteAgentTaskConfig(string id);
 
-        public void DeleteAllAgentTaskConfigs();
+        void DeleteAllAgentTaskConfigs();
 
-        public void UploadUserAccounts(string path);
+        void UploadUserAccounts(string path);
         Boolean GenerateSchedules();
-        public void ImportTimeSlotsTasks(string xlsmfullPath);
+        void ImportTimeSlotsTasks(string xlsmfullPath);
 
-        public Byte[] DownloadSchedules();
+        Byte[] DownloadSchedules();
 
-        public TimeSlotTasks[] GetTimeSlotsTasks();
+        TimeSlotTasks[] GetTimeSlotsTasks();
 
-        public TimeSlotTasks[] SetTimeSlotsTasks(TimeSlotTasks tasks);
-        public Boolean DeleteTimeSlotsTasks(TimeSlotTasks slotFromClient);
+        TimeSlotTasks[] SetTimeSlotsTasks(TimeSlotTasks tasks);
+        Boolean DeleteTimeSlotsTasks(TimeSlotTasks slotFromClient);
 
-        public IEnumerable<AccountResponse> DeleteAllUserAccounts();
-        public bool GetAutoEmail();
-        public bool SetAutoEmail(bool autoEmail);
-        public void SendRemindingEmail4Functions();
-        
+        IEnumerable<AccountResponse> DeleteAllUserAccounts();
+        bool GetAutoEmail();
+        bool SetAutoEmail(bool autoEmail);
+        void SendRemindingEmail4Functions();
+
         // MFA methods
         Task EnableMfaAsync(string userId, string phoneNumber);
         Task DisableMfaAsync(string userId);
@@ -147,28 +120,9 @@ namespace WebApi.Services
 
     public class AccountService : IAccountService
     {
-        private const string AGENTS_2_TASKS_FORMAT = "yyyyMMddHHmm";// "dd/MMM/yyyy/h:mm";
-        private const string SEPARATOR = "&";
-        private const string A2T_INPUT = "a2t.txt";
-        private const string A2T_OUTPUT = "a2t_result.txt";
-        private const string A2T_EXE = "Agents2Tasks.exe";
-        private const string CLEANER = "Cleaner";
         public static TimeSpan THREE_DAYS_TIMEOUT = new TimeSpan(3, 0, 0, 0);   // Three days time span
         public static TimeSpan WEEK_TIMEOUT = new TimeSpan(7, 0, 0, 0);         // Week time span
-
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly DataContext _context;
-        private readonly IMapper _mapper;
-        private readonly AppSettings _appSettings;
-        private readonly IEmailService _emailService;
-        private readonly IMfaService _mfaService;
         public static readonly SemaphoreSlim semaphoreObject = new SemaphoreSlim(1, 1);
-        private readonly IHubContext<MessageHub, IMessageHubClient> _hubContext;
-        private IConfiguration _configuration;
-        private readonly IUserStore<Account> _userStore;
-        private readonly IUserEmailStore<Account> _emailStore;
-        private readonly UserManager<Account> _userManager;
-        private Microsoft.AspNetCore.Hosting.IWebHostEnvironment _hostingEnvironment;
 
         public AccountService(
             DataContext context,
@@ -768,38 +722,6 @@ namespace WebApi.Services
             }
         }
 
-        private ScheduleDateTimeResponse GetAllDatesWithoutLock()
-        {
-            ScheduleDateTimeResponse response = new ScheduleDateTimeResponse();
-            response.ScheduleDateTimes = new List<ScheduleDateTime>();
-
-            var accounts = _context.Accounts;
-            var accountAll = _context.Accounts.Include(x => x.Schedules).ToList();
-            foreach (var item in accountAll)
-            {
-                foreach (var schedule in item.Schedules)
-                {
-                    Boolean found = false;
-                    foreach (var dt in response.ScheduleDateTimes)
-                    {
-                        if (dt.Date == schedule.Date)
-                        {
-                            found = true; // DateTime already exists - break the for loop
-                            break;
-                        }
-                    }
-                    if (!found)
-                    {
-                        ScheduleDateTime sdt = new ScheduleDateTime();
-                        sdt.Date = schedule.Date;
-                        sdt.Id = schedule.ScheduleId;
-                        response.ScheduleDateTimes.Add(sdt);
-                    }
-                }
-            }
-            return response;
-        }
-
         public DateFunctionTeamResponse GetTeamsByFunctionForDate(string dateStr)
         {
             log.Info("GetTeamsByFunctionForDate before locking");
@@ -821,55 +743,6 @@ namespace WebApi.Services
                 semaphoreObject.Release();
                 log.Info("GetTeamsByFunctionForDate after locking");
             }
-        }
-
-        private DateFunctionTeamResponse GetTeamsByFunctionForDateWithoutLock(string dateStr)
-        {
-            var accountAll = _context.Accounts.Include(x => x.Schedules).ToList();
-            var dateTime = dateStr;
-
-            var offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
-
-            log.InfoFormat("Date requested string {0} parsed value {1} offset {2}",
-                            dateStr,
-                            dateTime,
-                            offset);
-
-            DateFunctionTeamResponse response = new DateFunctionTeamResponse();
-            response.DateFunctionTeams = new List<DateFunctionTeam>();
-
-            foreach (var account in accountAll)
-            {
-                foreach (var schedule in account.Schedules)
-                {
-                    DateFunctionTeam team = null;
-
-                    if (schedule.Date == dateTime)
-                    {
-                        // Find existing team for the date and function
-                        foreach (var item in response.DateFunctionTeams)
-                        {
-                            if (schedule.Date == item.Date && item.UserFunction == schedule.UserFunction)
-                            {
-                                team = item;
-                                break;
-                            }
-                        }
-                        if (team == null)
-                        {
-                            team = new DateFunctionTeam(dateTime, schedule.UserFunction);
-                            response.DateFunctionTeams.Add(team);
-                        }
-
-                        User user = _mapper.Map<User>(account);
-                        user.Function = schedule.UserFunction;
-                        user.UserAvailability = schedule.UserAvailability;
-                        user.ScheduleGroup = schedule.ScheduleGroup;
-                        team.Users.Add(user);
-                    }
-                }
-            }
-            return response;
         }
 
         public AccountResponse GetById(string id)
@@ -2112,6 +1985,390 @@ namespace WebApi.Services
             }
         }
 
+        public IEnumerable<AccountResponse> DeleteAllUserAccounts()
+        {
+            log.Info("DeleteAllUserAccounts before locking");
+            semaphoreObject.Wait();
+
+            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var foundAccounts = _context.Accounts.Include(x => x.RefreshTokens).Include(x => x.Schedules).Include(x => x.UserFunctions).Where(x => x.Role != Role.Admin).ToArray().ToList();
+                    _context.Accounts.RemoveRange(foundAccounts);
+
+                    _context.SaveChanges();
+                    transaction.Commit();
+
+                    var accounts = _context.Accounts;
+                    return _mapper.Map<IList<AccountResponse>>(accounts);
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
+                    log.Error(Thread.CurrentThread.Name + "Error occurred in Delete:", ex);
+                    ExceptionDispatchInfo.Throw(ex);
+                    throw;
+                }
+                finally
+                {
+                    semaphoreObject.Release();
+                    log.Info("Delete after locking");
+                }
+            }
+        }
+
+        public class CustomEqualityComparer<T> : IEqualityComparer<T>
+        {
+            public CustomEqualityComparer(Func<T, T, bool> comparison)
+            {
+                this.Comparison = comparison;
+            }
+
+            public bool Equals(T x, T y)
+            {
+                return Comparison(x, y);
+            }
+
+            public int GetHashCode(T obj)
+            {
+                return obj.GetHashCode();
+            }
+
+            public static IEqualityComparer<T> Create(Func<T, T, bool> comparison)
+            {
+                return new CustomEqualityComparer<T>(comparison);
+            }
+
+            private readonly Func<T, T, bool> Comparison;
+        }
+        public bool IsValidTimeFormat(string input, out TimeSpan intervalVal)
+        {
+            //TimeSpan dummyOutput;
+            return TimeSpan.TryParse(input, out intervalVal);
+        }
+
+        public Boolean GetAutoEmail()
+        {
+            log.Info("GetAutoEmail before locking");
+            semaphoreObject.Wait();
+
+            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var systemInformation = _context.SystemInformation.ToList().FirstOrDefault();
+                    _context.Entry(systemInformation).Reload();
+                    var retval = systemInformation.autoEmail;
+                    return retval;
+
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
+                    log.Error(Thread.CurrentThread.Name + "Error occurred in GetAutoEmail:", ex);
+                    throw;
+                }
+                finally
+                {
+                    semaphoreObject.Release();
+                    log.Info("GetAutoEmail after locking");
+                }
+            }
+        }
+
+        public Boolean SetAutoEmail(Boolean autoEmail)
+        {
+            log.Info("SetAutoEmail before locking");
+            semaphoreObject.Wait();
+
+            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var systemInformation = _context.SystemInformation.ToList().FirstOrDefault();
+                    systemInformation.autoEmail = autoEmail;
+                    _context.SaveChanges();
+                    transaction.Commit();
+                    return systemInformation.autoEmail;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
+                    log.Error(Thread.CurrentThread.Name + "Error occurred in SetAutoEmail:", ex);
+                    ExceptionDispatchInfo.Throw(ex);
+                    throw;
+                }
+                finally
+                {
+                    semaphoreObject.Release();
+                    log.Info("SetAutoEmail after locking");
+                }
+            }
+        }
+
+        public void SendRemindingEmail4Functions()
+        {
+            log.Info("SendRemindingEmail4Functions before locking");
+            semaphoreObject.Wait();
+
+            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    log.Debug("\n");
+                    var accountAll = _context.Accounts.Include(x => x.UserFunctions).Include(x => x.Schedules).ToList();
+
+                    IEnumerable<Account> query = accountAll.TakeWhile((a) => a.UserFunctions != null);
+                    foreach (var a in accountAll)
+                    {
+                        foreach (var s in a.Schedules)
+                        {
+                            string clientTimeZoneId = _configuration["AppSettings:ClientTimeZoneId"];
+                            DateTime scheduleDate = DateTime.Parse(s.Date);
+
+                            DateTime dt = DateTime.Now;
+                            DateTime now = dt;
+                            log.DebugFormat("scheduleDate {0} now {1}",
+                                scheduleDate,
+                                now);
+
+                            log.DebugFormat("Schedule `{0}` is now {1} days ahead of execution (negative means it's over)",
+                                s.Date,
+                                (scheduleDate - now).TotalMilliseconds / (1000 * 60 * 60 * 24));
+
+                            if ((scheduleDate - now) < WEEK_TIMEOUT && a.NotifyWeekBefore == true && s.NotifiedWeekBefore == false)
+                            {
+                                string message = $@"This is a weekly reminder that <row>{a.FirstName} {a.LastName}</row> is scheduled to attend their duties.";
+                                string subject = $@"Reminder: {a.FirstName} {a.LastName} is {s.UserFunction} on {scheduleDate.ToString(ConstantsDefined.DateTimeFormat)}";
+                                _emailService.Send(
+                                    to: a.Email,
+                                    subject: subject,
+                                    html: message
+                                );
+                                s.NotifiedWeekBefore = true;
+                                log.DebugFormat("Schedule ready for week ahead of reminder for an account is: {0} {1} {2}", a.FirstName, a.LastName, a.Email);
+                            }
+                            if ((scheduleDate - now) < THREE_DAYS_TIMEOUT && a.NotifyThreeDaysBefore == true && s.NotifiedThreeDaysBefore == false)
+                            {
+                                string message = $@"This is a three-day reminder that <row>{a.FirstName} {a.LastName}</row> is scheduled to attend their duties.";
+                                string subject = $@"Reminder: {a.FirstName} {a.LastName} is {s.UserFunction} on {scheduleDate.ToString(ConstantsDefined.DateTimeFormat)}";
+                                _emailService.Send(
+                                    to: a.Email,
+                                    subject: subject,
+                                    html: message
+                                );
+                                s.NotifiedThreeDaysBefore = true;
+                                log.DebugFormat("Schedule ready for 3 days ahead of reminder for an account is: {0} {1} {2}", a.FirstName, a.LastName, a.Email);
+                            }
+                            _context.Accounts.Update(a);
+                            _context.SaveChanges();
+                        }
+                    }
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    log.Error(Thread.CurrentThread.Name + "Error occurred in SendRemindingEmail4Functions:", ex);
+                    Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
+                    if (ex.GetType() == typeof(DbUpdateConcurrencyException))
+                    {
+                        var dbUCException = (DbUpdateConcurrencyException)ex;
+                        foreach (var entry in dbUCException.Entries)
+                        {
+                            if (entry.Entity is Schedule)
+                            {
+                                var proposedValues = entry.CurrentValues;
+                                var databaseValues = entry.GetDatabaseValues();
+
+                                foreach (var property in proposedValues.Properties)
+                                {
+                                    var proposedValue = proposedValues[property];
+                                    var databaseValue = databaseValues[property];
+
+                                    // TODO: decide which value should be written to database
+                                    // proposedValues[property] = <value to be saved>;
+                                }
+
+                                // Refresh original values to bypass next concurrency check
+                                entry.OriginalValues.SetValues(databaseValues);
+                            }
+                            else
+                            {
+                                throw new NotSupportedException(
+                                    "Don't know how to handle concurrency conflicts for "
+                                    + entry.Metadata.Name);
+                            }
+                        }
+                    }
+                    //throw; // for now
+                }
+                finally
+                {
+                    semaphoreObject.Release();
+                    log.Info("SendRemindingEmail4Functions after locking");
+                }
+            }
+        }
+
+        // MFA Implementation Methods
+
+        public async Task<MfaResponse> AuthenticateWithMfaAsync(AuthenticateRequest model, string ipAddress)
+        {
+            try
+            {
+                log.InfoFormat("Authenticating user with MFA {0}", model.Email);
+                semaphoreObject.Wait();
+
+                var account = await _context.Accounts
+                    .Include(x => x.RefreshTokens)
+                    .SingleOrDefaultAsync(x => x.Email == model.Email && x.DOB == model.Dob);
+
+                if (account == null || !account.IsVerified || !BC.Verify(model.Password, account.PasswordHash))
+                    throw new AppException("Email, DOB or password is incorrect");
+
+                // Check if MFA is enabled for this account
+                if (account.MfaEnabled && !string.IsNullOrEmpty(account.PhoneNumber))
+                {
+                    // Send MFA code via SMS
+                    var codeSent = await _mfaService.SendMfaCodeViaSmsAsync(account.Id, account.PhoneNumber);
+
+                    if (!codeSent)
+                    {
+                        log.ErrorFormat("Failed to send MFA code to user {0}", account.Id);
+                        throw new AppException("Failed to send verification code. Please try again.");
+                    }
+
+                    // Generate a temporary token for MFA verification
+                    var tempToken = generateJwtToken(account, isTemp: true);
+
+                    log.InfoFormat("MFA code sent to user {0}", account.Email);
+
+                    return new MfaResponse
+                    {
+                        MfaRequired = true,
+                        Message = "Verification code sent to your registered phone number",
+                        TempToken = tempToken
+                    };
+                }
+                else
+                {
+                    // MFA not enabled, proceed with regular authentication
+                    log.InfoFormat("MFA not enabled for user {0}, proceeding with regular auth", account.Email);
+
+                    var jwtToken = generateJwtToken(account);
+                    var refreshToken = generateRefreshToken(ipAddress);
+                    account.RefreshTokens.Add(refreshToken);
+                    removeOldRefreshTokens(account);
+
+                    _context.Update(account);
+                    await _context.SaveChangesAsync();
+
+                    var response = _mapper.Map<MfaResponse>(account);
+                    response.JwtToken = jwtToken;
+                    response.RefreshToken = refreshToken.Token;
+                    response.MfaRequired = false;
+                    response.Message = "Authentication successful";
+
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error($"Error in AuthenticateWithMfaAsync for {model.Email}", ex);
+                throw;
+            }
+            finally
+            {
+                semaphoreObject.Release();
+            }
+        }
+
+        public async Task<AuthenticateResponse> VerifyMfaAsync(VerifyMfaRequest model, string ipAddress)
+        {
+            try
+            {
+                log.InfoFormat("Verifying MFA code for user {0}", model.Email);
+                semaphoreObject.Wait();
+
+                using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var account = await _context.Accounts
+                            .Include(x => x.RefreshTokens)
+                            .SingleOrDefaultAsync(x => x.Email == model.Email);
+
+                        if (account == null)
+                            throw new AppException("Account not found");
+
+                        // Validate the MFA code
+                        var isValid = await _mfaService.ValidateMfaCodeAsync(account.Id, model.MfaCode);
+
+                        if (!isValid)
+                        {
+                            log.WarnFormat("Invalid MFA code for user {0}", account.Email);
+                            throw new AppException("Invalid or expired verification code");
+                        }
+
+                        // MFA verification successful, generate tokens
+                        var jwtToken = generateJwtToken(account);
+                        var refreshToken = generateRefreshToken(ipAddress);
+                        account.RefreshTokens.Add(refreshToken);
+                        removeOldRefreshTokens(account);
+
+                        _context.Update(account);
+                        await _context.SaveChangesAsync();
+
+                        var response = _mapper.Map<AuthenticateResponse>(account);
+                        response.JwtToken = jwtToken;
+                        response.RefreshToken = refreshToken.Token;
+
+                        transaction.Commit();
+                        log.InfoFormat("MFA verification successful for user {0}", account.Email);
+
+                        return response;
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        log.Error($"Error in VerifyMfaAsync transaction for {model.Email}", ex);
+                        throw;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error($"Error in VerifyMfaAsync for {model.Email}", ex);
+                throw;
+            }
+            finally
+            {
+                semaphoreObject.Release();
+            }
+        }
+
+        public async Task EnableMfaAsync(string userId, string phoneNumber)
+        {
+            await _mfaService.EnableMfaAsync(userId, phoneNumber);
+            log.InfoFormat("MFA enabled for user {0}", userId);
+        }
+
+        public async Task DisableMfaAsync(string userId)
+        {
+            await _mfaService.DisableMfaAsync(userId);
+            log.InfoFormat("MFA disabled for user {0}", userId);
+        }
+
+        public bool IsMfaEnabled(string userId)
+        {
+            return _mfaService.IsMfaEnabled(userId);
+        }
+
         protected void ManipulatePdf(MemoryStream src, MemoryStream dest)
         {
             PdfDocument pdfDoc = new PdfDocument(new PdfReader(src), new PdfWriter(dest));
@@ -2126,6 +2383,106 @@ namespace WebApi.Services
             }
 
             doc.Close();
+        }
+
+        private const string AGENTS_2_TASKS_FORMAT = "yyyyMMddHHmm";// "dd/MMM/yyyy/h:mm";
+        private const string SEPARATOR = "&";
+        private const string A2T_INPUT = "a2t.txt";
+        private const string A2T_OUTPUT = "a2t_result.txt";
+        private const string A2T_EXE = "Agents2Tasks.exe";
+        private const string CLEANER = "Cleaner";
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly DataContext _context;
+        private readonly IMapper _mapper;
+        private readonly AppSettings _appSettings;
+        private readonly IEmailService _emailService;
+        private readonly IMfaService _mfaService;
+        private readonly IHubContext<MessageHub, IMessageHubClient> _hubContext;
+        private IConfiguration _configuration;
+        private readonly IUserStore<Account> _userStore;
+        private readonly IUserEmailStore<Account> _emailStore;
+        private readonly UserManager<Account> _userManager;
+        private Microsoft.AspNetCore.Hosting.IWebHostEnvironment _hostingEnvironment;
+
+        private ScheduleDateTimeResponse GetAllDatesWithoutLock()
+        {
+            ScheduleDateTimeResponse response = new ScheduleDateTimeResponse();
+            response.ScheduleDateTimes = new List<ScheduleDateTime>();
+
+            var accounts = _context.Accounts;
+            var accountAll = _context.Accounts.Include(x => x.Schedules).ToList();
+            foreach (var item in accountAll)
+            {
+                foreach (var schedule in item.Schedules)
+                {
+                    Boolean found = false;
+                    foreach (var dt in response.ScheduleDateTimes)
+                    {
+                        if (dt.Date == schedule.Date)
+                        {
+                            found = true; // DateTime already exists - break the for loop
+                            break;
+                        }
+                    }
+                    if (!found)
+                    {
+                        ScheduleDateTime sdt = new ScheduleDateTime();
+                        sdt.Date = schedule.Date;
+                        sdt.Id = schedule.ScheduleId;
+                        response.ScheduleDateTimes.Add(sdt);
+                    }
+                }
+            }
+            return response;
+        }
+
+        private DateFunctionTeamResponse GetTeamsByFunctionForDateWithoutLock(string dateStr)
+        {
+            var accountAll = _context.Accounts.Include(x => x.Schedules).ToList();
+            var dateTime = dateStr;
+
+            var offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
+
+            log.InfoFormat("Date requested string {0} parsed value {1} offset {2}",
+                            dateStr,
+                            dateTime,
+                            offset);
+
+            DateFunctionTeamResponse response = new DateFunctionTeamResponse();
+            response.DateFunctionTeams = new List<DateFunctionTeam>();
+
+            foreach (var account in accountAll)
+            {
+                foreach (var schedule in account.Schedules)
+                {
+                    DateFunctionTeam team = null;
+
+                    if (schedule.Date == dateTime)
+                    {
+                        // Find existing team for the date and function
+                        foreach (var item in response.DateFunctionTeams)
+                        {
+                            if (schedule.Date == item.Date && item.UserFunction == schedule.UserFunction)
+                            {
+                                team = item;
+                                break;
+                            }
+                        }
+                        if (team == null)
+                        {
+                            team = new DateFunctionTeam(dateTime, schedule.UserFunction);
+                            response.DateFunctionTeams.Add(team);
+                        }
+
+                        User user = _mapper.Map<User>(account);
+                        user.Function = schedule.UserFunction;
+                        user.UserAvailability = schedule.UserAvailability;
+                        user.ScheduleGroup = schedule.ScheduleGroup;
+                        team.Users.Add(user);
+                    }
+                }
+            }
+            return response;
         }
 
         private string[] GetTasksArray()
@@ -2474,40 +2831,6 @@ namespace WebApi.Services
             }
         }
 
-        public IEnumerable<AccountResponse> DeleteAllUserAccounts()
-        {
-            log.Info("DeleteAllUserAccounts before locking");
-            semaphoreObject.Wait();
-
-            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    var foundAccounts = _context.Accounts.Include(x => x.RefreshTokens).Include(x => x.Schedules).Include(x => x.UserFunctions).Where(x => x.Role != Role.Admin).ToArray().ToList();
-                    _context.Accounts.RemoveRange(foundAccounts);
-
-                    _context.SaveChanges();
-                    transaction.Commit();
-
-                    var accounts = _context.Accounts;
-                    return _mapper.Map<IList<AccountResponse>>(accounts);
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in Delete:", ex);
-                    ExceptionDispatchInfo.Throw(ex);
-                    throw;
-                }
-                finally
-                {
-                    semaphoreObject.Release();
-                    log.Info("Delete after locking");
-                }
-            }
-        }
-         
         private void PopulateUsers(string path)
         {
             //Creates workbook
@@ -2818,36 +3141,6 @@ namespace WebApi.Services
             }
         }
 
-        public class CustomEqualityComparer<T> : IEqualityComparer<T>
-        {
-            private readonly Func<T, T, bool> Comparison;
-
-            public CustomEqualityComparer(Func<T, T, bool> comparison)
-            {
-                this.Comparison = comparison;
-            }
-
-            public bool Equals(T x, T y)
-            {
-                return Comparison(x, y);
-            }
-
-            public int GetHashCode(T obj)
-            {
-                return obj.GetHashCode();
-            }
-
-            public static IEqualityComparer<T> Create(Func<T, T, bool> comparison)
-            {
-                return new CustomEqualityComparer<T>(comparison);
-            }
-        }
-        public bool IsValidTimeFormat(string input, out TimeSpan intervalVal)
-        {
-            //TimeSpan dummyOutput;
-            return TimeSpan.TryParse(input, out intervalVal);
-        }
-
         /* Private helper functions */
         private SchedulePoolElement PopFromPool(Account account, UpdateScheduleRequest item)
         {
@@ -2874,172 +3167,6 @@ namespace WebApi.Services
                 return null;
             }
         }
-        public Boolean GetAutoEmail()
-        {
-            log.Info("GetAutoEmail before locking");
-            semaphoreObject.Wait();
-
-            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    var systemInformation = _context.SystemInformation.ToList().FirstOrDefault();
-                    _context.Entry(systemInformation).Reload();
-                    var retval = systemInformation.autoEmail;
-                    return retval;
-
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in GetAutoEmail:", ex);
-                    throw;
-                }
-                finally
-                {
-                    semaphoreObject.Release();
-                    log.Info("GetAutoEmail after locking");
-                }
-            }
-        }
-
-        public Boolean SetAutoEmail(Boolean autoEmail)
-        {
-            log.Info("SetAutoEmail before locking");
-            semaphoreObject.Wait();
-
-            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    var systemInformation = _context.SystemInformation.ToList().FirstOrDefault();
-                    systemInformation.autoEmail = autoEmail;
-                    _context.SaveChanges();
-                    transaction.Commit();
-                    return systemInformation.autoEmail;
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in SetAutoEmail:", ex);
-                    ExceptionDispatchInfo.Throw(ex);
-                    throw;
-                }
-                finally
-                {
-                    semaphoreObject.Release();
-                    log.Info("SetAutoEmail after locking");
-                }
-            }
-        }
-
-        public void SendRemindingEmail4Functions()
-        {
-            log.Info("SendRemindingEmail4Functions before locking");
-            semaphoreObject.Wait();
-
-            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    log.Debug("\n");
-                    var accountAll = _context.Accounts.Include(x => x.UserFunctions).Include(x => x.Schedules).ToList();
-
-                    IEnumerable<Account> query = accountAll.TakeWhile((a) => a.UserFunctions != null);
-                    foreach (var a in accountAll)
-                    {
-                        foreach (var s in a.Schedules)
-                        {
-                            string clientTimeZoneId = _configuration["AppSettings:ClientTimeZoneId"];
-                            DateTime scheduleDate = DateTime.Parse(s.Date);
-
-                            DateTime dt = DateTime.Now;
-                            DateTime now = dt;
-                            log.DebugFormat("scheduleDate {0} now {1}",
-                                scheduleDate,
-                                now);
-
-                            log.DebugFormat("Schedule `{0}` is now {1} days ahead of execution (negative means it's over)",
-                                s.Date,
-                                (scheduleDate - now).TotalMilliseconds / (1000 * 60 * 60 * 24));
-
-                            if ((scheduleDate - now) < WEEK_TIMEOUT && a.NotifyWeekBefore == true && s.NotifiedWeekBefore == false)
-                            {
-                                string message = $@"This is a weekly reminder that <row>{a.FirstName} {a.LastName}</row> is scheduled to attend their duties.";
-                                string subject = $@"Reminder: {a.FirstName} {a.LastName} is {s.UserFunction} on {scheduleDate.ToString(ConstantsDefined.DateTimeFormat)}";
-                                _emailService.Send(
-                                    to: a.Email,
-                                    subject: subject,
-                                    html: message
-                                );
-                                s.NotifiedWeekBefore = true;
-                                log.DebugFormat("Schedule ready for week ahead of reminder for an account is: {0} {1} {2}", a.FirstName, a.LastName, a.Email);
-                            }
-                            if ((scheduleDate - now) < THREE_DAYS_TIMEOUT && a.NotifyThreeDaysBefore == true && s.NotifiedThreeDaysBefore == false)
-                            {
-                                string message = $@"This is a three-day reminder that <row>{a.FirstName} {a.LastName}</row> is scheduled to attend their duties.";
-                                string subject = $@"Reminder: {a.FirstName} {a.LastName} is {s.UserFunction} on {scheduleDate.ToString(ConstantsDefined.DateTimeFormat)}";
-                                _emailService.Send(
-                                    to: a.Email,
-                                    subject: subject,
-                                    html: message
-                                );
-                                s.NotifiedThreeDaysBefore = true;
-                                log.DebugFormat("Schedule ready for 3 days ahead of reminder for an account is: {0} {1} {2}", a.FirstName, a.LastName, a.Email);
-                            }
-                            _context.Accounts.Update(a);
-                            _context.SaveChanges();
-                        }
-                    }
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in SendRemindingEmail4Functions:", ex);
-                    Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    if (ex.GetType() == typeof(DbUpdateConcurrencyException))
-                    {
-                        var dbUCException = (DbUpdateConcurrencyException)ex;
-                        foreach (var entry in dbUCException.Entries)
-                        {
-                            if (entry.Entity is Schedule)
-                            {
-                                var proposedValues = entry.CurrentValues;
-                                var databaseValues = entry.GetDatabaseValues();
-
-                                foreach (var property in proposedValues.Properties)
-                                {
-                                    var proposedValue = proposedValues[property];
-                                    var databaseValue = databaseValues[property];
-
-                                    // TODO: decide which value should be written to database
-                                    // proposedValues[property] = <value to be saved>;
-                                }
-
-                                // Refresh original values to bypass next concurrency check
-                                entry.OriginalValues.SetValues(databaseValues);
-                            }
-                            else
-                            {
-                                throw new NotSupportedException(
-                                    "Don't know how to handle concurrency conflicts for "
-                                    + entry.Metadata.Name);
-                            }
-                        }
-                    }
-                    //throw; // for now
-                }
-                finally
-                {
-                    semaphoreObject.Release();
-                    log.Info("SendRemindingEmail4Functions after locking");
-                }
-            }
-        }
-
         private void PushToPool(Account account, UpdateScheduleRequest item)
         {
             var newPoolElement = new SchedulePoolElement();
@@ -3303,158 +3430,5 @@ namespace WebApi.Services
             );
         }
 
-        // MFA Implementation Methods
-
-        public async Task<MfaResponse> AuthenticateWithMfaAsync(AuthenticateRequest model, string ipAddress)
-        {
-            try
-            {
-                log.InfoFormat("Authenticating user with MFA {0}", model.Email);
-                semaphoreObject.Wait();
-                
-                var account = await _context.Accounts
-                    .Include(x => x.RefreshTokens)
-                    .SingleOrDefaultAsync(x => x.Email == model.Email && x.DOB == model.Dob);
-
-                if (account == null || !account.IsVerified || !BC.Verify(model.Password, account.PasswordHash))
-                    throw new AppException("Email, DOB or password is incorrect");
-
-                // Check if MFA is enabled for this account
-                if (account.MfaEnabled && !string.IsNullOrEmpty(account.PhoneNumber))
-                {
-                    // Send MFA code via SMS
-                    var codeSent = await _mfaService.SendMfaCodeViaSmsAsync(account.Id, account.PhoneNumber);
-                    
-                    if (!codeSent)
-                    {
-                        log.ErrorFormat("Failed to send MFA code to user {0}", account.Id);
-                        throw new AppException("Failed to send verification code. Please try again.");
-                    }
-
-                    // Generate a temporary token for MFA verification
-                    var tempToken = generateJwtToken(account, isTemp: true);
-
-                    log.InfoFormat("MFA code sent to user {0}", account.Email);
-                    
-                    return new MfaResponse
-                    {
-                        MfaRequired = true,
-                        Message = "Verification code sent to your registered phone number",
-                        TempToken = tempToken
-                    };
-                }
-                else
-                {
-                    // MFA not enabled, proceed with regular authentication
-                    log.InfoFormat("MFA not enabled for user {0}, proceeding with regular auth", account.Email);
-                    
-                    var jwtToken = generateJwtToken(account);
-                    var refreshToken = generateRefreshToken(ipAddress);
-                    account.RefreshTokens.Add(refreshToken);
-                    removeOldRefreshTokens(account);
-                    
-                    _context.Update(account);
-                    await _context.SaveChangesAsync();
-
-                    var response = _mapper.Map<MfaResponse>(account);
-                    response.JwtToken = jwtToken;
-                    response.RefreshToken = refreshToken.Token;
-                    response.MfaRequired = false;
-                    response.Message = "Authentication successful";
-
-                    return response;
-                }
-            }
-            catch (Exception ex)
-            {
-                log.Error($"Error in AuthenticateWithMfaAsync for {model.Email}", ex);
-                throw;
-            }
-            finally
-            {
-                semaphoreObject.Release();
-            }
-        }
-
-        public async Task<AuthenticateResponse> VerifyMfaAsync(VerifyMfaRequest model, string ipAddress)
-        {
-            try
-            {
-                log.InfoFormat("Verifying MFA code for user {0}", model.Email);
-                semaphoreObject.Wait();
-
-                using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        var account = await _context.Accounts
-                            .Include(x => x.RefreshTokens)
-                            .SingleOrDefaultAsync(x => x.Email == model.Email);
-
-                        if (account == null)
-                            throw new AppException("Account not found");
-
-                        // Validate the MFA code
-                        var isValid = await _mfaService.ValidateMfaCodeAsync(account.Id, model.MfaCode);
-
-                        if (!isValid)
-                        {
-                            log.WarnFormat("Invalid MFA code for user {0}", account.Email);
-                            throw new AppException("Invalid or expired verification code");
-                        }
-
-                        // MFA verification successful, generate tokens
-                        var jwtToken = generateJwtToken(account);
-                        var refreshToken = generateRefreshToken(ipAddress);
-                        account.RefreshTokens.Add(refreshToken);
-                        removeOldRefreshTokens(account);
-
-                        _context.Update(account);
-                        await _context.SaveChangesAsync();
-
-                        var response = _mapper.Map<AuthenticateResponse>(account);
-                        response.JwtToken = jwtToken;
-                        response.RefreshToken = refreshToken.Token;
-
-                        transaction.Commit();
-                        log.InfoFormat("MFA verification successful for user {0}", account.Email);
-                        
-                        return response;
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        log.Error($"Error in VerifyMfaAsync transaction for {model.Email}", ex);
-                        throw;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                log.Error($"Error in VerifyMfaAsync for {model.Email}", ex);
-                throw;
-            }
-            finally
-            {
-                semaphoreObject.Release();
-            }
-        }
-
-        public async Task EnableMfaAsync(string userId, string phoneNumber)
-        {
-            await _mfaService.EnableMfaAsync(userId, phoneNumber);
-            log.InfoFormat("MFA enabled for user {0}", userId);
-        }
-
-        public async Task DisableMfaAsync(string userId)
-        {
-            await _mfaService.DisableMfaAsync(userId);
-            log.InfoFormat("MFA disabled for user {0}", userId);
-        }
-
-        public bool IsMfaEnabled(string userId)
-        {
-            return _mfaService.IsMfaEnabled(userId);
-        }
     }
 }

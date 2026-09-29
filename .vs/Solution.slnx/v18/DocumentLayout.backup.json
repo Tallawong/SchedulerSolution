@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\SchedulerSolution\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C4447535-BD7C-FDD9-5F44-32DAB67E47C8}|ScheduleMeBackEnd\\scheduleme.server.csproj|c:\\schedulersolution\\schedulemebackend\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C4447535-BD7C-FDD9-5F44-32DAB67E47C8}|ScheduleMeBackEnd\\scheduleme.server.csproj|solutionrelative:schedulemebackend\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|c:\\schedulersolution\\schedulemefrontend\\src\\app\\floating-schedules\\floating-schedules.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|solutionrelative:schedulemefrontend\\src\\app\\floating-schedules\\floating-schedules.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|c:\\schedulersolution\\schedulemefrontend\\src\\app\\account\\account.module.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|solutionrelative:schedulemefrontend\\src\\app\\account\\account.module.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+      "AbsoluteMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|c:\\schedulersolution\\schedulemefrontend\\src\\app\\app-routing-module.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|solutionrelative:schedulemefrontend\\src\\app\\app-routing-module.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|c:\\schedulersolution\\schedulemefrontend\\src\\app\\account.controls\\login-prompt.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|ScheduleMeFrontEnd\\scheduleme.client.esproj|solutionrelative:schedulemefrontend\\src\\app\\account.controls\\login-prompt.component.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,27 +27,40 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "EmailService.cs",
-              "DocumentMoniker": "C:\\SchedulerSolution\\ScheduleMeBackEnd\\Services\\EmailService.cs",
-              "RelativeDocumentMoniker": "ScheduleMeBackEnd\\Services\\EmailService.cs",
-              "ToolTip": "C:\\SchedulerSolution\\ScheduleMeBackEnd\\Services\\EmailService.cs",
-              "RelativeToolTip": "ScheduleMeBackEnd\\Services\\EmailService.cs",
-              "ViewState": "AgIAAEQAAAAAAAAAAAAkwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-22T16:13:58.536Z",
+              "Title": "floating-schedules.component.ts",
+              "DocumentMoniker": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\floating-schedules\\floating-schedules.component.ts",
+              "RelativeDocumentMoniker": "ScheduleMeFrontEnd\\src\\app\\floating-schedules\\floating-schedules.component.ts",
+              "ToolTip": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\floating-schedules\\floating-schedules.component.ts",
+              "RelativeToolTip": "ScheduleMeFrontEnd\\src\\app\\floating-schedules\\floating-schedules.component.ts",
+              "ViewState": "AgIAABQAAAAAAAAAAAAkwDkAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-09-25T17:22:17.563Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "account.module.ts",
-              "DocumentMoniker": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\account\\account.module.ts",
-              "RelativeDocumentMoniker": "ScheduleMeFrontEnd\\src\\app\\account\\account.module.ts",
-              "ToolTip": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\account\\account.module.ts",
-              "RelativeToolTip": "ScheduleMeFrontEnd\\src\\app\\account\\account.module.ts",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAADgAAAAAAAAAAAAAAA==",
+              "Title": "app-routing-module.ts",
+              "DocumentMoniker": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\app-routing-module.ts",
+              "RelativeDocumentMoniker": "ScheduleMeFrontEnd\\src\\app\\app-routing-module.ts",
+              "ToolTip": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\app-routing-module.ts",
+              "RelativeToolTip": "ScheduleMeFrontEnd\\src\\app\\app-routing-module.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2026-09-20T05:38:51.424Z",
+              "WhenOpened": "2026-09-25T15:52:22.72Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "login-prompt.component.ts",
+              "DocumentMoniker": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\account.controls\\login-prompt.component.ts",
+              "RelativeDocumentMoniker": "ScheduleMeFrontEnd\\src\\app\\account.controls\\login-prompt.component.ts",
+              "ToolTip": "C:\\SchedulerSolution\\ScheduleMeFrontEnd\\src\\app\\account.controls\\login-prompt.component.ts",
+              "RelativeToolTip": "ScheduleMeFrontEnd\\src\\app\\account.controls\\login-prompt.component.ts",
+              "ViewState": "AgIAAMEAAAAAAAAAAAAMwNwAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-09-25T15:40:11.584Z",
               "EditorCaption": ""
             }
           ]

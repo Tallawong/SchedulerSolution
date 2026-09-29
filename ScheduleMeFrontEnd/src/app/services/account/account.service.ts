@@ -25,6 +25,7 @@ import { TimeSlotsTasksDTO } from '../../entities/timeslotstasksDTO';
 import { AccountsService } from '../../shared/openapi-api-client/api/accounts.service';
 import { AuthenticateResponse } from '../../shared/openapi-api-client/model/authenticateResponse';
 import { accountApiOptions } from './account-api.interceptor';
+import { VerifyEmailRequest } from '../../dto/requests/verify-email-request';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -98,8 +99,8 @@ export class AccountService {
     });
   }
 
-  verifyEmail(token: string, dob: string) {
-    return this.api.accountsVerifyPost({ token, dob });
+  verifyEmail(req : VerifyEmailRequest /*token: string, dob: string*/) {
+    return this.api.accountsVerifyPost(req);
   }
 
   forgotPassword(request: ForgotPasswordRequest) {
