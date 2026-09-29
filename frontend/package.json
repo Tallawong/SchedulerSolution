@@ -12,7 +12,7 @@
     "format:check": "prettier --check \"src/**/*.{ts,html,css,scss,less,json}\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "ci": "npm run lint && npm run format:check && npm run test"
+    "test:ci": "npm run lint && npm run format:check && npm run test"
   },
   "private": true,
   "packageManager": "npm@11.16.0",
