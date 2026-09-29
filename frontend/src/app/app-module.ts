@@ -43,13 +43,11 @@ import { DatePickerExampleComponent } from './date-picker-example/date-picker-ex
     HomeComponent,
   ],
   providers: [
-
     provideRouter(routes, withDebugTracing()),
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptors([jwtInterceptor, errorInterceptor])),
     provideApi({ basePath: environment.apiUrl, withCredentials: true }),
     provideAppInitializer(() => initializeApp(inject(AccountService))()),
-
   ],
   bootstrap: [App],
 })

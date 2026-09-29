@@ -35,7 +35,12 @@ export class AlertService {
     seen.add(value);
 
     if (Array.isArray(value)) {
-      return value.map((item) => this.errorMessage(item, seen)).filter(Boolean).join('; ') || undefined;
+      return (
+        value
+          .map((item) => this.errorMessage(item, seen))
+          .filter(Boolean)
+          .join('; ') || undefined
+      );
     }
 
     const error = value as Record<string, unknown>;

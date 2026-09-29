@@ -43,7 +43,11 @@ export class AccountService {
     return this.accountSubject.value;
   }
 
-  login(email: string, password: string, dob: string): Observable<MfaResponse | AuthenticateResponse> {
+  login(
+    email: string,
+    password: string,
+    dob: string,
+  ): Observable<MfaResponse | AuthenticateResponse> {
     return this.asLegacyResponse<MfaResponse | AuthenticateResponse>(
       this.api.accountsAuthenticateMfaPost(
         { email, password, dob },
@@ -99,7 +103,7 @@ export class AccountService {
     });
   }
 
-  verifyEmail(req : VerifyEmailRequest /*token: string, dob: string*/) {
+  verifyEmail(req: VerifyEmailRequest /*token: string, dob: string*/) {
     return this.api.accountsVerifyPost(req);
   }
 

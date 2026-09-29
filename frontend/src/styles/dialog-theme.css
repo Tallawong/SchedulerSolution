@@ -96,7 +96,14 @@
 
 /* Limit form styling to actual single-line fields; preserve checkboxes and textareas.
    Global selectors reach projected controls without disabling Angular encapsulation. */
-body .app-dialog-theme .lp-form :is(input.lp-input, input.form-control, select.form-select):not([type='checkbox'], [type='radio'], [multiple]) {
+body
+  .app-dialog-theme
+  .lp-form
+  :is(input.lp-input, input.form-control, select.form-select):not(
+    [type='checkbox'],
+    [type='radio'],
+    [multiple]
+  ) {
   width: 100%;
   box-sizing: border-box;
   height: var(--dialog-field-height);
@@ -114,7 +121,9 @@ body .app-dialog-theme .lp-form :is(input.lp-input, input.form-control, select.f
   margin-top: 0.25rem;
 }
 
-.app-dialog-theme .lp-form :is(input.lp-input, input.form-control, select.form-select):focus-visible {
+.app-dialog-theme
+  .lp-form
+  :is(input.lp-input, input.form-control, select.form-select):focus-visible {
   outline: 2px solid var(--dialog-focus-color);
   outline-offset: 2px;
 }

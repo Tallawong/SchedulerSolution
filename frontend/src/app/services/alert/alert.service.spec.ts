@@ -13,7 +13,7 @@ describe('AlertService error messages', () => {
     });
     const service = TestBed.inject(AlertService);
     let message = '';
-    const subscription = service.onAlert().subscribe(alert => message = alert.message);
+    const subscription = service.onAlert().subscribe((alert) => (message = alert.message));
     service.error(error);
     subscription.unsubscribe();
     return message;
@@ -24,20 +24,24 @@ describe('AlertService error messages', () => {
   });
 
   it('extracts the API message from an HTTP error', () => {
-    expect(displayMessage(new HttpErrorResponse({
-      status: 400,
-      error: { message: 'Email or password is incorrect' },
-    }))).toBe('Email or password is incorrect');
+    expect(
+      displayMessage(
+        new HttpErrorResponse({
+          status: 400,
+          error: { message: 'Email or password is incorrect' },
+        }),
+      ),
+    ).toBe('Email or password is incorrect');
   });
 
   it('handles nested error strings', () => {
-    expect(displayMessage({ error: { error: 'Invalid credentials' } }))
-      .toBe('Invalid credentials');
+    expect(displayMessage({ error: { error: 'Invalid credentials' } })).toBe('Invalid credentials');
   });
 
   it('extracts validation messages', () => {
-    expect(displayMessage({ error: { errors: { Email: ['Email is required'] } } }))
-      .toBe('Email: Email is required');
+    expect(displayMessage({ error: { errors: { Email: ['Email is required'] } } })).toBe(
+      'Email: Email is required',
+    );
   });
 
   it('handles native Error objects', () => {
@@ -45,8 +49,9 @@ describe('AlertService error messages', () => {
   });
 
   it('provides a fallback for unrecognized objects', () => {
-    expect(displayMessage({ unexpected: 123 }))
-      .toBe('An unexpected error occurred. Please try again.');
+    expect(displayMessage({ unexpected: 123 })).toBe(
+      'An unexpected error occurred. Please try again.',
+    );
   });
 
   it('handles circular error objects', () => {

@@ -16,28 +16,30 @@
             </tr>
           </thead>
           @if (poolElements) {
-          <tbody>
-            @for (s of poolElements; track s) {
-            <tr>
-              <td>{{ s.email }}</td>
-              <td>{{ s.date }}</td>
-              <td>{{ s.userFunction }}</td>
-              <td>{{ s.scheduleGroup }}</td>
-              @if (isLoggedAsAdmin) {
-              <td style="white-space: nowrap">
-                <button class="btn btn-sm btn-danger btn-delete-account"
+            <tbody>
+              @for (s of poolElements; track s) {
+                <tr>
+                  <td>{{ s.email }}</td>
+                  <td>{{ s.date }}</td>
+                  <td>{{ s.userFunction }}</td>
+                  <td>{{ s.scheduleGroup }}</td>
+                  @if (isLoggedAsAdmin) {
+                    <td style="white-space: nowrap">
+                      <button
+                        class="btn btn-sm btn-danger btn-delete-account"
                         type="button"
-                        (click)="onDeletePoolElement($event, s.id, s.email, s.userFunction)">
-                  @if (s.deleting) {
-                  <span class="spinner-border spinner-border-sm mr-1"></span>
+                        (click)="onDeletePoolElement($event, s.id, s.email, s.userFunction)"
+                      >
+                        @if (s.deleting) {
+                          <span class="spinner-border spinner-border-sm mr-1"></span>
+                        }
+                        Delete
+                      </button>
+                    </td>
                   }
-                  Delete
-                </button>
-              </td>
+                </tr>
               }
-            </tr>
-            }
-          </tbody>
+            </tbody>
           }
         </table>
       </div>

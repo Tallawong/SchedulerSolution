@@ -9,7 +9,8 @@
 
 /* Material input height belongs to its form-field container, not the input.
    Calendar popup controls, multiline inputs and choice controls are excluded. */
-body input:not(
+body
+  input:not(
     [type='checkbox'],
     [type='radio'],
     [type='range'],
@@ -18,12 +19,8 @@ body input:not(
     .mat-mdc-input-element,
     [matInput]
   ):not(:where(ngxsmk-datepicker-content *, mat-calendar *)),
-body select:not([multiple]):not([size]):not(
-    :where(ngxsmk-datepicker-content *, mat-calendar *)
-  ),
-body select[size='1']:not([multiple]):not(
-    :where(ngxsmk-datepicker-content *, mat-calendar *)
-  ) {
+body select:not([multiple]):not([size]):not(:where(ngxsmk-datepicker-content *, mat-calendar *)),
+body select[size='1']:not([multiple]):not(:where(ngxsmk-datepicker-content *, mat-calendar *)) {
   box-sizing: border-box;
   height: var(--app-control-height);
   min-height: var(--app-control-height);
@@ -32,7 +29,8 @@ body select[size='1']:not([multiple]):not(
 }
 
 /* Size action buttons, not icon-only controls, calendar cells or popup options. */
-body button:not(
+body
+  button:not(
     .mat-mdc-button-base,
     [mat-icon-button],
     [mat-fab],

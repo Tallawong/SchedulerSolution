@@ -26,7 +26,9 @@ describe('App', () => {
           provide: AccountService,
           useValue: {
             account: account.asObservable(),
-            get accountValue() { return account.value; },
+            get accountValue() {
+              return account.value;
+            },
             logout: () => {
               logoutCalls++;
               account.next(null);

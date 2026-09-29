@@ -36,8 +36,7 @@ export class VerifyEmailComponent implements OnInit {
     if (!token) {
       this.loading = false;
       this.success = false;
-      this.message =
-        'No verification token provided. Please check your email link.';
+      this.message = 'No verification token provided. Please check your email link.';
       return;
     }
 
@@ -53,8 +52,7 @@ export class VerifyEmailComponent implements OnInit {
         this.loading = false;
         this.success = true;
         this.message =
-          res?.message ||
-          'Your email has been verified successfully. You can now log in.';
+          res?.message || 'Your email has been verified successfully. You can now log in.';
         try {
           this.modalService.hideLogin();
         } catch {}
@@ -74,8 +72,7 @@ export class VerifyEmailComponent implements OnInit {
         this.loading = false;
         this.success = false;
         this.message =
-          err?.error?.message ||
-          'Email verification failed. The link may be invalid or expired.';
+          err?.error?.message || 'Email verification failed. The link may be invalid or expired.';
       },
     });
   }

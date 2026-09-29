@@ -3,13 +3,13 @@ import { Component, signal } from '@angular/core';
 import { form, FormField } from '@angular/forms/signals';
 
 import {
-    ChangeDetectorRef,
-    EventEmitter,
-    Input,
-    NgZone,
-    OnDestroy,
-    OnInit,
-    Output,
+  ChangeDetectorRef,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  Output,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { finalize, Subscription } from 'rxjs';
@@ -197,8 +197,11 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (response: AuthenticateResponse) => {
-          if (!isAuthenticateResponse(response) || !response.jwtToken?.trim()
-            || (isMfaResponse(response) && response.mfaRequired)) {
+          if (
+            !isAuthenticateResponse(response) ||
+            !response.jwtToken?.trim() ||
+            (isMfaResponse(response) && response.mfaRequired)
+          ) {
             this.errorMessage = 'Unexpected MFA verification response';
             return;
           }

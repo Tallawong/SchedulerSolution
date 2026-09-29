@@ -18,10 +18,7 @@ describe('RegisterDialogComponent string dates', () => {
     register = vi.fn().mockReturnValue(of({ message: 'Registration successful' }));
     await TestBed.configureTestingModule({
       imports: [RegisterDialogComponent],
-      providers: [
-        provideRouter([]),
-        { provide: AccountService, useValue: { register } },
-      ],
+      providers: [provideRouter([]), { provide: AccountService, useValue: { register } }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegisterDialogComponent);

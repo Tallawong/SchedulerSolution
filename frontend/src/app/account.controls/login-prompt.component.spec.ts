@@ -53,7 +53,9 @@ describe('LoginPromptComponent', () => {
 
       expect(component.visible).toBe(true);
       expect(fixture.nativeElement.querySelector('.lp-form')).not.toBeNull();
-      expect(fixture.nativeElement.querySelector('button[type="submit"]').textContent).toContain('Sign in');
+      expect(fixture.nativeElement.querySelector('button[type="submit"]').textContent).toContain(
+        'Sign in',
+      );
     }
   });
 
@@ -113,7 +115,9 @@ describe('LoginPromptComponent', () => {
     const responses = new Subject<MfaResponse>();
     login.mockReturnValue(responses);
     component.loginModel.set({
-      email: 'user@example.test', password: 'password', dob: '2000-01-01',
+      email: 'user@example.test',
+      password: 'password',
+      dob: '2000-01-01',
     });
     component.onSubmit();
     component.loginModel.update((model) => ({ ...model, email: 'changed@example.test' }));
@@ -188,7 +192,9 @@ describe('LoginPromptComponent', () => {
 
   it('prioritizes an MFA challenge even if it contains authentication fields', () => {
     const response: MfaResponse = {
-      dob: '01-01-2000', mfaRequired: true, jwtToken: 'jwt',
+      dob: '01-01-2000',
+      mfaRequired: true,
+      jwtToken: 'jwt',
     };
     login.mockReturnValue(of(response));
 
@@ -230,26 +236,31 @@ describe('LoginPromptComponent', () => {
     expect(component.loading).toBe(false);
   });
 
-  it.each([
-    null,
-    { dob: null, jwtToken: 123 },
-    { dob: null, mfaRequired: true, jwtToken: 'jwt' },
-  ])('rejects an invalid runtime verification response: %j', (response) => {
-    verifyMfa.mockReturnValue(of(response));
-    component.showMfa = true;
+  it.each([null, { dob: null, jwtToken: 123 }, { dob: null, mfaRequired: true, jwtToken: 'jwt' }])(
+    'rejects an invalid runtime verification response: %j',
+    (response) => {
+      verifyMfa.mockReturnValue(of(response));
+      component.showMfa = true;
 
-    component.onMfaVerify('123456');
+      component.onMfaVerify('123456');
 
-    expect(component.errorMessage).toBe('Unexpected MFA verification response');
-    expect(component.showMfa).toBe(true);
-    expect(navigate).not.toHaveBeenCalled();
-    expect(component.loading).toBe(false);
-  });
+      expect(component.errorMessage).toBe('Unexpected MFA verification response');
+      expect(component.showMfa).toBe(true);
+      expect(navigate).not.toHaveBeenCalled();
+      expect(component.loading).toBe(false);
+    },
+  );
 
   it.each(['Invalid code', 'Code expired'])('handles MFA failure: %s', (message) => {
-    verifyMfa.mockReturnValue(throwError(() => new HttpErrorResponse({
-      status: 400, error: { message },
-    })));
+    verifyMfa.mockReturnValue(
+      throwError(
+        () =>
+          new HttpErrorResponse({
+            status: 400,
+            error: { message },
+          }),
+      ),
+    );
     component.showMfa = true;
     component.mfaEmail = 'user@example.test';
 

@@ -186,27 +186,32 @@ describe('AccountService generated API wrapper', () => {
     refresh.flush(accountResponse());
   });
 
-  it.each(['login', 'verifyMfa'] as const)('does not establish a session for a tokenless %s response', (operation) => {
-    const response: MfaResponse = { dob: null, mfaRequired: false };
-    const result = operation === 'login'
-      ? service.login('user@example.test', 'password', '01-01-2000')
-      : service.verifyMfa('user@example.test', '123456');
-    result.subscribe();
-    http.expectOne(`${apiUrl}/${operation === 'login' ? 'authenticate-mfa' : 'verify-mfa'}`).flush(response);
+  it.each(['login', 'verifyMfa'] as const)(
+    'does not establish a session for a tokenless %s response',
+    (operation) => {
+      const response: MfaResponse = { dob: null, mfaRequired: false };
+      const result =
+        operation === 'login'
+          ? service.login('user@example.test', 'password', '01-01-2000')
+          : service.verifyMfa('user@example.test', '123456');
+      result.subscribe();
+      http
+        .expectOne(`${apiUrl}/${operation === 'login' ? 'authenticate-mfa' : 'verify-mfa'}`)
+        .flush(response);
 
-    expect(service.accountValue).toBeNull();
-    vi.advanceTimersByTime(3600_000);
-    http.expectNone(`${apiUrl}/refresh-token`);
-  });
+      expect(service.accountValue).toBeNull();
+      vi.advanceTimersByTime(3600_000);
+      http.expectNone(`${apiUrl}/refresh-token`);
+    },
+  );
 
   it('keeps the session empty when MFA verification fails', () => {
     service.verifyMfa('user@example.test', '123456').subscribe({
       error: (error: unknown) => expect(error).toBeTruthy(),
     });
-    http.expectOne(`${apiUrl}/verify-mfa`).flush(
-      { message: 'Invalid code' },
-      { status: 400, statusText: 'Bad Request' },
-    );
+    http
+      .expectOne(`${apiUrl}/verify-mfa`)
+      .flush({ message: 'Invalid code' }, { status: 400, statusText: 'Bad Request' });
 
     expect(service.accountValue).toBeNull();
     vi.advanceTimersByTime(3600_000);
