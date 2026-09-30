@@ -58,9 +58,9 @@ jobs:
           npm run format:check
         working-directory: ./frontend
 
-      - name: Run Frontend Tests
+      #- name: Run Frontend Tests
         #run: npm run test:ci # Configured to run Chrome Headless
-        working-directory: ./frontend
+        #working-directory: ./frontend
 
       - name: Build Angular App
         run: npm run build -- --configuration=production
