@@ -32,9 +32,7 @@ export class MfaDialogComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible']?.currentValue === true) {
       setTimeout(() => {
-        try {
-          this.codeInput?.nativeElement.focus();
-        } catch {}
+        this.codeInput?.nativeElement.focus();
       });
     }
   }

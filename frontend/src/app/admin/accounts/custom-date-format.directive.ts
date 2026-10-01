@@ -1,7 +1,6 @@
 import { Directive } from '@angular/core';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { Constants } from 'src/app/core/helpers/constants';
-import { environment } from 'src/environments/environment';
 
 export const FORMAT = {
   parse: {

@@ -44,18 +44,19 @@ function getErrorMessage(err: unknown): string {
     return 'Unknown Error';
   }
 
-  const e = err as Record<string, any>;
+  const e = err as Record<string, unknown>;
+  const body = e['error'];
 
-  if (e['error']) {
+  if (body) {
     // Angular sets statusText 'Unknown Error' when it fails to JSON.parse the response body;
     // in that case err.error is { error: SyntaxError, text: <raw body> }, not the API's JSON.
-    if (typeof e['error']?.['text'] === 'string') {
-      return `Non-JSON response: ${e['error']['text']}`;
+    if (typeof body === 'object' && 'text' in body && typeof body.text === 'string') {
+      return `Non-JSON response: ${body.text}`;
     }
 
-    const inner = getErrorMessage(e['error']);
+    const inner = getErrorMessage(body);
     // surface ASP.NET Core ModelState validation details (e.error.errors: { field: string[] })
-    const validationErrors = e['error']?.['errors'];
+    const validationErrors = typeof body === 'object' && 'errors' in body ? body.errors : null;
     if (validationErrors && typeof validationErrors === 'object') {
       const details = Object.entries(validationErrors)
         .map(([field, messages]) => `${field}: ${(messages as string[]).join(', ')}`)
@@ -65,7 +66,8 @@ function getErrorMessage(err: unknown): string {
     return inner;
   }
 
-  return e['errorMessage'] || e['title'] || e['message'] || e['statusText'] || 'Unknown Error';
+  const message = e['errorMessage'] || e['title'] || e['message'] || e['statusText'];
+  return typeof message === 'string' ? message : 'Unknown Error';
 }
 
 function isHttpErrorResponse(err: unknown): err is HttpErrorResponse {

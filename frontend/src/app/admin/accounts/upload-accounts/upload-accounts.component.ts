@@ -60,10 +60,10 @@ export class UploadAccountsComponent implements OnInit, AfterViewInit {
       this.fileHasBeenSelected = false;
     }
   }
-  onSubmit(event: any, fileUpload: any) {
+  onSubmit(fileUpload: HTMLInputElement) {
     this.alertService.clear();
 
-    const file: File = fileUpload.files[0];
+    const file = fileUpload.files?.[0];
 
     if (file) {
       this.submitted = true;
@@ -83,17 +83,6 @@ export class UploadAccountsComponent implements OnInit, AfterViewInit {
       );
 
       this.uploadSub = upload$.subscribe({
-        next: (value) => {
-          //this.submitted = false;
-          // if (value.type == HttpEventType.UploadProgress) {
-          //   this.uploadProgress = Math.round(100 * (value.loaded / value.total));
-          //   console.log("Progress:" + this.uploadProgress);
-          //   if (this.uploadProgress == 100) {
-          //     this.uploadProgress = 0;
-          //     //this.progressChild.nativeElement.removeAttribute("value");
-          //   }
-          // }
-        },
         complete: () => {
           this.alertService.info('Done');
           this.submitted = false;

@@ -50,7 +50,7 @@ export class ListComponent implements OnInit, AfterViewInit {
 
   dataSource: MatTableDataSource<Account> = new MatTableDataSource<Account>([]);
   displayedColumns: string[] = COLUMNS_SCHEMA.map((col) => col.key);
-  columnsSchema: any = COLUMNS_SCHEMA;
+  columnsSchema = COLUMNS_SCHEMA;
 
   accounts = signal<Account[]>([]);
   autoEmail: boolean = false;
@@ -79,14 +79,14 @@ export class ListComponent implements OnInit, AfterViewInit {
     }, 0);
   }
 
-  onRowSelected(contact: Account, input: any, index: number, event: MouseEvent) {
+  onRowSelected(contact: Account, event: MouseEvent) {
     if (event.ctrlKey) {
       if (contact.highlighted) {
         contact.highlighted = false;
         return;
       }
     }
-    this.selectRow(contact, index);
+    this.selectRow(contact);
   }
   private sortInAscNameOrder() {
     const sortState: Sort = { active: 'name', direction: 'asc' };
@@ -94,13 +94,13 @@ export class ListComponent implements OnInit, AfterViewInit {
     this.sort.direction = sortState.direction;
     this.sort.sortChange.emit(sortState);
   }
-  private selectRow(contact: Account, index: number) {
+  private selectRow(contact: Account) {
     for (let index = 0; index < this.accounts().length; index++) {
       const element = this.accounts()[index];
       if (element.highlighted) element.highlighted = false;
 
       if (this.isSameAccount(contact, element)) {
-        var pageNumber = Math.floor(index / this.paginator.pageSize);
+        const pageNumber = Math.floor(index / this.paginator.pageSize);
         this.paginator.pageIndex = pageNumber;
 
         this.paginator.page.next({
@@ -112,15 +112,14 @@ export class ListComponent implements OnInit, AfterViewInit {
     }
     contact.highlighted = true;
   }
-  isSameAccount(a1: Account, a2: any): boolean {
+  isSameAccount(a1: Account, a2: Account): boolean {
     console.assert(a1 != null && a2 != null, 'One of the accounts is null');
     return a1.email == a2.email && a1.dob == a2.dob;
   }
 
   /* I am not sure if we need 'input' parameter - keep it for now*/
-  applyFilter(t: any, input: any) {
-    const target = t as HTMLTextAreaElement;
-    var filterValue = target.value;
+  applyFilter(input: HTMLInputElement) {
+    let filterValue = input.value;
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSource.filter = filterValue;
@@ -141,7 +140,7 @@ export class ListComponent implements OnInit, AfterViewInit {
     this.accountService
       .getAutoEmail()
       .pipe(first())
-      .subscribe((autoEmail: any) => {
+      .subscribe((autoEmail: boolean) => {
         this.autoEmail = autoEmail;
       });
   }
@@ -157,7 +156,7 @@ export class ListComponent implements OnInit, AfterViewInit {
     modalRef.componentInstance.bodyInfoStr =
       'All information associated with the user profile will be permanently deleted.';
     modalRef.result
-      .then((data) => {
+      .then(() => {
         const account = this.accounts().find((x) => x.id === id);
         if (!account) return;
         account.isDeleting = true;
@@ -165,7 +164,7 @@ export class ListComponent implements OnInit, AfterViewInit {
           .delete(id)
           .pipe(first())
           .subscribe({
-            next: (value) => {
+            next: () => {
               this.refreshList();
             },
             complete: () => {
@@ -176,15 +175,15 @@ export class ListComponent implements OnInit, AfterViewInit {
             },
           });
       })
-      .catch((error) => {
-        //this.alertService.error(error);
+      .catch(() => {
+        this.alertService.clear();
       });
   }
 
   public get RoleAdminEnum() {
     return Role.Admin;
   }
-  public onDeleteAllUserAccounts(event: Event) {
+  public onDeleteAllUserAccounts() {
     // Reset alerts on delete
     this.alertService.clear();
 
@@ -196,7 +195,7 @@ export class ListComponent implements OnInit, AfterViewInit {
       'All information associated with the user profiles will be permanently deleted.';
 
     modalRef.result
-      .then((data) => {
+      .then(() => {
         const modalRef = this.modalService.open(NgbdModalOptionsComponent, {
           backdrop: 'static',
           centered: true,
@@ -208,7 +207,7 @@ export class ListComponent implements OnInit, AfterViewInit {
           .deleteAllUserAccounts()
           .pipe(first())
           .subscribe({
-            next: (accounts: any) => {
+            next: (accounts) => {
               this.refreshList();
               console.log(accounts);
             },
@@ -224,16 +223,16 @@ export class ListComponent implements OnInit, AfterViewInit {
             },
           });
       })
-      .catch((error) => {
-        //this.alertService.error(error);
+      .catch(() => {
+        this.isDeleting = false;
       });
   }
-  public onChangeAutoEmail(event: any, tr: any) {
+  public onChangeAutoEmail(event: Event) {
     this.accountService
-      .setAutoEmail(new Boolean(event.target.checked))
+      .setAutoEmail((event.target as HTMLInputElement).checked)
       .pipe(first())
       .subscribe({
-        next: (autoEmail: any) => {
+        next: (autoEmail: boolean) => {
           //tr.click();
           this.autoEmail = autoEmail;
         },
@@ -262,7 +261,6 @@ export class ListComponent implements OnInit, AfterViewInit {
       .generateSchedules()
       .pipe(first())
       .subscribe({
-        next: (autoEmail: any) => {},
         complete: () => {
           this.generatingSchedules = false;
           modalRef.close();
@@ -274,7 +272,7 @@ export class ListComponent implements OnInit, AfterViewInit {
         },
       });
   }
-  downloadSchedules(event: any) {
+  downloadSchedules() {
     this.downloadingSchedules = true;
 
     const modalRef = this.modalService.open(NgbdModalOptionsComponent, {
@@ -286,12 +284,12 @@ export class ListComponent implements OnInit, AfterViewInit {
 
     this.accountService.downloadSchedulesFile().subscribe({
       next: (data) => {
-        var file = new Blob([data], { type: 'application/pdf' });
-        var fileURL = URL.createObjectURL(file);
+        const file = new Blob([data], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
 
         // if you want to open PDF in new tab
         window.open(fileURL);
-        var a = document.createElement('a');
+        const a = document.createElement('a');
         a.href = fileURL;
         a.target = '_blank';
         a.download = 'Schedules.pdf';

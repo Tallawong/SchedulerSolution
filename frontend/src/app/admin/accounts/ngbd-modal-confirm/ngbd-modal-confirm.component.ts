@@ -1,7 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-ngbd-modal-confirm',
@@ -59,7 +58,7 @@ export class NgbdModalConfirmComponent {
   modal = inject(NgbActiveModal);
   form: FormGroup;
 
-  onClick(event: any) {
+  onClick() {
     console.log('Submit button was clicked!');
     this.modal.close('Ok click');
   }

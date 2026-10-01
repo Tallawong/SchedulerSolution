@@ -1,6 +1,5 @@
 import { Component, EventEmitter, forwardRef, OnDestroy, Output } from '@angular/core';
 import {
-  AbstractControl,
   ControlValueAccessor,
   FormControl,
   NG_VALIDATORS,
@@ -142,7 +141,7 @@ export class ScheduleDateTimeComponent implements ControlValueAccessor, Validato
     }
   }
 
-  validate(_control: AbstractControl): ValidationErrors | null {
+  validate(): ValidationErrors | null {
     return this.dateControl.invalid || this.timeControl.invalid ? { scheduleDateTime: true } : null;
   }
 

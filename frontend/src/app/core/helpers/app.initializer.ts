@@ -1,4 +1,5 @@
 import { AccountService } from '../../services/account/account.service';
+import { Account } from '../../entities/account';
 
 export function initializeApp(accountService: AccountService) {
   return async () => {
@@ -8,22 +9,22 @@ export function initializeApp(accountService: AccountService) {
         accountService
           .refreshToken()
           .subscribe({
-            next: (value: any) => {
+            next: (value: Account) => {
               console.log(
                 'initializeApp successful: ' + value.firstName,
                 value.lastName,
                 value.email,
               );
             },
-            error: (error: string) => {
-              console.log('Error in initializeApp');
+            error: (error: unknown) => {
+              console.warn('Error in initializeApp', error);
             },
           })
           .add(resolve);
       });
       console.log('initializeApp completed');
     } catch (error) {
-      //console.error('Error in initializeApp in catch', error);
+      console.warn('Error in initializeApp', error);
     }
   };
 }

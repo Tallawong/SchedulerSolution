@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UploadTimeslotsTasksComponent } from './upload-timeslots-tasks.component';
+import { UploadTimeslotsTasksModule } from './upload-timeslots-tasks.module';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('AutoGeneratorComponent', () => {
   let component: UploadTimeslotsTasksComponent;
@@ -8,7 +12,8 @@ describe('AutoGeneratorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UploadTimeslotsTasksComponent],
+      imports: [UploadTimeslotsTasksModule],
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UploadTimeslotsTasksComponent);

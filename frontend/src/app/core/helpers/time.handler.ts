@@ -65,9 +65,9 @@ export class TimeHandler {
       return;
     }
     dateSort.sort((a, b) => {
-      let isAsc = sort.direction == 'asc';
-      var date1 = toDateTime(a.date, Constants.dateTimeFormat).toMillis();
-      var date2 = toDateTime(b.date, Constants.dateTimeFormat).toMillis();
+      const isAsc = sort.direction == 'asc';
+      const date1 = toDateTime(a.date, Constants.dateTimeFormat).toMillis();
+      const date2 = toDateTime(b.date, Constants.dateTimeFormat).toMillis();
       if (date1 < date2) {
         return isAsc ? -1 : 1;
       } else if (date1 > date2) {
@@ -78,8 +78,8 @@ export class TimeHandler {
     });
   }
   static getDayStrFromDate(dateStr: string): string {
-    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    var date = toDateTime(dateStr, Constants.dateTimeFormat).toJSDate();
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const date = toDateTime(dateStr, Constants.dateTimeFormat).toJSDate();
     return days[date.getDay()];
   }
 }

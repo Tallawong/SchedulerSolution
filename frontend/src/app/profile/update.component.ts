@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { AbstractControlOptions, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 
@@ -8,7 +8,6 @@ import { MustMatch } from '../core/helpers';
 import { Schedule } from '../entities/schedule';
 import { AccountService, AlertService } from '../services';
 import { Constants } from '../core/helpers/constants';
-import { TimeHandler } from '../core/helpers/time.handler';
 import { CustomValidators } from '../core/helpers/custom-validators';
 
 @Component({

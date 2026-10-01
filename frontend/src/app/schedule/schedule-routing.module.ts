@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FunctionComponent } from '../admin/accounts/function.component';
-import { SubNavComponent } from '../admin/subnav.component';
-import { NavScheduleComponent } from './nav-schedule.component';
 import { ScheduleFunctionComponent } from './schedule-function.component';
 import { ScheduleLayoutComponent } from './schedule-layout.component';
 import { ScheduleListComponent } from './schedule-list.component';

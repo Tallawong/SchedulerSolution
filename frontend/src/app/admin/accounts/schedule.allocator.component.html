@@ -12,7 +12,6 @@
           <div class="mb-3 col-6">
             <app-schedule-date-time
               formControlName="scheduledDate"
-              (dateChange)="onDateChanged($event)"
             >
             </app-schedule-date-time>
           </div>
@@ -27,7 +26,7 @@
                 formControlName="function"
                 [ngClass]="{ 'is-invalid': submitted && f['function'].errors }"
                 required
-                (selectionChange)="onUserFunctionChanged($event)"
+                (selectionChange)="onUserFunctionChanged()"
               >
                 @for (item of uniqueTasks; track item) {
                   <mat-option [value]="item">
@@ -93,7 +92,7 @@
       <mat-label>Filter</mat-label>
       <input
         matInput
-        (keyup)="applyFilter($event.target, input)"
+        (keyup)="applyFilter(input)"
         placeholder="Search columns"
         #input
       />
@@ -165,10 +164,9 @@
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row
-      *matRowDef="let row; columns: displayedColumns; let i = index"
+      *matRowDef="let row; columns: displayedColumns"
       [ngClass]="{ highlighted: row.highlighted }"
-      #tr
-      (click)="onRowSelected(row, tr, i, $event)"
+      (click)="onRowSelected(row, $event)"
       (mouseover)="row.hovered = true"
       (mouseout)="row.hovered = false"
     ></mat-row>

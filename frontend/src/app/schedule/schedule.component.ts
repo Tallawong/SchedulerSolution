@@ -17,7 +17,6 @@ import { AccountService, AlertService } from '../services';
 import { Constants } from '../core/helpers/constants';
 import { AgentTaskConfig } from '../entities/agenttaskconfig';
 import { TimeHandler } from '../core/helpers/time.handler';
-import { ScheduleDateTime } from '../entities/scheduledatetime';
 
 const COLUMNS_SCHEMA = [
   {
@@ -53,7 +52,7 @@ const VALID_TO_SERVICE_TIMEOUT = 1000 * 60 * 60 * 24; // 1 DAY
 export class ScheduleComponent implements OnInit, AfterViewInit {
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<any>;
+  @ViewChild(MatTable) table!: MatTable<Schedule>;
 
   readonly CLEANER_STR = Constants.CLEANER_STR;
   // dateFormat = `${environment.dateTimeFormat}`;
@@ -82,7 +81,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
 
   dataSource: MatTableDataSource<Schedule>;
   displayedColumns: string[] = COLUMNS_SCHEMA.map((col) => col.key);
-  columnsSchema: any = COLUMNS_SCHEMA;
+  columnsSchema = COLUMNS_SCHEMA;
   public color: ThemePalette = 'primary';
   connection: signalR.HubConnection;
 
@@ -99,7 +98,6 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
 
     this.isLoggedAsAdmin = this.accountService.isAdmin();
 
-    var tempStr = environment.baseUrl;
     this.connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
       .withUrl(environment.baseUrl + '/update')
@@ -178,7 +176,6 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
                     ? parseInt(account.userFunctions[account.userFunctions.length - 1].id)
                     : 0;
 
-                var aDateValid = this.form.controls['availableSchedule4Function'].valid;
                 this.accountService
                   .getAvailablePoolElementsForAccount(account.id)
                   .pipe(first())
@@ -196,12 +193,12 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
                     },
                   });
               },
-              error: (error: any) => {
+              error: (error: unknown) => {
                 this.alertService.error(error);
               },
             });
         },
-        error: (error: any) => {
+        error: (error: unknown) => {
           this.alertService.error(error);
         },
       });
@@ -232,16 +229,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
     console.log('Called');
     this.connection.stop();
   }
-  /* I am not sure if we need 'input' parameter - keep it for now*/
-  applyFilter(t: any, input: any) {
-    const target = t as HTMLTextAreaElement;
-    var filterValue = target.value;
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
-  }
-
-  onCheckboxChange(event: any) {
+  onCheckboxChange() {
     this.updateSchedulesAndPoolFromServer();
   }
 
@@ -273,7 +261,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    var schedule = this.createScheduleFromAvailableDateString('availableSchedule4Function');
+    const schedule = this.createScheduleFromAvailableDateString('availableSchedule4Function');
     if (schedule == null) {
       return;
     }
@@ -307,7 +295,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
         },
       });
   }
-  onDeleteSchedule(event: any, scheduleId: string, indx: string, schedule2Delete: Schedule) {
+  onDeleteSchedule(schedule2Delete: Schedule) {
     // i is schedule index
     schedule2Delete.deleting = true;
     this.accountService
@@ -365,18 +353,15 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
       });
   }
   initSchedules(account: Account) {
-    var schedules: Schedule[] = [];
+    const schedules: Schedule[] = [];
 
-    var dLocalNow = new Date();
-    var localNowMs = dLocalNow.getTime();
+    const dLocalNow = new Date();
+    const localNowMs = dLocalNow.getTime();
     //  Filter out values that are older then now if checkbox this.f['allDates'].value is false
     for (let index = 0; index < account.schedules.length; index++) {
       const schedule = account.schedules[index];
-      var serverDate = schedule.date;
-      var serverDateStr = serverDate.toString();
-
-      var scheduleLocalDate = toDateTime(schedule.date, Constants.dateTimeFormat).toJSDate();
-      var scheduleLocalDateMs = scheduleLocalDate.getTime();
+      const scheduleLocalDate = toDateTime(schedule.date, Constants.dateTimeFormat).toJSDate();
+      const scheduleLocalDateMs = scheduleLocalDate.getTime();
 
       // Check the schedule is at least 1 day before now
       if (this.f['allDates'].value || scheduleLocalDateMs - localNowMs > VALID_TO_SERVICE_TIMEOUT) {
@@ -391,24 +376,24 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
   }
 
   createScheduleFromAvailableDateString(dateFormControlName: string): Schedule | null {
-    var dateAndFuncStr = this.form.controls[dateFormControlName].value;
+    const dateAndFuncStr = this.form.controls[dateFormControlName].value;
     const array = dateAndFuncStr.split('/');
 
-    var formDateStr = array[0];
-    var formFunction = array[1];
-    var cleanerGroup = array[2];
+    const formDateStr = array[0];
+    const formFunction = array[1];
+    const cleanerGroup = array[2];
 
-    var formMs = Date.parse(array[0]);
+    const formMs = Date.parse(array[0]);
     for (let index = 0; index < this.schedules.length; index++) {
-      var scheduleMs = new Date(this.schedules[index].date).getTime();
-      var scheduleFunction = this.schedules[index].userFunction;
+      const scheduleMs = new Date(this.schedules[index].date).getTime();
+      const scheduleFunction = this.schedules[index].userFunction;
       if (scheduleMs == formMs && scheduleFunction == formFunction) {
         this.alertService.warn('You are already ' + scheduleFunction + ' for that date/time');
         return null;
       }
     }
 
-    var schedule: Schedule = {
+    const schedule: Schedule = {
       accountId: this.account.id,
       date: formDateStr,
       newDate: formDateStr,
@@ -425,17 +410,15 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
   }
 
   isScheduleFromPast(schedule: Schedule) {
-    var scheduleLocalDate = toDateTime(schedule.date, Constants.dateTimeFormat).toJSDate();
-    var scheduleLocalDateMs = scheduleLocalDate.getTime();
+    const scheduleLocalDate = toDateTime(schedule.date, Constants.dateTimeFormat).toJSDate();
+    const scheduleLocalDateMs = scheduleLocalDate.getTime();
 
-    var localNowMs = Date.now();
+    const localNowMs = Date.now();
     if (scheduleLocalDateMs - localNowMs < VALID_TO_SERVICE_TIMEOUT) {
       return true;
     }
     return false;
   }
-
-  onRowSelected(schedule: Schedule, tr: any) {}
 
   get isAdmin() {
     return this.account?.role == Role.Admin;

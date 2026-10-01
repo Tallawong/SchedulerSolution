@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 //import { UserService } from '../services/user.service';
 import { ResetPasswordRequest } from '../dto/requests/reset-password-request';
-import { HonorificsComponent } from '../core/controls/honorifics/honorifics.component';
 import { AccountService } from '../services';
 
 @Component({
@@ -394,6 +394,7 @@ import { AccountService } from '../services';
 })
 export class ResetPasswordComponent implements OnInit {
   token: string | null = null;
+  dob: string | null = null;
   model = { password: '', confirmPassword: '' };
   loading = false;
   success = false;
@@ -411,11 +412,7 @@ export class ResetPasswordComponent implements OnInit {
     this.token =
       this.route.snapshot.paramMap.get('token') || this.route.snapshot.queryParamMap.get('token');
     // Accept optional DOB via query string (recommended: yyyy-mm-dd)
-    const dob = this.route.snapshot.queryParamMap.get('dob');
-    if (dob) {
-      // attach dob to model or keep local for request
-      (this as any).dob = dob;
-    }
+    this.dob = this.route.snapshot.queryParamMap.get('dob');
   }
 
   onSubmit(): void {
@@ -449,18 +446,18 @@ export class ResetPasswordComponent implements OnInit {
       confirmPassword: this.model.confirmPassword,
     };
     // include dob if present
-    if ((this as any).dob) {
-      (request as any).dob = (this as any).dob;
+    if (this.dob) {
+      request.dob = this.dob;
     }
 
     this.userService.resetPassword(request).subscribe({
-      next: (res: any) => {
+      next: (res: { message?: string } | null) => {
         this.loading = false;
         this.success = true;
         this.message = res?.message || 'Password reset successful! You can now log in.';
         setTimeout(() => this.gotoLogin(), 2000);
       },
-      error: (err: any) => {
+      error: (err: HttpErrorResponse) => {
         this.loading = false;
         this.error =
           err?.error?.message || 'Password reset failed. The link may be invalid or expired.';

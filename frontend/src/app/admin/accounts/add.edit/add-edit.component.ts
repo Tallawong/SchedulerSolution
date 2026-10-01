@@ -11,7 +11,7 @@ import { AccountService, AlertService } from 'src/app/services';
 import { Constants } from 'src/app/core/helpers/constants';
 import { firstValueFrom } from 'rxjs';
 import { ColorConfig, TestService } from 'src/app/services/test/test.service';
-import { USERS_SERVICE_CONFIG_TOKEN, USERS_SERVICE_TOKEN } from 'src/app/services/test/test.tokens';
+import { USERS_SERVICE_CONFIG_TOKEN } from 'src/app/services/test/test.tokens';
 
 @Component({
   standalone: false,
@@ -97,7 +97,7 @@ export class AddEditComponent implements OnInit, AfterViewInit {
       //     });
 
       /* One way of converting observable into Promise and handling the Promise */
-      var observable = this.accountService.getById(this.id);
+      const observable = this.accountService.getById(this.id);
       try {
         const value = await firstValueFrom(observable);
         // Edit mode
@@ -119,7 +119,6 @@ export class AddEditComponent implements OnInit, AfterViewInit {
             }).catch((error) => {
                 console.error(error);
             });*/
-    } else {
     }
   }
   // convenience getter for easy access to form fields
@@ -148,7 +147,7 @@ export class AddEditComponent implements OnInit, AfterViewInit {
   }
 
   private createAccount() {
-    var account: Account = new Account();
+    const account: Account = new Account();
     account.title = this.f['title'].value;
     account.firstName = this.f['firstName'].value;
     account.lastName = this.f['lastName'].value;
@@ -177,7 +176,7 @@ export class AddEditComponent implements OnInit, AfterViewInit {
   }
 
   private updateAccount() {
-    var account: Account = new Account();
+    const account: Account = new Account();
 
     account.title = this.f['title'].value;
     account.firstName = this.f['firstName'].value;
@@ -193,7 +192,7 @@ export class AddEditComponent implements OnInit, AfterViewInit {
       .update(this.id, account)
       .pipe(first())
       .subscribe({
-        next: (value) => {
+        next: () => {
           this.alertService.clear();
           //this.router.navigate(['../../../'], { relativeTo: this.route });
           this.loading = false;

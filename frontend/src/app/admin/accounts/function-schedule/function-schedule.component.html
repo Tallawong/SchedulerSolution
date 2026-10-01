@@ -27,7 +27,7 @@
     <!-- <div class="container">
         <mat-form-field appearance="outline">
             <mat-label>Filter</mat-label>
-            <input matInput (keyup)="onApplyFilter($event.target, input)" placeholder="Search columns" #input>
+            <input matInput (keyup)="onApplyFilter(input)" placeholder="Search columns" #input>
         </mat-form-field>
     </div> -->
     <mat-table #table class="lessons-table mat-elevation-z8" [dataSource]="dataSource" matSort>
@@ -79,10 +79,9 @@
       </ng-container>
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row
-        *matRowDef="let row; columns: displayedColumns; let i = index"
+        *matRowDef="let row; columns: displayedColumns"
         [ngClass]="{ hovered: row.hovered, highlighted: row.highlighted }"
-        #tr
-        (click)="onRowSelected(row, tr, i, $event)"
+        (click)="onRowSelected(row, $event)"
         (mouseover)="row.hovered = true"
         (mouseout)="row.hovered = false"
       ></mat-row>
@@ -100,12 +99,11 @@
     </mat-paginator>
 
     <button
-      #button
       type="button"
       [ngClass]="{
         disabled: f['selectedUser'].value == null || f['selectedUser'].value.length <= 0,
       }"
-      (click)="onAddSchedule($event, button)"
+      (click)="onAddSchedule()"
       class="btn3d btn btn-primary"
     >
       @if (isAdding) {

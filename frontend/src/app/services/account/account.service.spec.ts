@@ -134,6 +134,7 @@ describe('AccountService generated API wrapper', () => {
 
   it('publishes a plain authentication response without an MFA discriminator', () => {
     const { mfaRequired: _mfaRequired, ...response } = accountResponse();
+    expect(_mfaRequired).toBe(false);
     service.login(response.email, 'password', response.dob).subscribe();
     http.expectOne(`${apiUrl}/authenticate-mfa`).flush(response);
 
@@ -436,7 +437,13 @@ describe('AccountService generated API wrapper', () => {
       (s) => s.getScheduleFromPool('account-1', schedule),
       schedule,
     ],
-    ['create', 'POST', '', (s) => s.create({ firstName: 'New' }), { firstName: 'New' }],
+    [
+      'create',
+      'POST',
+      '',
+      (s) => s.create({ firstName: 'New', title: null, lastName: null, role: null, email: null, dob: null, password: null, confirmPassword: null }),
+      { firstName: 'New', title: null, lastName: null, role: null, email: null, dob: null, password: null, confirmPassword: null },
+    ],
     ['deleteAllAccounts', 'DELETE', '/delete-all-user-accounts', (s) => s.deleteAllUserAccounts()],
     ['getAutoEmail', 'GET', '/auto-email', (s) => s.getAutoEmail()],
     ['setAutoEmail', 'PUT', '/auto-email', (s) => s.setAutoEmail(false), false],

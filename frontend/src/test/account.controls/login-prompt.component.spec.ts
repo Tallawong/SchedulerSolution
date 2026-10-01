@@ -18,6 +18,6 @@ describe('LoginPromptComponent', () => {
     const fixture = TestBed.createComponent(LoginPromptComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('My Angular App');
+    expect(compiled.querySelector('h3')?.textContent).toContain('Welcome back');
   });
 });

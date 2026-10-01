@@ -1,8 +1,8 @@
 import { Component, ViewChild, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { toDateTime } from '../../../core/helpers/date-time';
 import { first } from 'rxjs/operators';
 import { TimeHandler } from 'src/app/core/helpers/time.handler';
@@ -13,14 +13,8 @@ import { AccountService, AlertService } from 'src/app/services';
 import { Constants } from 'src/app/core/helpers/constants';
 import { GenerateSchedulesComponent } from '../generate-schedules/generate-schedules.component';
 import { NgbdModalOptionsComponent } from '../ngbd-modal-options/ngbd-modal-options.component';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdModalConfirmComponent } from '../ngbd-modal-confirm/ngbd-modal-confirm.component';
-import { MaterialModule } from '../../../material.module';
-import { MatButtonModule } from '@angular/material/button';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 const COLUMNS_SCHEMA = [
   {
     key: 'scheduleDate',
@@ -40,35 +34,10 @@ const COLUMNS_SCHEMA = [
 ];
 
 @Component({
-  standalone: true,
+  standalone: false,
   selector: 'app-main-scheduler',
   templateUrl: './main-scheduler.component.html',
   styleUrls: ['./main-scheduler.component.less'],
-
-  imports: [
-
-        MatTableDataSource,
-        MatPaginator,
-        MatSort,
-        MaterialModule,
-        MatSortModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatButtonModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatInputModule,
-        MatFormFieldModule,MaterialModule,
-        MatSortModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatButtonModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatInputModule,
-        MatFormFieldModule,
-        GenerateSchedulesComponent
-], 
 })
 export class MainSchedulerComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -85,7 +54,7 @@ export class MainSchedulerComponent {
   isUsersLoaded: boolean = false;
 
   displayedColumns: string[] = COLUMNS_SCHEMA.map((col) => col.key);
-  columnsSchema: any = COLUMNS_SCHEMA;
+  columnsSchema = COLUMNS_SCHEMA;
   dataSource: MatTableDataSource<ScheduleDateTime> = new MatTableDataSource();
 
   futureScheduleDates = signal<ScheduleDateTime[]>([]);
@@ -113,7 +82,7 @@ export class MainSchedulerComponent {
       allDates: [true, ''],
     });
   }
-  onCheckboxChange(event: any) {
+  onCheckboxChange() {
     this.getAllDates(() => {});
   }
 
@@ -121,7 +90,7 @@ export class MainSchedulerComponent {
     return this.form.controls;
   }
 
-  getAllDates(callback: any) {
+  getAllDates(callback: () => void) {
     this.isLoaded = false;
     console.log('MainSchedulerComponent:getAllDates');
     this.accountService
@@ -143,22 +112,22 @@ export class MainSchedulerComponent {
           }
           // Optionally filter out past date strings
           for (let index = 0; index < this.list.length; index++) {
-            var nowMs = Date.now();
+            const nowMs = Date.now();
             const scheduleServerDate = toDateTime(
               this.list[index].date,
               Constants.dateTimeFormat,
             ).toJSDate();
-            var scheduleLocalDateStr = toDateTime(scheduleServerDate).toFormat(
+            const scheduleLocalDateStr = toDateTime(scheduleServerDate).toFormat(
               Constants.dateTimeFormat,
             );
-            var scheduleMs = scheduleServerDate.getTime();
+            const scheduleMs = scheduleServerDate.getTime();
 
             if (this.f['allDates'].value || scheduleMs > nowMs) {
               this.futureScheduleDateStrings.push(
                 scheduleLocalDateStr + '/' + this.getDayStrFromDate(scheduleLocalDateStr),
               );
 
-              var futureScheduleDate: ScheduleDateTime = {
+              const futureScheduleDate: ScheduleDateTime = {
                 id: this.list[index].id,
                 date: scheduleLocalDateStr,
                 highlighted: false,
@@ -176,7 +145,7 @@ export class MainSchedulerComponent {
           /* Set up selected row if still exists*/
           /* selected == undefined if user selected and deleted row in Schedules - top screen table */
           if (oldSelected != undefined) {
-            var selected = this.futureScheduleDates().find(function (item) {
+            const selected = this.futureScheduleDates().find(function (item) {
               return item.id == oldSelected.id;
             });
             if (selected != undefined) {
@@ -191,7 +160,7 @@ export class MainSchedulerComponent {
           }
         },
         error: (error) => {
-          console.log();
+          this.alertService.error(error);
           this.isLoaded = true;
         },
       });
@@ -218,12 +187,12 @@ export class MainSchedulerComponent {
   }
 
   getDayStrFromDate(dateStr: string): string {
-    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    var date = toDateTime(dateStr, Constants.dateTimeFormat).toJSDate();
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const date = toDateTime(dateStr, Constants.dateTimeFormat).toJSDate();
     return days[date.getDay()];
   }
   dateValidator(control: FormControl): { [s: string]: boolean } | null {
-    var test = control.value.match(/^\d/);
+    const test = control.value.match(/^\d/);
     if (!test) {
       return { invalidDate: true };
     }
@@ -231,7 +200,7 @@ export class MainSchedulerComponent {
   }
   onSchedulesUpdated(data: FunctionScheduleData) {
     this.getAllDates(() => {
-      var futureScheduleDate = this.futureScheduleDates().find((d) => {
+      const futureScheduleDate = this.futureScheduleDates().find((d) => {
         return d.date == data.date;
       });
       if (futureScheduleDate != undefined) {
@@ -242,11 +211,11 @@ export class MainSchedulerComponent {
       }
     });
   }
-  onChangePageProperties(event: any) {
+  onChangePageProperties(event: PageEvent) {
     MainSchedulerComponent.pageSize = event.pageSize;
   }
 
-  onRowSelected(schedule: ScheduleDateTime, tr: any, index: number, event: any) {
+  onRowSelected(schedule: ScheduleDateTime, event: MouseEvent) {
     // Reset alerts on delete
     this.alertService.clear();
 
@@ -266,7 +235,7 @@ export class MainSchedulerComponent {
       if (element.highlighted) element.highlighted = false;
 
       if (this.isSameScheduleDateTime(scheduleDateTime, element)) {
-        var pageNumber = Math.floor(index / this.paginator.pageSize);
+        const pageNumber = Math.floor(index / this.paginator.pageSize);
         this.paginator.pageIndex = pageNumber;
 
         this.paginator.page.next({
@@ -278,7 +247,6 @@ export class MainSchedulerComponent {
     }
     scheduleDateTime.highlighted = true;
     if (!scheduleDateTime.isDeleting) {
-      var date = toDateTime(scheduleDateTime.date, Constants.dateTimeFormat).toJSDate();
       /* Trigger `dateTimeChanged` on every `FunctionScheduleComponent` component (via `GenerateSchedulesComponent`) */
       this.generateScheduleComponent.setCurrentDateTime(scheduleDateTime.date);
     }
@@ -291,7 +259,7 @@ export class MainSchedulerComponent {
     return s1.date == s2.date;
   }
   dateTimeChanged(date: string) {
-    var futureScheduleDate = this.futureScheduleDates().find((d) => {
+    const futureScheduleDate = this.futureScheduleDates().find((d) => {
       return d.date == date;
     });
     this.alertService.clear();
@@ -318,7 +286,7 @@ export class MainSchedulerComponent {
       'All information associated with the schedules will be permanently deleted.';
 
     modalRef.result
-      .then((data) => {
+      .then(() => {
         date.isDeleting = true;
 
         // ... then display busy cursor
@@ -333,7 +301,6 @@ export class MainSchedulerComponent {
           .deleteSchedules4Date(date.date) //getAll()
           .pipe(first())
           .subscribe({
-            next: (value) => {},
             complete: () => {
               console.log('Deleting schedules for date: ' + date.date);
               this.getAllDates(() => {});

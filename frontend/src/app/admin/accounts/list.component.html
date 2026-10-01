@@ -1,4 +1,4 @@
-﻿<div class="container">
+<div class="container">
   <div class="row">
     <!-- <div class="mb-3 col-5">
     <fieldset>
@@ -172,7 +172,7 @@
               <li class="nav-item">
                 <button
                   routerLink="./"
-                  (click)="onDeleteAllUserAccounts($event)"
+                  (click)="onDeleteAllUserAccounts()"
                   type="button"
                   class="btn3d btn btn-sm btn-danger mb-2"
                   data-placement="top"
@@ -307,7 +307,7 @@
               <li class="nav-item mb-2">
                 <button
                   type="button"
-                  (click)="downloadSchedules($event)"
+                  (click)="downloadSchedules()"
                   class="btn3d btn btn-sm btn-primary mb-2"
                   data-placement="top"
                   title="View Schedules in .pdf format"
@@ -340,7 +340,7 @@
               <mat-label>Filter</mat-label>
               <input
                 matInput
-                (keyup)="applyFilter($event.target, input)"
+                (keyup)="applyFilter(input)"
                 placeholder="Search columns"
                 #input
               />
@@ -415,10 +415,9 @@
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
               <mat-row
-                *matRowDef="let row; columns: displayedColumns; let i = index"
+                *matRowDef="let row; columns: displayedColumns"
                 [ngClass]="{ highlighted: row.highlighted }"
-                #tr
-                (click)="onRowSelected(row, tr, i, $event)"
+                (click)="onRowSelected(row, $event)"
                 (mouseover)="row.hovered = true"
                 (mouseout)="row.hovered = false"
               ></mat-row>

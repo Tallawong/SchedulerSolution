@@ -18,7 +18,6 @@ import { AccountModalService } from '../account.controls/account-modal.service';
 import { LoginRequest } from '../dto/requests/login-request';
 import { MfaResponse } from '../dto/responses/mfa-response';
 import { AuthenticateResponse } from '../shared/openapi-api-client/model/authenticateResponse';
-import { MfaDialogComponent } from './mfa-dialog.component';
 
 import { Router } from '@angular/router';
 import { AccountService } from '../services';
@@ -104,9 +103,7 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
     this.subs.push(
       this.modalService.loginVisible$.subscribe((v) => {
         this.visible = v;
-        try {
-          this.cdr.detectChanges();
-        } catch {}
+        this.cdr.detectChanges();
       }),
     );
   }
@@ -116,9 +113,7 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
     this.modalService.hideLogin();
     this.loading = false;
     this.cancelled.emit();
-    try {
-      this.router.navigate(['/']);
-    } catch {}
+    this.router.navigate(['/']);
   }
   onSubmit(): void {
     this.errorMessage = '';
@@ -136,9 +131,7 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
       .pipe(
         finalize(() => {
           this.loading = false;
-          try {
-            this.cdr.detectChanges();
-          } catch {}
+          this.cdr.detectChanges();
         }),
       )
       .subscribe({
@@ -176,9 +169,7 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
 
   onForgotPassword(): void {
     this.forgotPassword.emit();
-    try {
-      this.router.navigate(['/account/forgot-password']);
-    } catch {}
+    this.router.navigate(['/account/forgot-password']);
   }
 
   // MFA dialog handlers
@@ -190,9 +181,7 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
       .pipe(
         finalize(() => {
           this.loading = false;
-          try {
-            this.cdr.detectChanges();
-          } catch {}
+          this.cdr.detectChanges();
         }),
       )
       .subscribe({
@@ -247,9 +236,7 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
     this.showMfa = false;
     this.mfaEmail = '';
     this.loading = false;
-    try {
-      this.cdr.detectChanges();
-    } catch {}
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy(): void {

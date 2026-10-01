@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { first } from 'rxjs/operators';
 
 import { AccountService } from '../services';
-import { Account } from '../entities';
 
 @Component({ standalone: false, templateUrl: 'schedule-list.component.html' })
 export class ScheduleListComponent implements OnInit {

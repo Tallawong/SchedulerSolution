@@ -1,13 +1,9 @@
 import {
-  AfterViewInit,
   Component,
   inject,
-  Input,
   input,
-  model,
   OnInit,
   output,
-  signal,
 } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';

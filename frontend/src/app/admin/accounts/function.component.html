@@ -4,7 +4,7 @@
     <div class="mb-3 col-5">
       <label>Choose Duties for {{account.firstName}}</label>
       <select formControlName="function" class="form-select"
-        [ngClass]="{ 'is-invalid': submitted && f['function'].errors }" (change)="onTaskChanged($event)"
+        [ngClass]="{ 'is-invalid': submitted && f['function'].errors }" (change)="onTaskChanged()"
         #functionSelected>
         @for(item of possibleTasks; track item) {
           <option>{{ item.userFunction }}
@@ -49,7 +49,7 @@
                     formControlName="function"
                     class="form-select"
                     [ngClass]="{ 'is-invalid': submitted && f['function'].errors }"
-                    (change)="onTaskChanged($event)"
+                    (change)="onTaskChanged()"
                     #functionSelected
                   >
                     @for (item of possibleTasks; track item) {
@@ -99,7 +99,7 @@
             <mat-label>Filter</mat-label>
             <input
               matInput
-              (keyup)="applyFilter($event.target, input)"
+              (keyup)="applyFilter(input)"
               placeholder="Search columns"
               #input
             />
@@ -147,10 +147,9 @@
             </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row
-              *matRowDef="let row; columns: displayedColumns; let i = index"
+              *matRowDef="let row; columns: displayedColumns"
               [ngClass]="{ highlighted: row.highlighted }"
-              #tr
-              (click)="onRowSelected(row, tr, i, $event)"
+              (click)="onRowSelected(row, $event)"
               (mouseover)="row.hovered = true"
               (mouseout)="row.hovered = false"
             ></mat-row>

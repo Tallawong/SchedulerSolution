@@ -1,6 +1,3 @@
-import { Role } from './role';
-import { Schedule } from './schedule';
-
 export class User {
   id!: string;
   firstName!: string;

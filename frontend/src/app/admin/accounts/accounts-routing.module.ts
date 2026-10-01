@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AddEditComponent } from './add.edit/add-edit.component';
 import { FunctionComponent } from './function.component';
 import { ListComponent } from './list.component';
 import { MainSchedulerComponent } from './main-scheduler/main-scheduler.component';

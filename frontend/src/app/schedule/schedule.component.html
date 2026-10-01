@@ -52,7 +52,7 @@
     <legend>Assigned Dates:</legend>
     <input
       type="checkbox"
-      (change)="onCheckboxChange($event)"
+      (change)="onCheckboxChange()"
       formControlName="allDates"
       id="allDates"
       name="allDates"
@@ -89,11 +89,11 @@
       </ng-container>
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-        <mat-cell *matCellDef="let i = index; let schedule; let row">
+        <mat-cell *matCellDef="let schedule; let row">
           <button
             class="btn3d btn btn-sm btn-danger btn-delete-account"
             type="button"
-            (click)="onDeleteSchedule($event, row, i, schedule)"
+            (click)="onDeleteSchedule(schedule)"
             [ngClass]="{ disabled: isScheduleFromPast(row) || row.deleting }"
           >
             @if (row.deleting) {
@@ -109,8 +109,6 @@
         [ngClass]="{ hovered: row.hovered }"
         (mouseover)="row.hovered = true"
         (mouseout)="row.hovered = false"
-        #tr
-        (click)="onRowSelected(row, tr)"
       >
       </mat-row>
     </mat-table>

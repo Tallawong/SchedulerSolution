@@ -5,11 +5,9 @@ import {
   ViewChild,
   AfterViewInit,
   inject,
-  TemplateRef,
-  ElementRef,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
+import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -67,7 +65,7 @@ export class TimeSlotTasksEditorComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<TimeSlotsTasks> = new MatTableDataSource<TimeSlotsTasks>([]);
   displayedColumns: string[] = COLUMNS_SCHEMA.map((col) => col.key);
   displayedLabels: string[] = COLUMNS_SCHEMA.map((col) => col.label);
-  columnsSchema: any = COLUMNS_SCHEMA;
+  columnsSchema = COLUMNS_SCHEMA;
 
   timeSlots = signal<TimeSlotsTasks[]>([]);
   agentTaskConfigs: AgentTaskConfig[] = [];
@@ -116,7 +114,7 @@ export class TimeSlotTasksEditorComponent implements OnInit, AfterViewInit {
         },
       });
   }
-  addFormControl(fieldName: string, validators: any[] = []) {
+  addFormControl(fieldName: string, validators: ValidatorFn[] = []) {
     this.form.addControl(fieldName, this.formBuilder.control(fieldName, validators));
   }
   private refreshTimeSlotsTasks(selectRow: TimeSlotsTasks | null) {
@@ -128,7 +126,7 @@ export class TimeSlotTasksEditorComponent implements OnInit, AfterViewInit {
       .subscribe({
         next: (value: TimeSlotsTasksDTO[]) => {
           value.forEach((element: TimeSlotsTasksDTO) => {
-            var slot: TimeSlotsTasks = {
+            const slot: TimeSlotsTasks = {
               date: element.date,
               tasks: element.tasks.split(' '),
               isDeleting: false,
@@ -180,9 +178,9 @@ export class TimeSlotTasksEditorComponent implements OnInit, AfterViewInit {
     modalRef.componentInstance.bodyInfoStr =
       'All information associated with the time slot profile will be permanently deleted.';
     modalRef.result
-      .then((data) => {
+      .then(() => {
         tasks.isDeleting = true;
-        var timeslotsTasks: TimeSlotsTasksDTO = {
+        const timeslotsTasks: TimeSlotsTasksDTO = {
           date: tasks.date,
           tasks: tasks.tasks.join(' '),
           isDeleting: false,
@@ -205,7 +203,9 @@ export class TimeSlotTasksEditorComponent implements OnInit, AfterViewInit {
             },
           });
       })
-      .catch((error) => {});
+      .catch(() => {
+        tasks.isDeleting = false;
+      });
   }
   // convenience getter for easy access to form fields
   get f() {
@@ -227,11 +227,11 @@ export class TimeSlotTasksEditorComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    var dateControl = this.f['scheduledDate'];
-    var date = toDateTime(dateControl.value).toFormat(this.dateTimeFormat);
-    var tasks: string = this.getTasksStr();
+    const dateControl = this.f['scheduledDate'];
+    const date = toDateTime(dateControl.value).toFormat(this.dateTimeFormat);
+    const tasks: string = this.getTasksStr();
 
-    let timeslotsTasksDTO: TimeSlotsTasksDTO = {
+    const timeslotsTasksDTO: TimeSlotsTasksDTO = {
       date: date,
       tasks: tasks,
       isDeleting: false,
@@ -246,8 +246,8 @@ export class TimeSlotTasksEditorComponent implements OnInit, AfterViewInit {
       .pipe(first())
       .subscribe({
         next: (value: TimeSlotsTasksDTO[]) => {
-          let slots = value.map((tst) => {
-            let retVal: TimeSlotsTasks = {
+          const slots = value.map((tst) => {
+            const retVal: TimeSlotsTasks = {
               date: tst.date,
               tasks: tst.tasks.split(' '),
               isDeleting: false,
@@ -260,7 +260,7 @@ export class TimeSlotTasksEditorComponent implements OnInit, AfterViewInit {
         },
         complete: () => {
           console.assert(task != null, 'AgentTaskConfig  is null');
-          let selected = this.timeSlots().filter(function (item) {
+          const selected = this.timeSlots().filter(function (item) {
             return item.date == task.date;
           });
           console.assert(selected.length == 1, 'Number of selected tasks:' + selected.length);
@@ -280,11 +280,11 @@ export class TimeSlotTasksEditorComponent implements OnInit, AfterViewInit {
   }
 
   private getTasksStr() {
-    var tasks: string = '';
-    for (let cfg of this.agentTaskConfigs) {
+    let tasks: string = '';
+    for (const cfg of this.agentTaskConfigs) {
       const control = this.form.get(cfg.agentTaskStr); // 'control' is a FormControl
       if (!control) continue;
-      for (var i = 0; i < control.value; i++) {
+      for (let i = 0; i < control.value; i++) {
         if (i > 0 || tasks.length > 0) tasks = tasks.concat(' ').concat(cfg.agentTaskStr);
         else tasks = tasks.concat(cfg.agentTaskStr);
       }
@@ -294,13 +294,13 @@ export class TimeSlotTasksEditorComponent implements OnInit, AfterViewInit {
   }
 
   splitArr(arr: AgentTaskConfig[], size: number): AgentTaskConfig[][] {
-    let newArr: AgentTaskConfig[][] = [];
+    const newArr: AgentTaskConfig[][] = [];
     for (let i = 0; i < arr.length; i += size) {
       newArr.push(arr.slice(i, i + size));
     }
     return newArr;
   }
-  onRowSelected(slot: TimeSlotsTasks, tr: any, index: number, event: any) {
+  onRowSelected(slot: TimeSlotsTasks, event: MouseEvent) {
     if (event.ctrlKey) {
       if (slot.highlighted) {
         slot.highlighted = false;
@@ -316,7 +316,7 @@ export class TimeSlotTasksEditorComponent implements OnInit, AfterViewInit {
       if (element.highlighted) element.highlighted = false;
 
       if (this.isSameTimeSlot(slot, element)) {
-        var pageNumber = Math.floor(index / this.paginator.pageSize);
+        const pageNumber = Math.floor(index / this.paginator.pageSize);
         this.paginator.pageIndex = pageNumber;
 
         this.paginator.page.next({
@@ -338,12 +338,12 @@ export class TimeSlotTasksEditorComponent implements OnInit, AfterViewInit {
   }
 
   setTasksCounters(slot: TimeSlotsTasks) {
-    var dateControl = this.f['scheduledDate'];
+    const dateControl = this.f['scheduledDate'];
     dateControl.setValue(toDateTime(slot.date, Constants.dateTimeFormat).toJSDate());
 
-    var map = this.getWordCount(slot.tasks);
+    const map = this.getWordCount(slot.tasks);
     this.agentTaskConfigs.forEach((task) => {
-      var control = this.f[task.agentTaskStr];
+      const control = this.f[task.agentTaskStr];
       if (map.get(task.agentTaskStr) == undefined) control.setValue(0);
       else control.setValue(map.get(task.agentTaskStr));
     });
@@ -352,17 +352,17 @@ export class TimeSlotTasksEditorComponent implements OnInit, AfterViewInit {
   getWordCount(array: string[]) {
     const map = new Map();
     for (let i = 0; i < array.length; i++) {
-      let item = array[i];
+      const item = array[i];
       if (map.get(item) == undefined) map.set(item, 1);
       else map.set(item, map.get(item) + 1);
     }
     return map;
   }
-  onChangeDateTime(event: any) {
-    let day = toDateTime(event.value).toFormat(this.dateTimeFormat);
+  onChangeDateTime(event: { value: Date | null }) {
+    const day = toDateTime(event.value).toFormat(this.dateTimeFormat);
     console.log(day);
   }
-  onChangePageProperties(event: any) {
+  onChangePageProperties(event: PageEvent) {
     TimeSlotTasksEditorComponent.pageSize = event.pageSize;
   }
   get pageSize() {
@@ -374,7 +374,7 @@ export class TimeSlotTasksEditorComponent implements OnInit, AfterViewInit {
     );
   }
   validateAddUpdateButton(): boolean {
-    let retVal = this.timeSlots().find(function (item) {
+    const retVal = this.timeSlots().find(function (item) {
       return item.highlighted == true;
     });
     return retVal != undefined;

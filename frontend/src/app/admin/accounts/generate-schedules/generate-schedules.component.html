@@ -6,8 +6,8 @@
         <div class="col-3">
           <app-schedule-date-time
             formControlName="scheduledDateTime"
-            (dateChange)="onChangeDateTime($event)"
-            (keydown.enter)="onKeydown($event)"
+            (dateChange)="onChangeDateTime()"
+            (keydown.enter)="onKeydown()"
           >
           </app-schedule-date-time>
         </div>
@@ -16,9 +16,8 @@
           <div class="col-2">
             <button
               [ngClass]="{ disabled: !enableCopyButton }"
-              #button
               type="button"
-              (click)="onCopy($event, button)"
+              (click)="onCopy()"
               class="btn btn-primary"
             >
               Copy To Buffer
@@ -27,16 +26,15 @@
           <div class="col-2">
             <button
               [ngClass]="{ disabled: !enablePasteButton }"
-              #button
               type="button"
-              (click)="onPaste($event, button)"
+              (click)="onPaste()"
               class="btn btn-primary"
             >
               Paste From Buffer
             </button>
           </div>
           <div class="col-2">
-            <button #button type="button" (click)="onClear($event, button)" class="btn btn-primary">
+            <button type="button" (click)="onClear()" class="btn btn-primary">
               Clear Buffer
             </button>
           </div>

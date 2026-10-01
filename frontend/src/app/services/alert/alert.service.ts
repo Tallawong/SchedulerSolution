@@ -18,11 +18,11 @@ export class AlertService {
   }
 
   // convenience methods
-  success(message: string, options?: any) {
+  success(message: string, options?: Partial<Alert>) {
     this.alert(new Alert({ ...options, type: AlertType.Success, message }));
   }
 
-  error(error: unknown, options?: any) {
+  error(error: unknown, options?: Partial<Alert>) {
     const message = this.errorMessage(error) || 'An unexpected error occurred. Please try again.';
     this.alert(new Alert({ ...options, type: AlertType.Error, message }));
   }
@@ -66,11 +66,11 @@ export class AlertService {
     return undefined;
   }
 
-  info(message: string, options?: any) {
+  info(message: string, options?: Partial<Alert>) {
     this.alert(new Alert({ ...options, type: AlertType.Info, message }));
   }
 
-  warn(message: string, options?: any) {
+  warn(message: string, options?: Partial<Alert>) {
     this.alert(new Alert({ ...options, type: AlertType.Warning, message }));
   }
 
