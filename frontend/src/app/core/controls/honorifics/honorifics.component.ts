@@ -1,5 +1,5 @@
-import { Component, input, model, output } from '@angular/core';
-import { FormsModule, NgModel } from '@angular/forms';
+import { Component, model } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { form, FormField, required } from '@angular/forms/signals';
 
 export interface HonorificsData {

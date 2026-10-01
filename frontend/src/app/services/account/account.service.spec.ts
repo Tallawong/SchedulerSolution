@@ -134,6 +134,7 @@ describe('AccountService generated API wrapper', () => {
 
   it('publishes a plain authentication response without an MFA discriminator', () => {
     const { mfaRequired: _mfaRequired, ...response } = accountResponse();
+    expect(_mfaRequired).toBe(false);
     service.login(response.email, 'password', response.dob).subscribe();
     http.expectOne(`${apiUrl}/authenticate-mfa`).flush(response);
 

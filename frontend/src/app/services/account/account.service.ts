@@ -11,6 +11,7 @@ import { ForgotPasswordRequest } from '../../dto/requests/forgot-password-reques
 import { ResetPasswordRequest } from '../../dto/requests/reset-password-request';
 import { MfaResponse } from '../../dto/responses/mfa-response';
 import { isAuthenticateResponse, isMfaResponse } from '../../core/helpers/auth-response';
+import { parseJwtPayload } from '../../core/helpers/jwt.utils';
 //import { JwtHelperService } from '@auth0/angular-jwt';
 
 //import { environment } from '../environments/environment';
@@ -88,7 +89,6 @@ export class AccountService {
     ).pipe(
       map((account) => {
         this.accountSubject.next(account);
-        const cookie = document.cookie;
         this.startRefreshTokenTimer();
         return account;
       }),
@@ -130,7 +130,7 @@ export class AccountService {
   getAllDates() {
     return this.asLegacyResponse<ScheduleDateTimes>(this.api.accountsAllDatesGet());
   }
-  getTeamsByFunctionForDate(dateStr: any) {
+  getTeamsByFunctionForDate(dateStr: string) {
     return this.asLegacyResponse<DateFunctionTeams>(this.api.accountsTeamsForDateDateGet(dateStr));
   }
 
@@ -157,7 +157,7 @@ export class AccountService {
       ),
     );
   }
-  getAvailablePoolElementsForAccount(id: any) {
+  getAvailablePoolElementsForAccount(id: string) {
     return this.asLegacyResponse<SchedulePoolElements>(
       this.api.accountsAvailablePoolElementsForAccountIdGet(id),
     );
@@ -167,12 +167,12 @@ export class AccountService {
       this.api.accountsAllAvailablePoolElementsGet(),
     );
   }
-  addSchedule(id: any, schedule: any) {
+  addSchedule(id: string, schedule: Schedule) {
     return this.asLegacyResponse<Account>(this.api.accountsAddScheduleIdPut(id, schedule));
   }
-  updateSchedule(id: any, schedule: Schedule) {
-    return this.api.accountsUpdateScheduleIdPost(id, schedule).pipe(
-      map((account: any) => {
+  updateSchedule(id: string, schedule: Schedule) {
+    return this.asLegacyResponse<Account>(this.api.accountsUpdateScheduleIdPost(id, schedule)).pipe(
+      map((account) => {
         // update the current account if it was updated
         if (account.id === this.accountValue?.id) {
           // publish updated account to subscribers
@@ -184,7 +184,7 @@ export class AccountService {
     );
   }
 
-  deleteSchedule(id: any, schedule: any) {
+  deleteSchedule(id: string, schedule: Schedule) {
     return this.asLegacyResponse<Account>(this.api.accountsDeleteScheduleIdPost(id, schedule));
   }
 
@@ -196,15 +196,15 @@ export class AccountService {
     return this.asLegacyResponse<Account[]>(this.api.accountsGetScheduleDateStrGet(dateStr));
   }
 
-  addFunction(id: any, userTask: Task) {
+  addFunction(id: string, userTask: Task) {
     return this.asLegacyResponse<Account>(this.api.accountsAddFunctionIdPut(id, userTask));
   }
 
-  testAddFunction(id: any, userTask: Task) {
+  testAddFunction(id: string, userTask: Task) {
     return this.asLegacyResponse<Account[]>(this.api.accountsTestAddFunctionIdPut(id, userTask));
   }
 
-  deleteFunction(id: any, userTask: Task) {
+  deleteFunction(id: string, userTask: Task) {
     return this.asLegacyResponse<Account>(this.api.accountsDeleteFunctionIdPost(id, userTask));
   }
 
@@ -214,21 +214,21 @@ export class AccountService {
     );
   }
 
-  moveSchedule2Pool(id: any, schedule: any) {
+  moveSchedule2Pool(id: string, schedule: Schedule) {
     return this.asLegacyResponse<Account>(this.api.accountsMoveScheduleToPoolIdPost(id, schedule));
   }
 
-  getScheduleFromPool(id: any, schedule: any) {
+  getScheduleFromPool(id: string, schedule: Schedule) {
     return this.asLegacyResponse<Account>(this.api.accountsGetScheduleFromPoolIdPost(id, schedule));
   }
 
-  create(params: any) {
+  create(params: Account) {
     return this.api.accountsPost(params);
   }
 
-  update(id: any, params: any) {
-    return this.api.accountsIdPut(id, params).pipe(
-      map((account: any) => {
+  update(id: string, params: Account) {
+    return this.asLegacyResponse<Account>(this.api.accountsIdPut(id, params)).pipe(
+      map((account) => {
         // update the current account if it was updated
         if (account.id === this.accountValue?.id) {
           // publish updated account to subscribers
@@ -261,10 +261,10 @@ export class AccountService {
   deleteAllUserAccounts() {
     return this.api.accountsDeleteAllUserAccountsDelete();
   }
-  getAutoEmail(): any {
+  getAutoEmail(): Observable<boolean> {
     return this.api.accountsAutoEmailGet();
   }
-  setAutoEmail(autoEmail: Boolean) {
+  setAutoEmail(autoEmail: boolean) {
     return this.api.accountsAutoEmailPut(autoEmail.valueOf());
   }
 
@@ -306,32 +306,11 @@ export class AccountService {
   private refreshTokenTimeout: ReturnType<typeof setTimeout> | undefined;
 
   private startRefreshTokenTimer() {
-    // HEADER:ALGORITHM & TOKEN TYPE
-
-    // parse json object from base64 encoded jwt token
-    // var buf = Buffer.from(this.accountValue.jwtToken.split('.')[0], 'base64');
-    // var header = JSON.parse(buf.toString('base64'));
-    var header = JSON.parse(atob(this.accountValue!.jwtToken!.split('.')[0]));
-
-    // PAYLOAD:DATA
-    // parse json object from base64 encoded jwt token
-    // var buf = Buffer.from(this.accountValue.jwtToken.split('.')[1], 'base64');
-    // const payload = JSON.parse(buf.toString('base64'));
-    const payload = JSON.parse(atob(this.accountValue!.jwtToken!.split('.')[1]));
-
-    // VERIFY SIGNATURE
-    // parse json object from base64 encoded jwt token
-    const signature = this.accountValue!.jwtToken!.split('.')[2];
-
-    // VERIFY SIGNATURE
-    // parse json object from base64 encoded jwt token
-    //const jwtSignature = JSON.parse(atob(this.accountValue.jwtToken.split('.')[2]));
-
-    // parse json object from base64 encoded jwt token
-    const jwtToken = JSON.parse(atob(this.accountValue!.jwtToken!.split('.')[1]));
+    const payload = parseJwtPayload(this.accountValue?.jwtToken ?? '');
+    if (!payload?.exp) return;
 
     // set a timeout to refresh the token a minute before it expires
-    const expires = new Date(jwtToken.exp * 1000);
+    const expires = new Date(payload.exp * 1000);
     const timeout = expires.getTime() - Date.now() - 60 * 1000;
     this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
   }

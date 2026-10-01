@@ -20,7 +20,9 @@ export class TokenService {
     this.testingTokenInterval = window.setInterval(() => {
       try {
         callback();
-      } catch {}
+      } catch (error) {
+        console.warn('Token check failed', error);
+      }
     }, 5 * 1000) as unknown as number;
   }
 

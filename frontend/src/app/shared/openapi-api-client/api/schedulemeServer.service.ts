@@ -87,7 +87,7 @@ export class SchedulemeServerService extends BaseService {
       }
     }
 
-    let localVarPath = `/`;
+    const localVarPath = `/`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,

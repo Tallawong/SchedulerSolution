@@ -3,7 +3,6 @@ import {
   Router,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
-  ActivatedRoute,
 } from '@angular/router';
 
 import { AccountService } from '../../services/account/account.service';

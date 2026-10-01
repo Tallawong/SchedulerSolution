@@ -75,7 +75,7 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
   dateTimeFormat = Constants.dateTimeFormat;
 
   form: FormGroup;
-  @Output() onScheduledAdded: EventEmitter<any>;
+  @Output() onScheduledAdded: EventEmitter<Schedule[]>;
   id: string = '';
 
   dataSource: MatTableDataSource<Schedule> = new MatTableDataSource<Schedule>([]);
@@ -92,7 +92,7 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
   isUpdating: boolean = false;
 
   displayedColumns: string[] = COLUMNS_SCHEMA.map((col) => col.key);
-  columnsSchema: any = COLUMNS_SCHEMA;
+  columnsSchema = COLUMNS_SCHEMA;
 
   userFunctions: Task[] = [];
 
@@ -137,7 +137,7 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
         return console.error(err.toString());
       });
 
-    this.connection.on('SendUpdate', (id: number) => {
+    this.connection.on('SendUpdate', () => {
       this.updateSchedulesFromServer();
     });
 
@@ -212,11 +212,11 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
       });
   }
   initSchedules(account: Account) {
-    var schedules = [];
+    const schedules = [];
 
     for (let index0 = 0; index0 < account.schedules.slice().length; index0++) {
       const dbSchedule = account.schedules[index0];
-      var existingGuiSchedules = this.schedules.filter((s) => {
+      const existingGuiSchedules = this.schedules.filter((s) => {
         return this.isSameSchedule(s, dbSchedule);
       });
       console.assert(
@@ -224,22 +224,20 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
         "Error - we can't have more than one schedule date per agent",
       );
       if (existingGuiSchedules.length == 1) {
-        ((existingGuiSchedules[0].accountId = account.id),
-          (existingGuiSchedules[0].userFunction = dbSchedule.userFunction));
+        existingGuiSchedules[0].accountId = account.id;
+        existingGuiSchedules[0].userFunction = dbSchedule.userFunction;
         existingGuiSchedules[0].scheduleGroup = dbSchedule.scheduleGroup;
-        ((existingGuiSchedules[0].newDate = dbSchedule.newDate),
-          (existingGuiSchedules[0].dob = dbSchedule.dob),
-          (existingGuiSchedules[0].required = dbSchedule.required),
-          (existingGuiSchedules[0].userAvailability = dbSchedule.userAvailability),
-          (existingGuiSchedules[0].scheduleGroup = dbSchedule.scheduleGroup),
-          (existingGuiSchedules[0].userFunction = dbSchedule.userFunction),
-          (existingGuiSchedules[0].newUserFunction = dbSchedule.userFunction),
-          schedules.push(existingGuiSchedules[0]));
+        existingGuiSchedules[0].newDate = dbSchedule.newDate;
+        existingGuiSchedules[0].dob = dbSchedule.dob;
+        existingGuiSchedules[0].required = dbSchedule.required;
+        existingGuiSchedules[0].userAvailability = dbSchedule.userAvailability;
+        existingGuiSchedules[0].newUserFunction = dbSchedule.userFunction;
+        schedules.push(existingGuiSchedules[0]);
         if (existingGuiSchedules[0].highlighted) {
           console.log('We have found highlighted item: ' + existingGuiSchedules[0]);
         }
       } else {
-        var guiSchedule: Schedule = {
+        const guiSchedule: Schedule = {
           accountId: account.id,
           scheduleId: dbSchedule.scheduleId,
           date: dbSchedule.date,
@@ -284,9 +282,8 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
     this.connection.stop().catch((err) => console.error(err.toString()));
   }
   /* I am not sure if we need 'input' parameter - keep it for now*/
-  applyFilter(t: any, input: any) {
-    const target = t as HTMLTextAreaElement;
-    var filterValue = target.value;
+  applyFilter(input: HTMLInputElement) {
+    let filterValue = input.value;
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSource.filter = filterValue;
@@ -312,10 +309,6 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
 
     // stop here if form is invalid
     if (this.form.invalid) {
-      var scheduledDateCtrl = this.f['scheduledDate'].valid;
-      var groupTaskCtrl = this.f['groupTask'].valid;
-      var functionCtrl = this.f['function'].valid;
-
       this.form.markAsTouched(); //markAllAsTouched();
       this.f['groupTask'].markAsTouched();
       return;
@@ -338,7 +331,7 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
         complete: () => {
           this.isAdding = false;
           // We have just succesfuly added a new schedule
-          var schedules = this.schedules.filter((s) => this.isSameSchedule(s, newSchedule));
+          const schedules = this.schedules.filter((s) => this.isSameSchedule(s, newSchedule));
           console.assert(schedules.length == 1, 'Schedule  just created not found');
           this.selectRow(schedules[0]);
           //this.alertService.info("Data Saved");
@@ -351,24 +344,24 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
   }
 
   createSchedule(): Schedule | null {
-    var formDate = new Date(this.form.controls['scheduledDate'].value);
+    const formDate = new Date(this.form.controls['scheduledDate'].value);
     formDate.setSeconds(0); // Re-set seconds to zero
 
-    var formDateTimeStr = toDateTime(formDate).toFormat(Constants.dateTimeFormat);
-    var formFunctionStr = this.form.controls['function'].value;
-    var formGroup = this.form.controls['groupTask'].value;
+    const formDateTimeStr = toDateTime(formDate).toFormat(Constants.dateTimeFormat);
+    const formFunctionStr = this.form.controls['function'].value;
+    const formGroup = this.form.controls['groupTask'].value;
 
     for (let index = 0; index < this.schedules.length; index++) {
-      var scheduleTimeStr = this.schedules[index].date;
-      var scheduleFunction = this.schedules[index].userFunction;
-      var scheduleGroup = this.schedules[index].scheduleGroup;
+      const scheduleTimeStr = this.schedules[index].date;
+      const scheduleFunction = this.schedules[index].userFunction;
+      const scheduleGroup = this.schedules[index].scheduleGroup;
 
       if (
         scheduleTimeStr == formDateTimeStr &&
         scheduleFunction == formFunctionStr &&
         scheduleGroup == formGroup
       ) {
-        var GroupStr = scheduleGroup.length > 0 ? '/' + formGroup : '';
+        const GroupStr = scheduleGroup.length > 0 ? '/' + formGroup : '';
         this.alertService.warn(
           'Schedule ' +
             scheduleFunction +
@@ -384,7 +377,7 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
       }
     }
 
-    var schedule: Schedule = {
+    const schedule: Schedule = {
       accountId: this.account.id,
       date: formDateTimeStr,
       newDate: formDateTimeStr,
@@ -411,13 +404,13 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
     modalRef.componentInstance.bodyInfoStr =
       'All information associated with the Schedule profile will be permanently deleted.';
     modalRef.result
-      .then((data) => {
+      .then(() => {
         schedule2Delete.deleting = true;
         this.accountService
           .deleteSchedule(this.account.id, schedule2Delete)
           .pipe(first())
           .subscribe({
-            next: (account) => {
+            next: () => {
               this.updateSchedulesFromServer();
             },
             complete: () => {
@@ -430,7 +423,7 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
             },
           });
       })
-      .catch((error) => {
+      .catch(() => {
         schedule2Delete.deleting = false;
       });
   }
@@ -455,18 +448,13 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
       });
   }
 
-  onDateChanged(event: any) {
-    let day = toDateTime(event.value).toFormat(this.dateTimeFormat);
-    var dateTime = event.value;
-    var t = typeof (dateTime === 'Date');
-    //this.add.nativeElement.click();
-  }
-  onUserFunctionChanged(event: any) {
+  onUserFunctionChanged() {
     this.setupGroupTaskCtrl();
   }
 
   private setupGroupTaskCtrl() {
-    this.isGroupTaskSelected ? this.f['groupTask'].enable() : this.f['groupTask'].disable();
+    if (this.isGroupTaskSelected) this.f['groupTask'].enable();
+    else this.f['groupTask'].disable();
     this.uniqueGroups = [
       ...new Set(
         this.account.userFunctions
@@ -484,11 +472,11 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onGroupButtonEntered(event: any) {
-    console.log('You entered: ', event.target.value);
+  onGroupButtonEntered(event: Event) {
+    console.log('You entered: ', (event.target as HTMLInputElement).value);
   }
 
-  onRowSelected(schedule: Schedule, tr: any, index: number, event: any) {
+  onRowSelected(schedule: Schedule, event: MouseEvent) {
     if (event.ctrlKey) {
       if (schedule.highlighted) {
         schedule.highlighted = false;
@@ -504,7 +492,7 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
       if (element.highlighted) element.highlighted = false;
 
       if (this.isSameSchedule(schedule, element)) {
-        var pageNumber = Math.floor(index / this.paginator.pageSize);
+        const pageNumber = Math.floor(index / this.paginator.pageSize);
         this.paginator.pageIndex = pageNumber;
 
         this.paginator.page.next({
@@ -516,7 +504,7 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
     }
     schedule.highlighted = true;
     if (!schedule.deleting) {
-      var date = toDateTime(schedule.date, Constants.dateTimeFormat).toJSDate();
+      const date = toDateTime(schedule.date, Constants.dateTimeFormat).toJSDate();
       this.f['scheduledDate'].setValue(date);
       this.f['function'].setValue(schedule.userFunction);
       this.setupGroupTaskCtrl();

@@ -172,7 +172,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/accounts-by-date`;
+    const localVarPath = `/Accounts/accounts-by-date`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<Array<AccountResponse>>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -281,7 +281,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/add-function/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/add-function/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<AccountResponse>('put', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -390,7 +390,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/add-schedule/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/add-schedule/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<AccountResponse>('put', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -470,7 +470,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/all-available-pool-elements`;
+    const localVarPath = `/Accounts/all-available-pool-elements`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<SchedulePoolElementsResponse>(
       'get',
@@ -553,7 +553,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/all-dates`;
+    const localVarPath = `/Accounts/all-dates`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<ScheduleDateTimeResponse>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -634,7 +634,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/authenticate-mfa`;
+    const localVarPath = `/Accounts/authenticate-mfa`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -733,7 +733,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/authenticate`;
+    const localVarPath = `/Accounts/authenticate`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<AuthenticateResponse>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -813,7 +813,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/auto-email`;
+    const localVarPath = `/Accounts/auto-email`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<boolean>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -911,7 +911,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/auto-email`;
+    const localVarPath = `/Accounts/auto-email`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<boolean>('put', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -1002,7 +1002,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/available_pool-elements-for-account/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/available_pool-elements-for-account/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<SchedulePoolElementsResponse>(
       'get',
@@ -1114,7 +1114,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/create-agent-task-config/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/create-agent-task-config/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<Array<AgentTaskConfig>>('put', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -1188,7 +1188,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/delete-agent-task-config/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/delete-agent-task-config/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -1250,7 +1250,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/delete-all-agent-task-configs`;
+    const localVarPath = `/Accounts/delete-all-agent-task-configs`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -1329,7 +1329,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/delete-all-schedules`;
+    const localVarPath = `/Accounts/delete-all-schedules`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<Array<ScheduleDateTimeResponse>>(
       'delete',
@@ -1412,7 +1412,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/delete-all-user-accounts`;
+    const localVarPath = `/Accounts/delete-all-user-accounts`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<Array<AccountResponse>>('delete', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -1520,7 +1520,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/delete-function/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/delete-function/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<AccountResponse>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -1629,7 +1629,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/delete-schedule/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/delete-schedule/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<AccountResponse>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -1703,7 +1703,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/delete-schedules_4_date/${this.configuration.encodeParam({ name: 'dateStr', value: dateStr, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/delete-schedules_4_date/${this.configuration.encodeParam({ name: 'dateStr', value: dateStr, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -1765,7 +1765,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/download-schedules-file`;
+    const localVarPath = `/Accounts/download-schedules-file`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -1846,7 +1846,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/forgot-password`;
+    const localVarPath = `/Accounts/forgot-password`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -1926,7 +1926,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/generate-schedules`;
+    const localVarPath = `/Accounts/generate-schedules`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<boolean>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -2005,7 +2005,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts`;
+    const localVarPath = `/Accounts`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<Array<AccountResponse>>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -2084,7 +2084,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/get-all-agent-task-configs`;
+    const localVarPath = `/Accounts/get-all-agent-task-configs`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<Array<AgentTaskConfig>>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -2174,7 +2174,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/get-schedule/${this.configuration.encodeParam({ name: 'dateStr', value: dateStr, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/get-schedule/${this.configuration.encodeParam({ name: 'dateStr', value: dateStr, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<Array<AccountResponse>>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -2282,7 +2282,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/get-schedule-from-pool/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/get-schedule-from-pool/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<AccountResponse>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -2354,7 +2354,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -2427,7 +2427,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}/disable-mfa`;
+    const localVarPath = `/Accounts/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}/disable-mfa`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -2518,7 +2518,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}/enable-mfa`;
+    const localVarPath = `/Accounts/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}/enable-mfa`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -2607,7 +2607,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<AccountResponse>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -2680,7 +2680,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}/mfa-status`;
+    const localVarPath = `/Accounts/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}/mfa-status`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -2786,7 +2786,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<AccountResponse>('put', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -2895,7 +2895,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/move-schedule-to-pool/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/move-schedule-to-pool/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<AccountResponse>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -2994,7 +2994,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts`;
+    const localVarPath = `/Accounts`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<AccountResponse>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -3074,7 +3074,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/refresh-token`;
+    const localVarPath = `/Accounts/refresh-token`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<AuthenticateResponse>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -3155,7 +3155,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/register`;
+    const localVarPath = `/Accounts/register`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -3266,7 +3266,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/remove-pool-element/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'AccountsRemovePoolElementIdEmailUserFunctionPostIdParameter', dataFormat: 'int32' })}/${this.configuration.encodeParam({ name: 'email', value: email, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}/${this.configuration.encodeParam({ name: 'userFunction', value: userFunction, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/remove-pool-element/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'AccountsRemovePoolElementIdEmailUserFunctionPostIdParameter', dataFormat: 'int32' })}/${this.configuration.encodeParam({ name: 'email', value: email, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}/${this.configuration.encodeParam({ name: 'userFunction', value: userFunction, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<SchedulePoolElementsResponse>(
       'post',
@@ -3351,7 +3351,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/reset-password`;
+    const localVarPath = `/Accounts/reset-password`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -3433,7 +3433,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/revoke-token`;
+    const localVarPath = `/Accounts/revoke-token`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -3524,7 +3524,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/teams-for-date/${this.configuration.encodeParam({ name: 'date', value: date, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/teams-for-date/${this.configuration.encodeParam({ name: 'date', value: date, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<DateFunctionTeamResponse>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -3632,7 +3632,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/test-add-function/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/test-add-function/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<Array<Account>>('put', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -3712,7 +3712,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/timeslots-tasks`;
+    const localVarPath = `/Accounts/timeslots-tasks`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<Array<TimeSlotTasks>>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -3810,7 +3810,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/timeslots-tasks`;
+    const localVarPath = `/Accounts/timeslots-tasks`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<boolean>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -3909,7 +3909,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/timeslots-tasks`;
+    const localVarPath = `/Accounts/timeslots-tasks`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<Array<TimeSlotTasks>>('put', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -4018,7 +4018,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/update-schedule/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const localVarPath = `/Accounts/update-schedule/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<AccountResponse>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -4081,7 +4081,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/upload-accounts`;
+    const localVarPath = `/Accounts/upload-accounts`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -4143,7 +4143,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/upload-timeslots`;
+    const localVarPath = `/Accounts/upload-timeslots`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -4224,7 +4224,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/validate-reset-token`;
+    const localVarPath = `/Accounts/validate-reset-token`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -4306,7 +4306,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/verify-`;
+    const localVarPath = `/Accounts/verify-`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -4388,7 +4388,7 @@ export class AccountsService extends BaseService {
       }
     }
 
-    let localVarPath = `/Accounts/verify-mfa`;
+    const localVarPath = `/Accounts/verify-mfa`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,

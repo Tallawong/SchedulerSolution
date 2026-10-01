@@ -3,7 +3,7 @@ import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 // custom validator to check that two fields match
 export function MustMatch(controlName: string, matchingControlName: string) {
   return (formGroup: AbstractControl): ValidationErrors | null => {
-    let fg: FormGroup = formGroup as FormGroup;
+    const fg: FormGroup = formGroup as FormGroup;
     const control = fg.controls[controlName];
     const matchingControl = fg.controls[matchingControlName];
 

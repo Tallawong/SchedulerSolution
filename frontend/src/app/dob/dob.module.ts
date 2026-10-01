@@ -1,13 +1,6 @@
-import { Inject, Injectable, LOCALE_ID, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { environment } from 'src/environments/environment';
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
-  MatNativeDateModule,
-  NativeDateAdapter,
-} from '@angular/material/core';
+import { MatNativeDateModule } from '@angular/material/core';
 import { DOBComponent } from '../dob/dob.component';
 import { MatTableModule } from '@angular/material/table';
 import { MaterialModule } from 'src/app/material/material.module';

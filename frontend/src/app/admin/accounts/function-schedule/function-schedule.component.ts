@@ -11,7 +11,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -80,7 +80,7 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
   dateTimeFormat = Constants.dateTimeFormat;
   form!: FormGroup;
   displayedColumns: string[] = COLUMNS_SCHEMA.map((col) => col.key);
-  columnsSchema: any = COLUMNS_SCHEMA;
+  columnsSchema = COLUMNS_SCHEMA;
 
   /* Busy cursor flags */
   isAdding: boolean = false;
@@ -194,16 +194,16 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
   private createString2UserMap(accounts: Account[]) {
     this.string2UserMap.clear();
 
-    var selected: string = '';
+    let selected: string = '';
     accounts.map((a) =>
       a.schedules
         .filter((s) => s.userFunction == this.functionStr && s.date == this.dateTimeStr)
         .map((s) => {
-          var str = a.firstName + '/' + a.lastName + '/' + a.email + '/' + a.dob;
+          let str = a.firstName + '/' + a.lastName + '/' + a.email + '/' + a.dob;
           if (s.scheduleGroup.length != 0) {
             str = str + '/' + s.scheduleGroup;
           }
-          var user: User = {
+          const user: User = {
             id: a.id,
             firstName: a.firstName,
             lastName: a.lastName,
@@ -228,7 +228,7 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
     this.f['selectedUser'].setValue(selected);
     if (this.dateCtrl) {
       // /* Trigger atrificially  `onChangeUser` */
-      var event = new CustomEvent('change', { detail: selected }); //new Event("HTMLEvents", {"bubbles":true, "cancelable":false});
+      const event = new CustomEvent('change', { detail: selected }); //new Event("HTMLEvents", {"bubbles":true, "cancelable":false});
       (this.dateCtrl.nativeElement as HTMLInputElement).dispatchEvent(event);
     }
 
@@ -244,7 +244,7 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
       a.userFunctions
         .filter((f) => f.userFunction == this.functionStr)
         .map((f) => {
-          var user: User = {
+          const user: User = {
             id: a.id,
             firstName: a.firstName,
             lastName: a.lastName,
@@ -279,7 +279,7 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   onChangeUser(event: Event) {
-    var valueSelected = (event.target as HTMLInputElement).value;
+    const valueSelected = (event.target as HTMLInputElement).value;
     this.selectedUser4Function = this.possibleUsersMap.get(valueSelected);
     if (this.selectedUser4Function != undefined) {
       // Fix up the date
@@ -287,14 +287,13 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
   /* I am not sure if we need 'input' parameter - keep it for now*/
-  onApplyFilter(t: any, input: any) {
-    const target = t as HTMLTextAreaElement;
-    var filterValue = target.value;
+  onApplyFilter(input: HTMLInputElement) {
+    let filterValue = input.value;
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSource.filter = filterValue;
   }
-  onAddSchedule(event: MouseEvent, button: any) {
+  onAddSchedule() {
     this.alertService.clear();
     const selectedUser = this.selectedUser4Function;
     if (!selectedUser) {
@@ -302,7 +301,7 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
       return;
     }
 
-    var existing: User[] = this.users().filter((u) => {
+    const existing: User[] = this.users().filter((u) => {
       return (
         u.date == selectedUser.date &&
         u.function == selectedUser.function &&
@@ -332,7 +331,7 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
     this.addSchedule(selectedUser);
   }
   public addSchedule(user: User) {
-    var schedule2Add: Schedule = {
+    const schedule2Add: Schedule = {
       accountId: user.id,
       date: this.dateTimeStr,
       newDate: this.dateTimeStr,
@@ -350,7 +349,7 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
       .addSchedule(user.id, schedule2Add)
       .pipe(first())
       .subscribe({
-        next: (account) => {
+        next: () => {
           this.refreshAccounts(() => {
             /* Notify parent that we got data from server - possibly from adding new schedule from this pannel */
             this.notifyParentOnChange();
@@ -366,7 +365,7 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
       });
   }
   private notifyParentOnChange() {
-    var funcSchedData: FunctionScheduleData = {
+    const funcSchedData: FunctionScheduleData = {
       userFunction: this.functionStr,
       date: this.dateTimeStr,
       accounts: this.accounts4DateAndFunction,
@@ -397,7 +396,7 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
       'All information associated with the schedules will be permanently deleted.';
 
     modalRef.result
-      .then((data) => {
+      .then(() => {
         user.isDeleting = true;
 
         // ... then display busy cursor
@@ -409,7 +408,7 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
           keyboard: false,
         });
 
-        var schedule2Delete: Schedule = {
+        const schedule2Delete: Schedule = {
           accountId: user.id,
           date: this.dateTimeStr,
           newDate: this.dateTimeStr,
@@ -426,7 +425,7 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
           .deleteSchedule(user.id, schedule2Delete)
           .pipe(first())
           .subscribe({
-            next: (z) => {
+            next: () => {
               console.log(
                 'FunctionScheduleComponent functionStr:' +
                   this.functionStr +
@@ -452,7 +451,7 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
         this.alertService.error(error);
       });
   }
-  onRowSelected(user: User, tr: any, index: number, event: any) {
+  onRowSelected(user: User, event: MouseEvent) {
     if (event.ctrlKey) {
       if (user.highlighted) {
         user.highlighted = false;
@@ -467,7 +466,7 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
       if (element.highlighted) element.highlighted = false;
 
       if (this.isSameUser(user, element)) {
-        var pageNumber = Math.floor(index / this.paginator.pageSize);
+        const pageNumber = Math.floor(index / this.paginator.pageSize);
         this.paginator.pageIndex = pageNumber;
 
         this.paginator.page.next({
@@ -489,7 +488,7 @@ export class FunctionScheduleComponent implements OnInit, AfterViewInit, OnDestr
     );
   }
 
-  onChangePageProperties(event: any) {
+  onChangePageProperties(event: PageEvent) {
     FunctionScheduleComponent.pageSize = event.pageSize;
   }
   get pageSize() {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 //import { UserService } from '../services/user.service';
@@ -48,26 +49,18 @@ export class VerifyEmailComponent implements OnInit {
     }
 
     this.accountService.verifyEmail(request).subscribe({
-      next: (res: any) => {
+      next: (res: { message?: string } | null) => {
         this.loading = false;
         this.success = true;
         this.message =
           res?.message || 'Your email has been verified successfully. You can now log in.';
-        try {
-          this.modalService.hideLogin();
-        } catch {}
-        try {
-          setTimeout(() => {
-            try {
-              this.modalService.showLogin();
-            } catch {}
-            try {
-              this.router.navigate(['/account/login']);
-            } catch {}
-          }, this.redirectDelayMs);
-        } catch {}
+        this.modalService.hideLogin();
+        setTimeout(() => {
+          this.modalService.showLogin();
+          this.router.navigate(['/account/login']);
+        }, this.redirectDelayMs);
       },
-      error: (err: any) => {
+      error: (err: HttpErrorResponse) => {
         console.error('Verification failed:', err);
         this.loading = false;
         this.success = false;
@@ -78,9 +71,7 @@ export class VerifyEmailComponent implements OnInit {
   }
 
   gotoLogin(): void {
-    try {
-      this.modalService.showLogin();
-    } catch {}
+    this.modalService.showLogin();
     this.router.navigate(['/account/login']);
   }
 

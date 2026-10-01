@@ -1,4 +1,5 @@
-import { Component, EventEmitter, inject, input, model, Output, signal } from '@angular/core';
+import { Component, EventEmitter, inject, input, Output, signal } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,7 +16,6 @@ import {
 import { PasswordComponent } from '../core/controls/password/password.component';
 import { MobileNumberComponent } from '../core/controls/mobile-number/mobile-number.component';
 import { AcceptTermsComponent } from '../core/controls/accept-terms/accept-terms.component';
-import { A11yModule } from '@angular/cdk/a11y';
 import { FirstLast } from '../core/controls/first-last/first-last.model';
 import { EmailAndDob } from '../core/controls/email-dob/email-dob.model';
 import { PasswordConfirm } from '../core/controls/password/password.model';
@@ -129,9 +129,7 @@ export class RegisterDialogComponent {
     this.reset();
     this.cancelled.emit();
     this.modalService.showLogin();
-    try {
-      this.router.navigate(['/account/login']);
-    } catch {}
+    this.router.navigate(['/account/login']);
   }
 
   onRegister(): void {
@@ -196,7 +194,7 @@ export class RegisterDialogComponent {
     };
 
     this.userService.register(registerRequest).subscribe({
-      next: (res: any) => {
+      next: () => {
         // Show success message about email verification
         this.successMessage.set(
           'Registration successful, please check your email: ' +
@@ -205,7 +203,7 @@ export class RegisterDialogComponent {
         );
         this.loading = false;
       },
-      error: (err: any) => {
+      error: (err: HttpErrorResponse) => {
         console.error('Registration error:', err);
 
         // Handle different error response formats
@@ -227,7 +225,9 @@ export class RegisterDialogComponent {
           }
           // If error has validation errors array
           else if (err.error.errors && Array.isArray(err.error.errors)) {
-            errorMsg = err.error.errors.map((e: any) => e.msg || e.message).join(', ');
+            errorMsg = err.error.errors
+              .map((e: { msg?: string; message?: string }) => e.msg || e.message)
+              .join(', ');
           }
           // If error object has other properties
           else if (err.error.error) {

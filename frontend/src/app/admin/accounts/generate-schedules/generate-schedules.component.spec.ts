@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GenerateSchedulesComponent } from './generate-schedules.component';
+import { AccountsModule } from '../accounts.module';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('GenerateSchedulesComponent', () => {
   let component: GenerateSchedulesComponent;
@@ -8,7 +12,8 @@ describe('GenerateSchedulesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GenerateSchedulesComponent],
+      imports: [AccountsModule],
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(GenerateSchedulesComponent);

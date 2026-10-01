@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { ForgotPasswordRequest } from '../dto/requests/forgot-password-request';
@@ -54,17 +55,15 @@ export class ForgotPasswordPageComponent {
     };
 
     this.userService.forgotPassword(request).subscribe({
-      next: (res: any) => {
+      next: (res: { message?: string } | null) => {
         this.loading = false;
         this.message =
           res?.message || 'If the account exists, a password reset email has been sent.';
         setTimeout(() => {
-          try {
-            this.router.navigate(['/']);
-          } catch {}
+          this.router.navigate(['/']);
         }, 3000);
       },
-      error: (err: any) => {
+      error: (err: HttpErrorResponse) => {
         this.loading = false;
         this.error = err?.error?.message || err?.message || 'Request failed';
       },
@@ -72,8 +71,6 @@ export class ForgotPasswordPageComponent {
   }
 
   onCancelled() {
-    try {
-      this.router.navigate(['/']);
-    } catch {}
+    this.router.navigate(['/']);
   }
 }

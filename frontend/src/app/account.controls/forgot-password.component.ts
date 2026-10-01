@@ -1,8 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, OnDestroy, Output } from '@angular/core';
-
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
-//import { UserService } from '../services/user.service';
 import { AccountService } from '../services';
 
 @Component({
@@ -118,18 +116,14 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   private setCursor(cursor: string): void {
-    try {
-      if (typeof document !== 'undefined' && document.body) {
-        document.body.style.cursor = cursor;
-      }
-    } catch (e) {}
+    if (typeof document !== 'undefined' && document.body) {
+      document.body.style.cursor = cursor;
+    }
   }
 
   private resetCursor(): void {
-    try {
-      if (typeof document !== 'undefined' && document.body) {
-        document.body.style.cursor = '';
-      }
-    } catch (e) {}
+    if (typeof document !== 'undefined' && document.body) {
+      document.body.style.cursor = '';
+    }
   }
 }

@@ -1,12 +1,10 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
   EventEmitter,
   OnInit,
   Output,
   QueryList,
-  ViewChild,
   ViewChildren,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -16,14 +14,13 @@ import { Subscription /* , first */ } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AgentTaskConfig } from 'src/app/entities/agenttaskconfig';
 import { FunctionScheduleData } from 'src/app/entities/functionscheduledata';
-import { ScheduleDateTime } from 'src/app/entities/scheduledatetime';
 import { User } from 'src/app/entities/user';
 import { AccountService, AlertService } from 'src/app/services';
 import { Constants } from 'src/app/core/helpers/constants';
 import { FunctionScheduleComponent } from '../function-schedule/function-schedule.component';
 
 @Component({
-  standalone: true,
+  standalone: false,
   selector: 'app-generate-schedules',
   templateUrl: './generate-schedules.component.html',
   styleUrls: ['./generate-schedules.component.less'],
@@ -49,7 +46,7 @@ export class GenerateSchedulesComponent implements OnInit, AfterViewInit {
   functionsLoaded: boolean = true;
   enableCopyButton: boolean = false;
   enablePasteButton: boolean = false;
-  advancedButtonsVisibility: any = false;
+  advancedButtonsVisibility: boolean = false;
 
   constructor(
     private accountService: AccountService,
@@ -67,7 +64,7 @@ export class GenerateSchedulesComponent implements OnInit, AfterViewInit {
       comps.forEach((element) => {
         this.fComponents.push(element);
       });
-      var newMap = new Map<FunctionScheduleComponent, User[]>(
+      const newMap = new Map<FunctionScheduleComponent, User[]>(
         GenerateSchedulesComponent.functions2SchedulesMap,
       );
       GenerateSchedulesComponent.functions2SchedulesMap.clear();
@@ -87,7 +84,7 @@ export class GenerateSchedulesComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       scheduledDateTime: [new Date(), Validators.required],
-      information: [, Validators.required],
+      information: ['', Validators.required],
     });
     this.functionsLoaded = false;
     this.accountService
@@ -110,7 +107,7 @@ export class GenerateSchedulesComponent implements OnInit, AfterViewInit {
 
           /* Create `UserFunction` component for every function that was returned by server*/
           value.forEach((element) => {
-            var f: AgentTaskConfig = {
+            const f: AgentTaskConfig = {
               agentTaskStr: element.agentTaskStr,
               isGroup: element.isGroup,
               isDeleting: false,
@@ -135,7 +132,7 @@ export class GenerateSchedulesComponent implements OnInit, AfterViewInit {
     this.schedulesUpdatedEmitter.emit(data);
   }
 
-  onChangeDateTime(event: any) {
+  onChangeDateTime() {
     if (this.f['scheduledDateTime'].invalid) return;
     this.fComponents.forEach((element) => {
       console.log('Changing time to: ' + this.getDateTimeStr());
@@ -144,10 +141,8 @@ export class GenerateSchedulesComponent implements OnInit, AfterViewInit {
     this.setCopyPasteButtons();
     this.dateTimeChangedEmitter.emit(this.getDateTimeStr());
   }
-  onKeydown(event: any) {
-    if (event.key === 'Enter') {
-      this.onChangeDateTime(event);
-    }
+  onKeydown() {
+    this.onChangeDateTime();
   }
   // convenience getter for easy access to form fields
   get f() {
@@ -172,16 +167,16 @@ export class GenerateSchedulesComponent implements OnInit, AfterViewInit {
     console.log('Generate changing date: ' + dateStr);
   }
 
-  onCopy(event: MouseEvent, button: any): Map<FunctionScheduleComponent, User[]> {
+  onCopy(): Map<FunctionScheduleComponent, User[]> {
     /* Build an array of accounts schedules to be copied */
-    var data = this.copyChildData();
+    const data = this.copyChildData();
     this.setCopyPasteButtons();
     return data;
   }
-  onPaste(event: MouseEvent, button: any) {
+  onPaste() {
     //this.functionsLoaded = false;
     this.setCopyPasteButtons();
-    for (let entry of GenerateSchedulesComponent.functions2SchedulesMap.entries()) {
+    for (const entry of GenerateSchedulesComponent.functions2SchedulesMap.entries()) {
       console.log('Key:' + entry[0].dateTimeStr);
       for (let index = 0; index < entry[1].length; index++) {
         console.log('\tValue:' + entry[1][index].firstName);
@@ -193,7 +188,7 @@ export class GenerateSchedulesComponent implements OnInit, AfterViewInit {
     }
     //this.functionsLoaded = true;
   }
-  onClear(event: MouseEvent, button: any) {
+  onClear() {
     GenerateSchedulesComponent.functions2SchedulesMap.clear();
     this.setCopyPasteButtons();
   }
@@ -221,7 +216,7 @@ export class GenerateSchedulesComponent implements OnInit, AfterViewInit {
     return GenerateSchedulesComponent.functions2SchedulesMap;
   }
   private childrenData(): Map<string, User[]> {
-    var array: Map<string, User[]> = new Map<string, User[]>();
+    const array: Map<string, User[]> = new Map<string, User[]>();
     this.fComponents.forEach((element) => {
       if (element.accounts4DateAndFunction.length > 0)
         array.set(element.functionStr, element.accounts4DateAndFunction);

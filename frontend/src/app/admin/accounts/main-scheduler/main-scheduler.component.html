@@ -13,7 +13,7 @@
             <input
               type="checkbox"
               checked
-              (change)="onCheckboxChange($event)"
+              (change)="onCheckboxChange()"
               formControlName="allDates"
               id="allDates"
               name="allDates"
@@ -60,10 +60,9 @@
             </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row
-              *matRowDef="let row; columns: displayedColumns; let i = index"
+              *matRowDef="let row; columns: displayedColumns"
               [ngClass]="{ hovered: row.hovered, highlighted: row.highlighted }"
-              #tr
-              (click)="onRowSelected(row, tr, i, $event)"
+              (click)="onRowSelected(row, $event)"
               (mouseover)="row.hovered = true"
               (mouseout)="row.hovered = false"
             ></mat-row>

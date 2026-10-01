@@ -29,7 +29,6 @@ import { AccountService, AlertService } from 'src/app/services';
 import { NgbdModalConfirmComponent } from './ngbd-modal-confirm/ngbd-modal-confirm.component';
 import { NgxTimepickerFieldComponent } from 'ngx-material-timepicker';
 import { toDateTime } from '../../core/helpers/date-time';
-import { NgbdModalOptionsComponent } from './ngbd-modal-options/ngbd-modal-options.component';
 
 const COLUMNS_SCHEMA = [
   {
@@ -59,7 +58,7 @@ const COLUMNS_SCHEMA = [
   templateUrl: 'function.component.html',
   styleUrls: ['./function.component.less'],
   host: {
-    '(click)': 'onToObservable($event)',
+    '(click)': 'onToObservable()',
   },
 })
 export class FunctionComponent implements OnInit, AfterViewInit {
@@ -77,7 +76,7 @@ export class FunctionComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<Task> = new MatTableDataSource<Task>([]);
   displayedColumns: string[] = COLUMNS_SCHEMA.map((col) => col.key);
   labeledColumns: string[] = COLUMNS_SCHEMA.map((col) => col.label);
-  columnsSchema: any = COLUMNS_SCHEMA;
+  columnsSchema = COLUMNS_SCHEMA;
 
   userTasks = signal<Task[]>([]);
   possibleTasks: AgentTaskConfig[] = [];
@@ -116,7 +115,7 @@ export class FunctionComponent implements OnInit, AfterViewInit {
 
   ngDoCheck(): void {
     if (this.openTime != undefined && !this.preferredTimeInitialized) {
-      var date = new Date();
+      const date = new Date();
       this.preferredTimeInitialized = true;
 
       this.openTime.changeHour(date.getHours());
@@ -124,20 +123,19 @@ export class FunctionComponent implements OnInit, AfterViewInit {
     }
   }
   // JD Test
-  onToObservable(e: any) {
+  onToObservable() {
     const numbers = signal(0);
     numbers.set(1);
     numbers.set(2);
     numbers.set(3);
 
-    var numbers$ = toObservable(numbers, { injector: this.injector });
+    const numbers$ = toObservable(numbers, { injector: this.injector });
     numbers.set(4);
 
     numbers$.subscribe({
       next: (value) => {
         console.log('numbrs$: ', value);
       },
-      error: (error) => {},
     });
     numbers.set(5);
   }
@@ -159,7 +157,7 @@ export class FunctionComponent implements OnInit, AfterViewInit {
 
                 this.account = account;
                 account.userFunctions.forEach((element) => {
-                  var task: Task = {
+                  const task: Task = {
                     group: element.group,
                     userFunction: element.userFunction,
                     preferredTime: element.preferredTime,
@@ -197,16 +195,15 @@ export class FunctionComponent implements OnInit, AfterViewInit {
       });
   }
   validateForm(control: AbstractControl): ValidationErrors | null {
-    var group = control as FormGroup;
+    const group = control as FormGroup;
     if (this.isGroupTaskAsString(group.controls['function'].value)) {
       return Validators.required(group.controls['groupTask']);
     }
     return null;
   }
   /* I am not sure if we need 'input' parameter - keep it for now*/
-  applyFilter(t: any, input: any) {
-    const target = t as HTMLTextAreaElement;
-    var filterValue = target.value;
+  applyFilter(input: HTMLInputElement) {
+    let filterValue = input.value;
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSource.filter = filterValue;
@@ -229,10 +226,6 @@ export class FunctionComponent implements OnInit, AfterViewInit {
     return null;
   }
   get isValid() {
-    var funcValid = this.f['function'].valid;
-    var preferredTimeValid = this.f['preferredTime'].valid;
-    var groupValid = this.f['groupTask'].valid;
-    var formValid = this.form.valid;
     return this.form.valid;
   }
   onAddTask() {
@@ -244,12 +237,12 @@ export class FunctionComponent implements OnInit, AfterViewInit {
     this.executeAddTask();
   }
   private executeAddTask() {
-    var currentValue = this.f['function'].value;
-    var currentGroupTask = this.f['groupTask'].value;
-    var preferredTime = this.f['preferredTime'].value;
+    const currentValue = this.f['function'].value;
+    const currentGroupTask = this.f['groupTask'].value;
+    const preferredTime = this.f['preferredTime'].value;
 
     /* Sanity check */
-    var existing: Task[] = this.userTasks().filter((f) => {
+    const existing: Task[] = this.userTasks().filter((f) => {
       return f.userFunction === currentValue && f.group === currentGroupTask;
     });
     console.assert(
@@ -260,7 +253,7 @@ export class FunctionComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    var task: Task = {
+    const task: Task = {
       id: (++this.userFunctionIndexer).toString(),
       preferredTime: preferredTime,
       userFunction: currentValue,
@@ -276,7 +269,7 @@ export class FunctionComponent implements OnInit, AfterViewInit {
         next: (accounts) => {
           if (accounts != null && accounts.length > 0) {
             // It's group agent
-            var bodyStr: string[] = [];
+            const bodyStr: string[] = [];
 
             accounts.forEach((element) => {
               bodyStr.push(
@@ -300,11 +293,13 @@ export class FunctionComponent implements OnInit, AfterViewInit {
               "' will also be updated:";
             modalRef.componentInstance.bodyInfoStr = bodyStr.join('');
             modalRef.result
-              .then((data) => {
+              .then(() => {
                 this.userTasks().push(task);
                 this.addFunction4Account(task);
               })
-              .catch((error) => {});
+              .catch(() => {
+                this.loading = false;
+              });
           } else {
             // It's an agent or group agent with just one member
             this.userTasks().push(task);
@@ -329,7 +324,7 @@ export class FunctionComponent implements OnInit, AfterViewInit {
         },
         complete: () => {
           // We have just succesfuly added a new schedule
-          var tasks = this.userTasks().filter((s) => this.isSameTask(s, task));
+          const tasks = this.userTasks().filter((s) => this.isSameTask(s, task));
           console.assert(tasks.length == 1, 'Task  just created not found or multiple tasks found');
           this.selectRow(tasks[0]);
           //this.alertService.info("Data Saved");
@@ -355,7 +350,7 @@ export class FunctionComponent implements OnInit, AfterViewInit {
     modalRef.componentInstance.bodyInfoStr =
       'All information associated with the task profile will be permanently deleted.';
     modalRef.result
-      .then((data) => {
+      .then(() => {
         task.isDeleting = true;
         this.accountService
           .deleteFunction(this.id, task)
@@ -372,7 +367,7 @@ export class FunctionComponent implements OnInit, AfterViewInit {
             },
           });
       })
-      .catch((error) => {
+      .catch(() => {
         task.isDeleting = false;
       });
   }
@@ -412,20 +407,19 @@ export class FunctionComponent implements OnInit, AfterViewInit {
   }
   get assignedGroup(): string {
     const taskSelected = this.f['function'].value;
-    var task = this.account.userFunctions.find((f) => {
+    const task = this.account.userFunctions.find((f) => {
       return f.userFunction === taskSelected;
     });
     return task != null && task != undefined ? task.group : '';
   }
-  onTaskChanged(event: Event) {
-    var valueSelected = (event.target as HTMLInputElement).value;
+  onTaskChanged() {
     if (this.isGroupTaskSelected) {
       this.f['groupTask'].setValue(this.assignedGroup);
     } else {
       this.f['groupTask'].setValue('');
     }
   }
-  onRowSelected(contact: Task, input: any, index: number, event: MouseEvent) {
+  onRowSelected(contact: Task, event: MouseEvent) {
     if (event.ctrlKey) {
       if (contact.highlighted) {
         contact.highlighted = false;
@@ -440,7 +434,7 @@ export class FunctionComponent implements OnInit, AfterViewInit {
       if (element.highlighted) element.highlighted = false;
 
       if (this.isSameTask(contact, element)) {
-        var pageNumber = Math.floor(index / this.paginator.pageSize);
+        const pageNumber = Math.floor(index / this.paginator.pageSize);
         this.paginator.pageIndex = pageNumber;
 
         this.paginator.page.next({
@@ -455,7 +449,7 @@ export class FunctionComponent implements OnInit, AfterViewInit {
       this.f['function'].setValue(contact.userFunction);
       this.f['groupTask'].setValue(contact.group);
 
-      let date = toDateTime(contact.preferredTime, 'HH:mm').toJSDate();
+      const date = toDateTime(contact.preferredTime, 'HH:mm').toJSDate();
       this.openTime?.changeHour(date.getHours());
       this.openTime?.changeMinute(date.getMinutes());
     }
@@ -469,7 +463,7 @@ export class FunctionComponent implements OnInit, AfterViewInit {
       t1.preferredTime == t2.preferredTime
     );
   }
-  onChangeHour(event: any) {
+  onChangeHour(event: unknown) {
     console.log(event);
   }
 }

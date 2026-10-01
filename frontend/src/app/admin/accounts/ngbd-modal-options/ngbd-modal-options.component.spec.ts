@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NgbdModalOptionsComponent } from './ngbd-modal-options.component';
+import { AccountsModule } from '../accounts.module';
 
 describe('NgbdModalOptionsComponent', () => {
   let component: NgbdModalOptionsComponent;
@@ -8,7 +9,7 @@ describe('NgbdModalOptionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbdModalOptionsComponent],
+      imports: [AccountsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NgbdModalOptionsComponent);

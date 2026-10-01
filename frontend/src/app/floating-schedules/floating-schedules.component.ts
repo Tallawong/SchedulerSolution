@@ -38,7 +38,7 @@ export class FloatingSchedulesComponent implements OnInit {
         return console.error(err.toString());
       });
 
-    this.connection.on('SendUpdate', (id: number) => {
+    this.connection.on('SendUpdate', () => {
       this.updateSchedulesFromServer();
     });
   }
@@ -66,7 +66,7 @@ export class FloatingSchedulesComponent implements OnInit {
     console.log('Called');
     this.connection.stop();
   }
-  onDeletePoolElement(event: any, scheduleId: string, email: string, userFunction: string) {
+  onDeletePoolElement(scheduleId: string, email: string, userFunction: string) {
     const poolElement = this.getPoolElementById(scheduleId);
     if (poolElement == null) return; // Nothing to delete, should never happen
     poolElement.deleting = true;

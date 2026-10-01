@@ -28,7 +28,7 @@
                       <button
                         class="btn btn-sm btn-danger btn-delete-account"
                         type="button"
-                        (click)="onDeletePoolElement($event, s.id, s.email, s.userFunction)"
+                        (click)="onDeletePoolElement(s.id, s.email, s.userFunction)"
                       >
                         @if (s.deleting) {
                           <span class="spinner-border spinner-border-sm mr-1"></span>

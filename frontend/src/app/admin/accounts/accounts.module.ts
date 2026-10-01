@@ -72,6 +72,8 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     UploadAccountsComponent,
     CustomDateFormatDirective,
     FunctionScheduleComponent,
+    GenerateSchedulesComponent,
+    MainSchedulerComponent,
     TimeSlotTasksEditorComponent,
     AgentTaskDefinitionComponent,
     NgbdModalOptionsComponent,

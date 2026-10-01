@@ -24,7 +24,7 @@ export class UploadTimeslotsTasksComponent implements OnInit, AfterViewInit {
   private alertService: AlertService;
   private router: Router;
   private route: ActivatedRoute;
-  fileName: any;
+  fileName = '';
   fileHasBeenSelected: boolean = false;
   submitted: boolean = false;
   uploadSub: Subscription | null = null;
@@ -61,7 +61,7 @@ export class UploadTimeslotsTasksComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onSubmit(event: any, fileUpload: any) {
+  onSubmit(fileUpload: HTMLInputElement) {
     this.alertService.clear();
 
     const file: File = fileUpload.files[0];
@@ -84,7 +84,6 @@ export class UploadTimeslotsTasksComponent implements OnInit, AfterViewInit {
       );
 
       this.uploadSub = upload$.subscribe({
-        next: (value) => {},
         complete: () => {
           this.alertService.info('Done');
           this.submitted = false;

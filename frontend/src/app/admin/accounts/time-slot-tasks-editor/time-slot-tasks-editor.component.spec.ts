@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimeSlotTasksEditorComponent } from './time-slot-tasks-editor.component';
+import { AccountsModule } from '../accounts.module';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('TimeSlotTasksEditorComponent', () => {
   let component: TimeSlotTasksEditorComponent;
@@ -8,7 +12,8 @@ describe('TimeSlotTasksEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TimeSlotTasksEditorComponent],
+      imports: [AccountsModule],
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TimeSlotTasksEditorComponent);

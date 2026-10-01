@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UploadAccountsComponent } from './upload-accounts.component';
+import { AccountsModule } from '../accounts.module';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('UploadAccountsComponent', () => {
   let component: UploadAccountsComponent;
@@ -8,7 +12,8 @@ describe('UploadAccountsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UploadAccountsComponent],
+      imports: [AccountsModule],
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UploadAccountsComponent);

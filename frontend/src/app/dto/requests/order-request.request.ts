@@ -1,1 +1,1 @@
-export interface OrderRequest {}
+export type OrderRequest = Record<string, never>;

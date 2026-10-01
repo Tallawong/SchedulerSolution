@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DOBComponent } from './dob.component';
+import { DOBModule } from './dob.module';
 
 describe('DOBComponent', () => {
   let component: DOBComponent;
@@ -8,7 +9,7 @@ describe('DOBComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DOBComponent],
+      imports: [DOBModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DOBComponent);

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort, SortDirection } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -45,7 +45,7 @@ export class AgentTaskDefinitionComponent implements OnInit {
   isLoaded: boolean = false;
 
   displayedColumns: string[] = COLUMNS_SCHEMA.map((col) => col.label);
-  columnsSchema: any = COLUMNS_SCHEMA;
+  columnsSchema = COLUMNS_SCHEMA;
 
   static pageSize: number = 10;
 
@@ -110,10 +110,10 @@ export class AgentTaskDefinitionComponent implements OnInit {
     // Reset alerts on submit
     this.alertService.clear();
 
-    var taskName = this.f['agentTaskName'].value;
-    var isGroup = this.f['isGroupBox'].value;
+    const taskName = this.f['agentTaskName'].value;
+    const isGroup = this.f['isGroupBox'].value;
 
-    let element2Update: AgentTaskConfig = {
+    const element2Update: AgentTaskConfig = {
       agentTaskStr: taskName,
       isGroup: isGroup,
       highlighted: true,
@@ -128,7 +128,7 @@ export class AgentTaskDefinitionComponent implements OnInit {
         },
         complete: () => {
           console.assert(element2Update != null, 'AgentTaskConfig  is null');
-          let selected = this.agentTaskConfigs().filter(function (item) {
+          const selected = this.agentTaskConfigs().filter(function (item) {
             return item.agentTaskStr == taskName;
           });
           console.assert(selected.length == 1, 'Number of selected tasks:' + selected.length);
@@ -151,10 +151,10 @@ export class AgentTaskDefinitionComponent implements OnInit {
     modalRef.componentInstance.bodyInfoStr =
       'All information associated with the agent task profile will be permanently deleted.';
     modalRef.result
-      .then((data) => {
+      .then(() => {
         task.isDeleting = true;
         this.accountService.deleteAgentTaskConfig(task.agentTaskStr).subscribe({
-          next: (value) => {
+          next: () => {
             this.agentTaskConfigs().splice(
               this.agentTaskConfigs().findIndex((t) => t.agentTaskStr == task.agentTaskStr),
               1,
@@ -171,9 +171,11 @@ export class AgentTaskDefinitionComponent implements OnInit {
           },
         });
       })
-      .catch((error) => {});
+      .catch(() => {
+        task.isDeleting = false;
+      });
   }
-  onChangePageProperties(event: any) {
+  onChangePageProperties(event: PageEvent) {
     AgentTaskDefinitionComponent.pageSize = event.pageSize;
   }
   sortData($event: Sort) {
@@ -195,7 +197,7 @@ export class AgentTaskDefinitionComponent implements OnInit {
       });
     }
   }
-  onRowSelected(slot: AgentTaskConfig, tr: any, index: number, event: any) {
+  onRowSelected(slot: AgentTaskConfig, event: MouseEvent) {
     if (event.ctrlKey) {
       if (slot.highlighted) {
         slot.highlighted = false;
@@ -210,7 +212,7 @@ export class AgentTaskDefinitionComponent implements OnInit {
       if (element.highlighted) element.highlighted = false;
 
       if (this.isSameTaskConfig(slot, element)) {
-        var pageNumber = Math.floor(index / this.paginator.pageSize);
+        const pageNumber = Math.floor(index / this.paginator.pageSize);
         this.paginator.pageIndex = pageNumber;
 
         this.paginator.page.next({
@@ -243,7 +245,7 @@ export class AgentTaskDefinitionComponent implements OnInit {
   }
 
   validateAddUpdateButton(): boolean {
-    let retVal = this.agentTaskConfigs().find(function (item) {
+    const retVal = this.agentTaskConfigs().find(function (item) {
       return item.highlighted == true;
     });
     return retVal != undefined;
