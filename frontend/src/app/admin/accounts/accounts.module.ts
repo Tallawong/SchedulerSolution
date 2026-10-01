@@ -71,12 +71,9 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     ScheduleAllocatorComponent,
     UploadAccountsComponent,
     CustomDateFormatDirective,
-    GenerateSchedulesComponent,
     FunctionScheduleComponent,
-    MainSchedulerComponent,
     TimeSlotTasksEditorComponent,
     AgentTaskDefinitionComponent,
-    //TimeSlotTasksEditorComponent
     NgbdModalOptionsComponent,
   ],
   providers: [
@@ -84,6 +81,9 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
       provide: UpperCasePipe,
     },
   ],
-  exports: [MatPaginatorModule, NgbdModalOptionsComponent],
+  exports: [
+      MatPaginatorModule,
+      NgbdModalOptionsComponent,
+],
 })
 export class AccountsModule {}

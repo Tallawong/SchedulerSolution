@@ -1,8 +1,8 @@
 import { Component, ViewChild, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { toDateTime } from '../../../core/helpers/date-time';
 import { first } from 'rxjs/operators';
 import { TimeHandler } from 'src/app/core/helpers/time.handler';
@@ -15,6 +15,12 @@ import { GenerateSchedulesComponent } from '../generate-schedules/generate-sched
 import { NgbdModalOptionsComponent } from '../ngbd-modal-options/ngbd-modal-options.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdModalConfirmComponent } from '../ngbd-modal-confirm/ngbd-modal-confirm.component';
+import { MaterialModule } from '../../../material.module';
+import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 const COLUMNS_SCHEMA = [
   {
     key: 'scheduleDate',
@@ -34,10 +40,35 @@ const COLUMNS_SCHEMA = [
 ];
 
 @Component({
-  standalone: false,
+  standalone: true,
   selector: 'app-main-scheduler',
   templateUrl: './main-scheduler.component.html',
   styleUrls: ['./main-scheduler.component.less'],
+
+  imports: [
+
+        MatTableDataSource,
+        MatPaginator,
+        MatSort,
+        MaterialModule,
+        MatSortModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatButtonModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatInputModule,
+        MatFormFieldModule,MaterialModule,
+        MatSortModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatButtonModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatInputModule,
+        MatFormFieldModule,
+        GenerateSchedulesComponent
+], 
 })
 export class MainSchedulerComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

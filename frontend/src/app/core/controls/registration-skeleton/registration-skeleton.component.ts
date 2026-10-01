@@ -19,6 +19,8 @@ import { AccountModalService } from '../../../account.controls/account-modal.ser
 //import { AccountModalService } from '../../account/account-modal.service';
 
 @Component({
+
+
   selector: 'app-registration-skeleton',
   imports: [FormsModule],
   templateUrl: './registration-skeleton.component.html',

@@ -11,9 +11,20 @@ import { MaterialModule } from '../material/material.module';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ScheduleAllocatorComponent } from './accounts/schedule.allocator.component';
+import { GenerateSchedulesComponent } from './accounts/generate-schedules/generate-schedules.component';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, AdminRoutingModule],
-  declarations: [SubNavComponent, LayoutComponent, OverviewComponent],
+  declarations: [
+    SubNavComponent,
+    LayoutComponent,
+    OverviewComponent,
+  ],
+
+exports: [
+  SubNavComponent,
+  LayoutComponent,
+  OverviewComponent,
+],   
 })
 export class AdminModule {}

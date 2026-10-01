@@ -23,7 +23,7 @@ import { Constants } from 'src/app/core/helpers/constants';
 import { FunctionScheduleComponent } from '../function-schedule/function-schedule.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
   selector: 'app-generate-schedules',
   templateUrl: './generate-schedules.component.html',
   styleUrls: ['./generate-schedules.component.less'],
