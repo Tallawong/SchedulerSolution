@@ -1,5 +1,5 @@
-import { TestBed } from "@angular/core/testing";
-import { LoginPromptComponent } from "../../app/account.controls/login-prompt.component";
+import { TestBed } from '@angular/core/testing';
+import { LoginPromptComponent } from '../../app/account.controls/login-prompt.component';
 
 describe('LoginPromptComponent', () => {
   beforeEach(async () => {

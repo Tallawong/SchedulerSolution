@@ -50,7 +50,7 @@
     <PackageJsonDevdependenciesGlobals Condition="$(PackageJsonDevdependenciesGlobals) == ''">^17.12.0</PackageJsonDevdependenciesGlobals>
     <PackageJsonDevdependenciesJsdom Condition="$(PackageJsonDevdependenciesJsdom) == ''">^28.0.0</PackageJsonDevdependenciesJsdom>
     <PackageJsonDevdependenciesLess Condition="$(PackageJsonDevdependenciesLess) == ''">^4.2.0</PackageJsonDevdependenciesLess>
-    <PackageJsonDevdependenciesPrettier Condition="$(PackageJsonDevdependenciesPrettier) == ''">^3.8.1</PackageJsonDevdependenciesPrettier>
+    <PackageJsonDevdependenciesPrettier Condition="$(PackageJsonDevdependenciesPrettier) == ''">^3.9.9</PackageJsonDevdependenciesPrettier>
     <PackageJsonDevdependenciesTypescript Condition="$(PackageJsonDevdependenciesTypescript) == ''">~6.0.2</PackageJsonDevdependenciesTypescript>
     <PackageJsonDevdependenciesTypescriptEslint Condition="$(PackageJsonDevdependenciesTypescriptEslint) == ''">^8.71.0</PackageJsonDevdependenciesTypescriptEslint>
     <PackageJsonDevdependenciesVitest Condition="$(PackageJsonDevdependenciesVitest) == ''">^4.1.11</PackageJsonDevdependenciesVitest>

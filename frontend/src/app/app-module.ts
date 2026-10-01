@@ -43,7 +43,6 @@ import { DatePickerExampleComponent } from './date-picker-example/date-picker-ex
     HomeComponent,
   ],
   providers: [
-
     provideRouter(routes, withDebugTracing()),
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptors([jwtInterceptor, errorInterceptor])),

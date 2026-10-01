@@ -338,12 +338,7 @@
           <form>
             <mat-form-field appearance="outline">
               <mat-label>Filter</mat-label>
-              <input
-                matInput
-                (keyup)="applyFilter(input)"
-                placeholder="Search columns"
-                #input
-              />
+              <input matInput (keyup)="applyFilter(input)" placeholder="Search columns" #input />
             </mat-form-field>
             <mat-table
               matSort

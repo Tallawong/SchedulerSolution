@@ -1,10 +1,4 @@
-import {
-  Component,
-  inject,
-  input,
-  OnInit,
-  output,
-} from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { RegisterRequest } from '../../../dto/requests/register-request';
@@ -15,8 +9,6 @@ import { AccountModalService } from '../../../account.controls/account-modal.ser
 //import { AccountModalService } from '../../account/account-modal.service';
 
 @Component({
-
-
   selector: 'app-registration-skeleton',
   imports: [FormsModule],
   templateUrl: './registration-skeleton.component.html',

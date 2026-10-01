@@ -9,16 +9,8 @@ import { OverviewComponent } from './overview.component';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, AdminRoutingModule],
-  declarations: [
-    SubNavComponent,
-    LayoutComponent,
-    OverviewComponent,
-  ],
+  declarations: [SubNavComponent, LayoutComponent, OverviewComponent],
 
-exports: [
-  SubNavComponent,
-  LayoutComponent,
-  OverviewComponent,
-],   
+  exports: [SubNavComponent, LayoutComponent, OverviewComponent],
 })
 export class AdminModule {}

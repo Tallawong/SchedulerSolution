@@ -1,11 +1,4 @@
-import {
-  signal,
-  Component,
-  OnInit,
-  ViewChild,
-  AfterViewInit,
-  inject,
-} from '@angular/core';
+import { signal, Component, OnInit, ViewChild, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
