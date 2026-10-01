@@ -52,7 +52,7 @@ export class AccountService {
     dob: string,
   ): Observable<MfaResponse | AuthenticateResponse> {
     return this.asLegacyResponse<MfaResponse | AuthenticateResponse>(
-      this.api.accountsAuthenticateMfaPost(
+      this.api.accountsAuthenticatePost(
         { email, password, dob },
         'body',
         false,

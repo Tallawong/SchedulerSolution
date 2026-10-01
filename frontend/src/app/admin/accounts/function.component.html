@@ -97,12 +97,7 @@
           </div>
           <mat-form-field appearance="outline">
             <mat-label>Filter</mat-label>
-            <input
-              matInput
-              (keyup)="applyFilter(input)"
-              placeholder="Search columns"
-              #input
-            />
+            <input matInput (keyup)="applyFilter(input)" placeholder="Search columns" #input />
           </mat-form-field>
           <mat-table matSort class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
             <ng-container matColumnDef="{{ displayedColumns[0] }}">

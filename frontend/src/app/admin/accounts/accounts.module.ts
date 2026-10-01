@@ -83,9 +83,6 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
       provide: UpperCasePipe,
     },
   ],
-  exports: [
-      MatPaginatorModule,
-      NgbdModalOptionsComponent,
-],
+  exports: [MatPaginatorModule, NgbdModalOptionsComponent],
 })
 export class AccountsModule {}

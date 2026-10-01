@@ -3,11 +3,11 @@
     "Name": "New Profile",
     "Projects": [
       {
-        "Path": "ScheduleMeBackEnd\\scheduleme.server.csproj",
+        "Path": "backend\\backend.csproj",
         "Action": "Start"
       },
       {
-        "Path": "ScheduleMeFrontEnd\\scheduleme.client.esproj",
+        "Path": "frontend\\frontend.esproj",
         "Action": "Start"
       }
     ]

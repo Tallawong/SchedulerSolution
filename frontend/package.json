@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:dev": "ng serve --host=localhost --ssl --ssl-cert \"./ssl/cert-from-pfx.pem\" --ssl-key \"./ssl/key-from-pfx.pem\" --configuration development",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
@@ -53,7 +54,7 @@
     "globals": "^17.12.0",
     "jsdom": "^28.0.0",
     "less": "^4.2.0",
-    "prettier": "^3.8.1",
+    "prettier": "^3.9.9",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.71.0",
     "vitest": "^4.1.11"
