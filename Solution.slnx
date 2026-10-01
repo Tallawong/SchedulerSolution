@@ -1,6 +1,6 @@
 <Solution>
-  <Project Path="BackEnd/scheduleme.server.csproj" />
-  <Project Path="FrontEnd/scheduleme.client.esproj"
+  <Project Path="backend/backend.csproj" />
+  <Project Path="frontend/frontend.esproj"
            Id="9b5919ad-e587-44c9-b020-2a80605cbb37">
     <Build />
     <Deploy />

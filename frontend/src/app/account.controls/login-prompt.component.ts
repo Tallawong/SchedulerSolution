@@ -46,7 +46,7 @@ interface LoginData {
     MatInputModule,
     MatDatepickerModule,
 
-    MfaDialogComponent,
+    //MfaDialogComponent,
   ],
   selector: 'app-login-prompt',
   templateUrl: './login-prompt.component.html',

@@ -1,4 +1,4 @@
-name: Full-Stack CI Pipeline
+﻿name: Full-Stack CI Pipeline
 
 on:
   push:
@@ -26,13 +26,13 @@ jobs:
           dotnet-version: '10.0.x' # Or '10.0.x' depending on target
 
       - name: Restore Dependencies
-        run: dotnet restore backend/backend.csproj
+        run: dotnet restore backend/scheduleme.server.csproj
 
       - name: Build Backend
-        run: dotnet build backend/backend.csproj --no-restore --configuration Release
+        run: dotnet build backend/scheduleme.server.csproj --no-restore --configuration Release
 
       - name: Run Backend Tests
-        run: dotnet test backend/backend.csproj --no-build --verbosity normal
+        run: dotnet test backend/scheduleme.server.csproj --no-build --verbosity normal
 
   # --- FRONTEND JOB ---
   frontend-ci:

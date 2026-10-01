@@ -1,1 +1,2 @@
 C:\SchedulerSolution\ScheduleMeFrontEnd\obj\Debug\scheduleme.client.esproj.CoreCompileInputs.cache
+C:\SchedulerSolution\frontend\obj\Debug\scheduleme.client.esproj.CoreCompileInputs.cache

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { CommonModule, UpperCasePipe } from '@angular/common';
 import { ScheduleDateTimeComponent } from '../../core/components/schedule-date-time/schedule-date-time.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
