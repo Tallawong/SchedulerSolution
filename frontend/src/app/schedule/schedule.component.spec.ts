@@ -5,16 +5,22 @@ import { ScheduleModule } from './schedule.module';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import * as signalR from '@microsoft/signalr';
 
 describe('ScheduleComponent', () => {
   let component: ScheduleComponent;
   let fixture: ComponentFixture<ScheduleComponent>;
 
   beforeEach(async () => {
+    vi.spyOn(signalR.HubConnection.prototype, 'start').mockResolvedValue();
     await TestBed.configureTestingModule({
       imports: [ScheduleModule],
       providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   beforeEach(() => {
