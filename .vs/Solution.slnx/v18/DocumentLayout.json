@@ -76,6 +76,13 @@
       "RelativeMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|frontend\\frontend.esproj|solutionrelative:frontend\\package.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
+<<<<<<< HEAD
+=======
+      "AbsoluteMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|frontend\\frontend.esproj|c:\\schedulersolution\\frontend\\.vscode\\launch.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{9B5919AD-E587-44C9-B020-2A80605CBB37}|frontend\\frontend.esproj|solutionrelative:frontend\\.vscode\\launch.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+>>>>>>> 4db21f771812f0aa042e09ecb2b43c31387fb537
       "AbsoluteMoniker": "D:0:0:{B5CEE1AB-68C5-FCEC-EA61-653FFB609ED2}|backend\\backend.csproj|c:\\schedulersolution\\backend\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B5CEE1AB-68C5-FCEC-EA61-653FFB609ED2}|backend\\backend.csproj|solutionrelative:backend\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -312,7 +319,49 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 16,
+=======
+              "DocumentIndex": 0,
+              "Title": "AccountService.cs",
+              "DocumentMoniker": "C:\\SchedulerSolution\\backend\\Services\\AccountService.cs",
+              "RelativeDocumentMoniker": "backend\\Services\\AccountService.cs",
+              "ToolTip": "C:\\SchedulerSolution\\backend\\Services\\AccountService.cs",
+              "RelativeToolTip": "backend\\Services\\AccountService.cs",
+              "ViewState": "AgIAAKAAAAAAAAAAAIAxwLgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-01T12:14:00.675Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\SchedulerSolution\\backend\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "backend\\appsettings.Development.json",
+              "ToolTip": "C:\\SchedulerSolution\\backend\\appsettings.Development.json",
+              "RelativeToolTip": "backend\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-10-02T06:36:12.655Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "plan-diagnose-angular-to-backend-login-connectivity.md [Preview]",
+              "DocumentMoniker": "C:\\Users\\Janusz\\.copilot\\plans\\plan-diagnose-angular-to-backend-login-connectivity.md",
+              "RelativeDocumentMoniker": "..\\Users\\Janusz\\.copilot\\plans\\plan-diagnose-angular-to-backend-login-connectivity.md",
+              "ToolTip": "C:\\Users\\Janusz\\.copilot\\plans\\plan-diagnose-angular-to-backend-login-connectivity.md [Preview]",
+              "RelativeToolTip": "..\\Users\\Janusz\\.copilot\\plans\\plan-diagnose-angular-to-backend-login-connectivity.md [Preview]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-10-02T06:21:30.072Z",
+              "EditorCaption": " [Preview]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+>>>>>>> 4db21f771812f0aa042e09ecb2b43c31387fb537
               "Title": "log4net.config",
               "DocumentMoniker": "C:\\SchedulerSolution\\backend\\log4net.config",
               "RelativeDocumentMoniker": "backend\\log4net.config",
@@ -373,7 +422,24 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 23,
+=======
+              "DocumentIndex": 16,
+              "Title": "launch.json",
+              "DocumentMoniker": "C:\\SchedulerSolution\\frontend\\.vscode\\launch.json",
+              "RelativeDocumentMoniker": "frontend\\.vscode\\launch.json",
+              "ToolTip": "C:\\SchedulerSolution\\frontend\\.vscode\\launch.json",
+              "RelativeToolTip": "frontend\\.vscode\\launch.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-10-01T21:10:36.574Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+>>>>>>> 4db21f771812f0aa042e09ecb2b43c31387fb537
               "Title": "AuthorizeAttribute.cs",
               "DocumentMoniker": "C:\\SchedulerSolution\\backend\\Helpers\\AuthorizeAttribute.cs",
               "RelativeDocumentMoniker": "backend\\Helpers\\AuthorizeAttribute.cs",
@@ -385,7 +451,11 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 22,
+=======
+              "DocumentIndex": 19,
+>>>>>>> 4db21f771812f0aa042e09ecb2b43c31387fb537
               "Title": "AppException.cs",
               "DocumentMoniker": "C:\\SchedulerSolution\\backend\\Helpers\\AppException.cs",
               "RelativeDocumentMoniker": "backend\\Helpers\\AppException.cs",
@@ -397,7 +467,11 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 21,
+=======
+              "DocumentIndex": 18,
+>>>>>>> 4db21f771812f0aa042e09ecb2b43c31387fb537
               "Title": "ScheduleFunctionRemainder.cs",
               "DocumentMoniker": "C:\\SchedulerSolution\\backend\\Helpers\\ScheduleFunctionRemainder.cs",
               "RelativeDocumentMoniker": "backend\\Helpers\\ScheduleFunctionRemainder.cs",
@@ -409,7 +483,11 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 20,
+=======
+              "DocumentIndex": 17,
+>>>>>>> 4db21f771812f0aa042e09ecb2b43c31387fb537
               "Title": "Startup.cs",
               "DocumentMoniker": "C:\\SchedulerSolution\\backend\\Startup.cs",
               "RelativeDocumentMoniker": "backend\\Startup.cs",
@@ -421,7 +499,11 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 24,
+=======
+              "DocumentIndex": 21,
+>>>>>>> 4db21f771812f0aa042e09ecb2b43c31387fb537
               "Title": "gen-tls.ps1.ps1",
               "DocumentMoniker": "C:\\SchedulerSolution\\frontend\\ssl\\gen-tls.ps1.ps1",
               "RelativeDocumentMoniker": "frontend\\ssl\\gen-tls.ps1.ps1",
@@ -433,7 +515,11 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 25,
+=======
+              "DocumentIndex": 22,
+>>>>>>> 4db21f771812f0aa042e09ecb2b43c31387fb537
               "Title": "backend",
               "DocumentMoniker": "C:\\SchedulerSolution\\backend\\backend.csproj",
               "RelativeDocumentMoniker": "backend\\backend.csproj",
@@ -444,7 +530,11 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 28,
+=======
+              "DocumentIndex": 26,
+>>>>>>> 4db21f771812f0aa042e09ecb2b43c31387fb537
               "Title": "upload-timeslots-tasks.component.ts",
               "DocumentMoniker": "C:\\SchedulerSolution\\frontend\\src\\app\\admin\\accounts\\upload-timeslots-tasks\\upload-timeslots-tasks.component.ts",
               "RelativeDocumentMoniker": "frontend\\src\\app\\admin\\accounts\\upload-timeslots-tasks\\upload-timeslots-tasks.component.ts",
@@ -456,7 +546,11 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 27,
+=======
+              "DocumentIndex": 25,
+>>>>>>> 4db21f771812f0aa042e09ecb2b43c31387fb537
               "Title": "upload-accounts.component.ts",
               "DocumentMoniker": "C:\\SchedulerSolution\\frontend\\src\\app\\admin\\accounts\\upload-accounts\\upload-accounts.component.ts",
               "RelativeDocumentMoniker": "frontend\\src\\app\\admin\\accounts\\upload-accounts\\upload-accounts.component.ts",
@@ -468,7 +562,36 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 26,
+=======
+              "DocumentIndex": 23,
+              "Title": "registration-dialog.component.ts",
+              "DocumentMoniker": "C:\\SchedulerSolution\\frontend\\src\\app\\account.controls\\registration-dialog.component.ts",
+              "RelativeDocumentMoniker": "frontend\\src\\app\\account.controls\\registration-dialog.component.ts",
+              "ToolTip": "C:\\SchedulerSolution\\frontend\\src\\app\\account.controls\\registration-dialog.component.ts",
+              "RelativeToolTip": "frontend\\src\\app\\account.controls\\registration-dialog.component.ts",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAxwB8AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-10-01T09:29:26.593Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "account.service.spec.ts",
+              "DocumentMoniker": "C:\\SchedulerSolution\\frontend\\src\\app\\services\\account\\account.service.spec.ts",
+              "RelativeDocumentMoniker": "frontend\\src\\app\\services\\account\\account.service.spec.ts",
+              "ToolTip": "C:\\SchedulerSolution\\frontend\\src\\app\\services\\account\\account.service.spec.ts",
+              "RelativeToolTip": "frontend\\src\\app\\services\\account\\account.service.spec.ts",
+              "ViewState": "AgIAALwBAAAAAAAAAMBSwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-10-01T09:34:00.172Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+>>>>>>> 4db21f771812f0aa042e09ecb2b43c31387fb537
               "Title": "forgot-password.component.ts",
               "DocumentMoniker": "C:\\SchedulerSolution\\frontend\\src\\app\\account.controls\\forgot-password.component.ts",
               "RelativeDocumentMoniker": "frontend\\src\\app\\account.controls\\forgot-password.component.ts",
