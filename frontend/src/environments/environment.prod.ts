@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
 
-  apiUrl: 'https://oloaschedulemebackend.azurewebsites.net/',
+  apiUrl: 'https://localhost:5002',
 
-  baseUrl: 'https://oloaschedulemebackend.azurewebsites.net/',
+  baseUrl: 'https://localhost:5002',
 };

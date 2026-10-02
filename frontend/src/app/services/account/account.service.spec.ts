@@ -45,7 +45,7 @@ describe('AccountService generated API wrapper', () => {
   function login() {
     const account = accountResponse();
     service.login(account.email, 'password', account.dob).subscribe();
-    http.expectOne(`${apiUrl}/authenticate-mfa`).flush(account);
+    http.expectOne(`${apiUrl}/authenticate`).flush(account);
     return account;
   }
 
@@ -82,7 +82,7 @@ describe('AccountService generated API wrapper', () => {
     service.login(account.email, 'password', account.dob).subscribe((value) => {
       expect(value).toEqual(account);
     });
-    const request = http.expectOne(`${apiUrl}/authenticate-mfa`);
+    const request = http.expectOne(`${apiUrl}/authenticate`);
     expect(request.request.method).toBe('POST');
     expect(request.request.body).toEqual({
       email: account.email,
@@ -117,7 +117,7 @@ describe('AccountService generated API wrapper', () => {
     service.login('user@example.test', 'password', '01-01-2000').subscribe((value) => {
       expect(value).toEqual(response);
     });
-    const request = http.expectOne(`${apiUrl}/authenticate-mfa`);
+    const request = http.expectOne(`${apiUrl}/authenticate`);
     expect(request.request.withCredentials).toBe(true);
     request.flush(response);
 
@@ -136,7 +136,7 @@ describe('AccountService generated API wrapper', () => {
     const { mfaRequired: _mfaRequired, ...response } = accountResponse();
     expect(_mfaRequired).toBe(false);
     service.login(response.email, 'password', response.dob).subscribe();
-    http.expectOne(`${apiUrl}/authenticate-mfa`).flush(response);
+    http.expectOne(`${apiUrl}/authenticate`).flush(response);
 
     expect(service.accountValue).toEqual(response);
     vi.advanceTimersByTime(3540_000);
@@ -153,7 +153,7 @@ describe('AccountService generated API wrapper', () => {
   ])('does not publish a malformed response or MFA challenge: %j', (fields) => {
     const response = { ...accountResponse(), ...fields };
     service.login('user@example.test', 'password', '01-01-2000').subscribe();
-    http.expectOne(`${apiUrl}/authenticate-mfa`).flush(response);
+    http.expectOne(`${apiUrl}/authenticate`).flush(response);
 
     expect(service.accountValue).toBeNull();
     vi.advanceTimersByTime(3600_000);
@@ -162,7 +162,7 @@ describe('AccountService generated API wrapper', () => {
 
   it('handles a null login response without accessing its properties', () => {
     service.login('user@example.test', 'password', '01-01-2000').subscribe();
-    http.expectOne(`${apiUrl}/authenticate-mfa`).flush(null);
+    http.expectOne(`${apiUrl}/authenticate`).flush(null);
 
     expect(service.accountValue).toBeNull();
     vi.advanceTimersByTime(3600_000);
@@ -197,7 +197,7 @@ describe('AccountService generated API wrapper', () => {
           : service.verifyMfa('user@example.test', '123456');
       result.subscribe();
       http
-        .expectOne(`${apiUrl}/${operation === 'login' ? 'authenticate-mfa' : 'verify-mfa'}`)
+        .expectOne(`${apiUrl}/${operation === 'login' ? 'authenticate' : 'verify-mfa'}`)
         .flush(response);
 
       expect(service.accountValue).toBeNull();

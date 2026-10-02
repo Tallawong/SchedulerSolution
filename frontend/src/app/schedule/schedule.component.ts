@@ -103,14 +103,16 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
       .withUrl(environment.baseUrl + '/update')
       .build();
 
-    this.connection
-      .start()
-      .then(function () {
-        console.log('SignalR Connected!');
-      })
-      .catch(function (err) {
-        return console.error(err.toString());
-      });
+    if (this.id) {
+      this.connection
+        .start()
+        .then(function () {
+          console.log('SignalR Connected!');
+        })
+        .catch(function (err) {
+          return console.error(err.toString());
+        });
+    }
 
     this.connection.on('SendUpdate', (id: number) => {
       if (id != parseInt(this.id)) {
