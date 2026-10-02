@@ -7,7 +7,6 @@ describe('FloatingSchedulesComponent', () => {
   let fixture: ComponentFixture<FloatingSchedulesComponent>;
 
   beforeEach(async () => {
-
     vi.spyOn(signalR.HubConnection.prototype, 'start').mockResolvedValue();
     await TestBed.configureTestingModule({
       declarations: [FloatingSchedulesComponent],
@@ -17,7 +16,6 @@ describe('FloatingSchedulesComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
 
   afterEach(() => {
     vi.restoreAllMocks();
