@@ -49,7 +49,7 @@ export class RegisterDialogComponent {
   visible: boolean = true;
   @Output() cancelled = new EventEmitter<void>();
   @Output() registered = new EventEmitter<RegisterPayload>();
-  title = input<string>('');
+  title = input<string>('Create an account');
   message = input<string>('');
 
   payload: RegisterPayload = {

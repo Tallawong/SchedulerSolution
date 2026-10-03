@@ -117,6 +117,11 @@ body
   font: inherit;
 }
 
+body .app-dialog-theme .lp-form select.form-select:not([multiple]) {
+  padding-block: var(--app-control-padding-y, 5px);
+  padding-inline-end: 2.25rem;
+}
+
 .app-dialog-theme .lp-form label > input.form-control {
   margin-top: 0.25rem;
 }

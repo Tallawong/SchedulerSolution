@@ -169,6 +169,12 @@ import { AccountService } from '../services';
         gap: 0.6rem;
         margin-top: 0.75rem;
       }
+      .fp-actions button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding-block: 0;
+      }
       .btn-primary {
         background: linear-gradient(90deg, #6a11cb, #2575fc);
         color: #fff;

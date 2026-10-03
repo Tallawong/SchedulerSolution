@@ -41,6 +41,12 @@ describe('RegisterDialogComponent string dates', () => {
     vi.useRealTimers();
   });
 
+  it('shows a registration title by default', () => {
+    expect(fixture.nativeElement.querySelector('.lp-header h3').textContent).toBe(
+      'Create an account',
+    );
+  });
+
   it.each([
     ['2000-09-22', '22-09-2000'],
     ['22-09-2000', '22-09-2000'],

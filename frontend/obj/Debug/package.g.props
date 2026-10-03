@@ -23,6 +23,7 @@
     <PackageJsonDependenciesAngularCompiler Condition="$(PackageJsonDependenciesAngularCompiler) == ''">^22.0.0</PackageJsonDependenciesAngularCompiler>
     <PackageJsonDependenciesAngularCore Condition="$(PackageJsonDependenciesAngularCore) == ''">^22.0.0</PackageJsonDependenciesAngularCore>
     <PackageJsonDependenciesAngularForms Condition="$(PackageJsonDependenciesAngularForms) == ''">^22.0.0</PackageJsonDependenciesAngularForms>
+    <PackageJsonDependenciesAngularLocalize Condition="$(PackageJsonDependenciesAngularLocalize) == ''">22.1.6</PackageJsonDependenciesAngularLocalize>
     <PackageJsonDependenciesAngularMaterial Condition="$(PackageJsonDependenciesAngularMaterial) == ''">^22.1.6</PackageJsonDependenciesAngularMaterial>
     <PackageJsonDependenciesAngularMaterialLuxonAdapter Condition="$(PackageJsonDependenciesAngularMaterialLuxonAdapter) == ''">^22.1.7</PackageJsonDependenciesAngularMaterialLuxonAdapter>
     <PackageJsonDependenciesAngularPlatformBrowser Condition="$(PackageJsonDependenciesAngularPlatformBrowser) == ''">^22.1.6</PackageJsonDependenciesAngularPlatformBrowser>
