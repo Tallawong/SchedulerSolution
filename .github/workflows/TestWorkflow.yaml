@@ -1,4 +1,5 @@
-on
+name: JD Test of CI Pipeline
+on:
   workflow_dispatch:
 env:
   TEST_VAR: "Hello, World!"
@@ -10,3 +11,5 @@ env:
           uses: actions/checkout@v2
         - name: Print environment variable
           run: echo $TEST_VAR
+        - name: Run tests
+          run: echo "Running tests..."
