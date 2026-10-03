@@ -37,6 +37,22 @@
           }
         }
       }
+    },
+    {
+      "label": "angular-start",
+      "type": "shell",
+      "command": "npm",
+      "args": [ "run", "start" ],
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "pattern": "$tsc-watch",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Building...",
+          "endsPattern": "Compiled successfully."
+        }
+      }
     }
   ]
 }

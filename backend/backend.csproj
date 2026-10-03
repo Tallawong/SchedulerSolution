@@ -21,7 +21,11 @@
     <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.12" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
   </ItemGroup>
-
+	<ItemGroup>
+		<ProjectReference Include="..\frontend\frontend.esproj">
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+		</ProjectReference>
+	</ItemGroup>
   <ItemGroup>
     <PackageReference Include="Aspose.Cells" Version="26.7.0" />
     <PackageReference Include="Aspose.PDF" Version="26.7.0" />

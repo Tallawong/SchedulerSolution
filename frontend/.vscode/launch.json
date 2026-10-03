@@ -6,7 +6,7 @@
       "name": "ng serve",
       "type": "chrome",
       "request": "launch",
-      //"preLaunchTask": "npm: start:dev",
+      //"preLaunchTask": "angular-start",
       "url": "https://localhost:4200/",
       "webRoot": "${workspaceFolder}"
     },

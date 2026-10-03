@@ -1,13 +1,15 @@
-<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.1635611">
+﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.1635611">
   <PropertyGroup>
-    <ProjectGuid>9b5919ad-e587-44c9-b020-2a80605cbb37</ProjectGuid>
-    <StartupCommand>npm start</StartupCommand>
-    <BuildCommand>npm run build</BuildCommand>
+    <!-- The command executed when you click 'Start' or press F5 in Visual Studio -->
+    <StartupCommand>npm run start:dev</StartupCommand>
+    <!-- JavaScript testing framework configured for the project -->
+    <JavaScriptTestFramework>Jasmine</JavaScriptTestFramework>
+    <!-- Ensures standard VS builds don't run production compilation sequentially during active debugging -->
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
+    <!-- Specifies where Angular places production-compiled assets (Matches angular.json output) -->
+    <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\frontend\browser\</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="obj\" />
-    <Folder Include="scripts\" />
-    <Folder Include="src\app\core\controls\registration-form\" />
+    <None Include=".vscode\tasks.json" />
   </ItemGroup>
 </Project>
