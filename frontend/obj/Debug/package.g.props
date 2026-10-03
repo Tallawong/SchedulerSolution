@@ -6,7 +6,7 @@
     <PackageJsonScriptsNg Condition="$(PackageJsonScriptsNg) == ''">ng</PackageJsonScriptsNg>
     <PackageJsonScriptsStart Condition="$(PackageJsonScriptsStart) == ''">ng serve</PackageJsonScriptsStart>
     <PackageJsonScriptsStartDev Condition="$(PackageJsonScriptsStartDev) == ''">ng serve --host=localhost --ssl --ssl-cert "./ssl/cert-from-pfx.pem" --ssl-key "./ssl/key-from-pfx.pem" --configuration development</PackageJsonScriptsStartDev>
-    <PackageJsonScriptsBuild Condition="$(PackageJsonScriptsBuild) == ''">ng build &amp;&amp; npm run prettier</PackageJsonScriptsBuild>
+    <PackageJsonScriptsBuild Condition="$(PackageJsonScriptsBuild) == ''">npm run prettier &amp;&amp; ng build</PackageJsonScriptsBuild>
     <PackageJsonScriptsWatch Condition="$(PackageJsonScriptsWatch) == ''">ng build --watch --configuration development</PackageJsonScriptsWatch>
     <PackageJsonScriptsTest Condition="$(PackageJsonScriptsTest) == ''">ng test</PackageJsonScriptsTest>
     <PackageJsonScriptsMigrateControlFlow Condition="$(PackageJsonScriptsMigrateControlFlow) == ''">ng generate @angular/core:control-flow --path=src --format=true</PackageJsonScriptsMigrateControlFlow>
