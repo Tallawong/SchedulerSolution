@@ -6,7 +6,7 @@
     <PackageJsonScriptsNg Condition="$(PackageJsonScriptsNg) == ''">ng</PackageJsonScriptsNg>
     <PackageJsonScriptsStart Condition="$(PackageJsonScriptsStart) == ''">ng serve</PackageJsonScriptsStart>
     <PackageJsonScriptsStartDev Condition="$(PackageJsonScriptsStartDev) == ''">ng serve --host=localhost --ssl --ssl-cert "./ssl/cert-from-pfx.pem" --ssl-key "./ssl/key-from-pfx.pem" --configuration development</PackageJsonScriptsStartDev>
-    <PackageJsonScriptsBuild Condition="$(PackageJsonScriptsBuild) == ''">ng build</PackageJsonScriptsBuild>
+    <PackageJsonScriptsBuild Condition="$(PackageJsonScriptsBuild) == ''">ng build &amp;&amp; npm run prettier</PackageJsonScriptsBuild>
     <PackageJsonScriptsWatch Condition="$(PackageJsonScriptsWatch) == ''">ng build --watch --configuration development</PackageJsonScriptsWatch>
     <PackageJsonScriptsTest Condition="$(PackageJsonScriptsTest) == ''">ng test</PackageJsonScriptsTest>
     <PackageJsonScriptsMigrateControlFlow Condition="$(PackageJsonScriptsMigrateControlFlow) == ''">ng generate @angular/core:control-flow --path=src --format=true</PackageJsonScriptsMigrateControlFlow>
@@ -15,6 +15,7 @@
     <PackageJsonScriptsLint Condition="$(PackageJsonScriptsLint) == ''">eslint .</PackageJsonScriptsLint>
     <PackageJsonScriptsLintFix Condition="$(PackageJsonScriptsLintFix) == ''">eslint . --fix</PackageJsonScriptsLintFix>
     <PackageJsonScriptsTestCi Condition="$(PackageJsonScriptsTestCi) == ''">npm run test</PackageJsonScriptsTestCi>
+    <PackageJsonScriptsPrettier Condition="$(PackageJsonScriptsPrettier) == ''">prettier "src/**/*.{ts,html,css,scss,less,json}"</PackageJsonScriptsPrettier>
     <PackageJsonPrivate Condition="$(PackageJsonPrivate) == ''">true</PackageJsonPrivate>
     <PackageJsonPackagemanager Condition="$(PackageJsonPackagemanager) == ''">npm@11.16.0</PackageJsonPackagemanager>
     <PackageJsonDependenciesAngularAnimations Condition="$(PackageJsonDependenciesAngularAnimations) == ''">^22.1.6</PackageJsonDependenciesAngularAnimations>

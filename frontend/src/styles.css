@@ -10,13 +10,9 @@
 /* Material inputs inside form fields are sized by their container; standalone
    Material inputs in tables use the shared height. Popup and choice controls are excluded. */
 body
-  input:not(
-    [type='checkbox'],
-    [type='radio'],
-    [type='range'],
-    [type='hidden'],
-    [type='image']
-  ):not(:where(.mat-mdc-form-field input, ngxsmk-datepicker-content *, mat-calendar *)),
+  input:not([type='checkbox'], [type='radio'], [type='range'], [type='hidden'], [type='image']):not(
+    :where(.mat-mdc-form-field input, ngxsmk-datepicker-content *, mat-calendar *)
+  ),
 body select:not([multiple]):not([size]):not(:where(ngxsmk-datepicker-content *, mat-calendar *)),
 body select[size='1']:not([multiple]):not(:where(ngxsmk-datepicker-content *, mat-calendar *)) {
   box-sizing: border-box;
