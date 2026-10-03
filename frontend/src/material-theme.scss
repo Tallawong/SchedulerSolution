@@ -22,19 +22,19 @@ html {
   // Hint/error space remains independent of the visible control height.
   @include mat.form-field-overrides(
     (
-      container-height: var(--app-control-height, 44px),
-      container-vertical-padding: 10px,
-      filled-with-label-container-padding-top: 18px,
-      filled-with-label-container-padding-bottom: 2px,
+      container-height: var(--app-control-height, 36px),
+      container-vertical-padding: 6px,
+      filled-with-label-container-padding-top: 12px,
+      filled-with-label-container-padding-bottom: 0px,
     )
   );
 
   @include mat.button-overrides(
     (
-      filled-container-height: var(--app-control-height, 44px),
-      outlined-container-height: var(--app-control-height, 44px),
-      protected-container-height: var(--app-control-height, 44px),
-      text-container-height: var(--app-control-height, 44px),
+      filled-container-height: var(--app-control-height, 36px),
+      outlined-container-height: var(--app-control-height, 36px),
+      protected-container-height: var(--app-control-height, 36px),
+      text-container-height: var(--app-control-height, 36px),
     )
   );
 }

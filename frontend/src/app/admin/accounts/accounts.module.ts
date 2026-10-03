@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, UpperCasePipe } from '@angular/common';
-import { ScheduleDateTimeComponent } from '../../core/components/schedule-date-time/schedule-date-time.component';
+import { ScheduleDateTimeComponent } from '../../core/controls/schedule-date-time/schedule-date-time.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';

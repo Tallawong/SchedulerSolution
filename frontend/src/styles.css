@@ -1,24 +1,22 @@
 /* Shared size for single-line controls across Bootstrap and custom components. */
 :root {
-  --app-control-height: 44px;
+  --app-control-height: 36px;
   --app-control-line-height: 24px;
   --app-control-padding-y: calc(
     (var(--app-control-height) - var(--app-control-line-height) - 2px) / 2
   );
 }
 
-/* Material input height belongs to its form-field container, not the input.
-   Calendar popup controls, multiline inputs and choice controls are excluded. */
+/* Material inputs inside form fields are sized by their container; standalone
+   Material inputs in tables use the shared height. Popup and choice controls are excluded. */
 body
   input:not(
     [type='checkbox'],
     [type='radio'],
     [type='range'],
     [type='hidden'],
-    [type='image'],
-    .mat-mdc-input-element,
-    [matInput]
-  ):not(:where(ngxsmk-datepicker-content *, mat-calendar *)),
+    [type='image']
+  ):not(:where(.mat-mdc-form-field input, ngxsmk-datepicker-content *, mat-calendar *)),
 body select:not([multiple]):not([size]):not(:where(ngxsmk-datepicker-content *, mat-calendar *)),
 body select[size='1']:not([multiple]):not(:where(ngxsmk-datepicker-content *, mat-calendar *)) {
   box-sizing: border-box;
@@ -51,9 +49,9 @@ body a.btn {
   padding-block: var(--app-control-padding-y);
 }
 
-/* A Bootstrap floating label shares the same 44px field without overlapping text. */
+/* A Bootstrap floating label shares the same 36px field without overlapping text. */
 body .form-floating > input.form-control {
-  padding-top: 16px;
+  padding-top: 8px;
   padding-bottom: 2px;
 }
 
