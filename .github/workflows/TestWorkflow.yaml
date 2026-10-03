@@ -1,16 +1,16 @@
 name: JD Test of CI Pipeline
-on:
 
+on:
   workflow_dispatch:
 env:
   TEST_VAR: "Hello, World!"
-  jobs:
-    test_job:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v2
-        - name: Print environment variable
-          run: echo $TEST_VAR
-        - name: Run tests
-          run: echo "Running tests..."
+jobs:
+  test_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Print environment variable
+        run: echo $TEST_VAR
+      - name: Run tests
+        run: echo "Running tests..."
