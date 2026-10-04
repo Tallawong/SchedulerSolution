@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Greeting
 
-        uses: actions/checkout@7
+        uses: actions/checkout@v4
