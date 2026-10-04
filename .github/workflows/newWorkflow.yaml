@@ -1,45 +1,14 @@
-name JD Real Test
+name: JD Real Test
 on:
   workflow-dispatch:
 
 env:
-  MY_FAVORITE_NO 2
+  MY_FAVORITE_NO: 2
 
 jobs:
   job1:
     runs_on: windows_latest
-	steps:
-	  Step1:
-	    - name: Greeting
-		use of acctions/checkout@4
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+    steps:
+      Step1:
+        - name: Greeting
+          uses: actions/checkout@4
