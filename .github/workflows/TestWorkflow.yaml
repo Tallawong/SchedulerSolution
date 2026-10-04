@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 env:
   TEST_VAR: "Hello, World!"
-  
+
 jobs:
   test_job:
     runs-on: ubuntu-latest
@@ -15,4 +15,4 @@ jobs:
         run: echo $TEST_VAR
       - name: Run tests
         run: echo "Running tests..."
-      
+        run: echo "Running tests..."

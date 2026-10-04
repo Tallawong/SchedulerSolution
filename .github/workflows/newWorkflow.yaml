@@ -1,0 +1,45 @@
+name JD Real Test
+on:
+  pull_request
+
+env:
+  MY_FAVORITE_NO 2
+
+jobs:
+  job1:
+    runs_on: windows_latest
+	steps:
+	  Step1:
+	    - name: Greeting
+		use of acctions/checkout@4
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
