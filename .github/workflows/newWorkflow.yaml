@@ -7,7 +7,7 @@ env:
 
 jobs:
   job1:
-    runs_on: windows_latest
+    runs-on: windows-latest
     steps:
       Step1:
         - name: Greeting
