@@ -1,6 +1,6 @@
 name JD Real Test
 on:
-  workflow-dispatch
+  workflow-dispatch:
 
 env:
   MY_FAVORITE_NO 2
