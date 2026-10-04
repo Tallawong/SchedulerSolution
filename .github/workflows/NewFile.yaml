@@ -1,0 +1,14 @@
+name: JD Real Test
+on:
+  pull_request
+env:
+  MY_FAVORITE_NO: 2
+jobs:
+  job1:
+    runs-on: windows_latest
+    steps:
+      - name: Checkout
+        uses: acctions/checkout@v4 
+      - name: Greetings
+        run: echo "Hello" 
+       	  
