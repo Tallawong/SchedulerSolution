@@ -1,6 +1,6 @@
 name JD Real Test
 on:
-  pull_request
+  workflow-dispatch
 
 env:
   MY_FAVORITE_NO 2
