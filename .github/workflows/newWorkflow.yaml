@@ -1,6 +1,6 @@
 name: JD Real Test
 on:
-  workflow-dispatch:
+  push:
 
 env:
   MY_FAVORITE_NO: 2
@@ -9,6 +9,5 @@ jobs:
   job1:
     runs-on: windows-latest
     steps:
-      Step1:
-        - name: Greeting
-          uses: actions/checkout@4
+      - name: Greeting
+        uses: actions/checkout@3
