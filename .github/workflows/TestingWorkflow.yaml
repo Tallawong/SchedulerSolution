@@ -26,3 +26,8 @@ jobs:
           echo "AppSettings__JwtSecret: ${{secrets.AppSettings__JwtSecret}}"
           echo "AppSettings__BrevoApiKey: ${{secrets.AppSettings__BrevoApiKey}}"
 
+      - name: Print secretes an env variables
+        run: |
+          echo "Kestrel__Endpoints__Https__Url: $Kestrel__Endpoints__Https__Url"
+        run: |
+          echo "Kestrel__Endpoints__Https__Url: $env:Kestrel__Endpoints__Https__Url"
