@@ -27,8 +27,8 @@ jobs:
           echo "AppSettings__BrevoApiKey: ${{secrets.AppSettings__BrevoApiKey}}"
 
       - name: Print secrets as environment variables
-        run: |
-          echo "Kestrel__Endpoints__Https__Url: $Kestrel__Endpoints__Https__Url"
+        #run: |
+        #  echo "Kestrel__Endpoints__Https__Url: $Kestrel__Endpoints__Https__Url"
         env:
           Kestrel__Endpoints__Https__Url: ${{secrets.Kestrel__Endpoints__Https__Url}}
         run: |
