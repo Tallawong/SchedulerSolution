@@ -1,6 +1,6 @@
 name: JD Real Test
 on:
-  push:
+  workflow-dispatch:
 
 env:
   MY_FAVORITE_NO: 2
@@ -26,7 +26,7 @@ jobs:
           echo "AppSettings__JwtSecret: ${{secrets.AppSettings__JwtSecret}}"
           echo "AppSettings__BrevoApiKey: ${{secrets.AppSettings__BrevoApiKey}}"
 
-      - name: Print secretes an env variables
+      - name: Print secrets and env variables
         run: |
           echo "Kestrel__Endpoints__Https__Url: $Kestrel__Endpoints__Https__Url"
         env:
