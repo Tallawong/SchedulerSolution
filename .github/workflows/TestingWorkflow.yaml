@@ -18,10 +18,10 @@ jobs:
       - name: Print secrets
         run: |
           echo "Hello"
-          echo "Kestrel__Endpoints__Https__Url=${{Kestrel__Endpoints__Https__Url}}"
-          echo "Kestrel__Endpoints__Https__Certificate__Path=${{Kestrel__Endpoints__Https__Certificate__Path}}"
-          echo "Kestrel__Endpoints__Https__Certificate__Password=${{Kestrel__Endpoints__Https__Certificate__Password}}"
-          echo "AppSettings__SpryngApiToken=${{AppSettings__SpryngApiToken}}"
-          echo "AppSettings__SmtpPass=${{AppSettings__SmtpPass}}"
-          echo "AppSettings__JwtSecret=${{AppSettings__JwtSecret}}"
+          echo "Kestrel__Endpoints__Https__Url:${{Kestrel__Endpoints__Https__Url}}"
+          echo "Kestrel__Endpoints__Https__Certificate__Path:${{Kestrel__Endpoints__Https__Certificate__Path}}"
+          echo "Kestrel__Endpoints__Https__Certificate__Password:${{Kestrel__Endpoints__Https__Certificate__Password}}"
+          echo "AppSettings__SpryngApiToken:${{AppSettings__SpryngApiToken}}"
+          echo "AppSettings__SmtpPass:${{AppSettings__SmtpPass}}"
+          echo "AppSettings__JwtSecret:${{AppSettings__JwtSecret}}"
           echo "AppSettings__BrevoApiKey=${{AppSettings__BrevoApiKey}}"
