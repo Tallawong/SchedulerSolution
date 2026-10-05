@@ -8,6 +8,9 @@ env:
 jobs:
   job1:
     runs-on: windows-latest
+    environment:
+      name: production
+      url: https://github.com
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -17,7 +20,7 @@ jobs:
 
       - name: Print secrets
         run: |
-          echo "Hello"
+          echo "APP_SECRET: ${{secrets.APP_SECRET}}"
           echo "Kestrel__Endpoints__Https__Url: ${{secrets.Kestrel__Endpoints__Https__Url}}"
           echo "Kestrel__Endpoints__Https__Certificate__Path: ${{secrets.Kestrel__Endpoints__Https__Certificate__Path}}"
           echo "Kestrel__Endpoints__Https__Certificate__Password: ${{secrets.Kestrel__Endpoints__Https__Certificate__Password}}"
