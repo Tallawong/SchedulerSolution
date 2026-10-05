@@ -16,6 +16,7 @@ jobs:
         run: echo "Hello"
 
         - name: Print secrets
+
         run: |
           echo "Hello"
           echo {{Kestrel__Endpoints__Https__Url}}
