@@ -29,7 +29,7 @@ jobs:
         run: dotnet test backend/backend.csproj --no-build --verbosity normal
 
       - name: Display log file
-        run: dir /w .\
+        run: dir /w .\backend\bin
         shell: cmd
         #working-directory: ./backend/bin
 
