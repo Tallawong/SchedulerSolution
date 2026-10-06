@@ -37,3 +37,16 @@ jobs:
           Kestrel__Endpoints__Https__Url: ${{secrets.Kestrel__Endpoints__Https__Url}}
         run: |
           echo "Kestrel__Endpoints__Https__Url: $Kestrel__Endpoints__Https__Url"
+    name: Copy log file job
+    runs-on: windows-latest
+      - name: Copy log file
+        run: |
+          echo "Copying log file..."
+          # Add your commands to copy the log file here
+          #uses: actions/upload-artifact@v3
+          #  with:
+          #    name: myapp.log
+          #    path: ./backend/bin/myapp.log
+          ls -l ./backend/bin/
+
+          
