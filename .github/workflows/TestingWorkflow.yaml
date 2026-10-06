@@ -29,7 +29,7 @@ jobs:
         run: dotnet test backend/backend.csproj --no-build --verbosity normal
 
       - name: Display log file
-        run: ls ./backend/bin/Release/net10.0
+        run: ls ./backend/bin
       - uses: actions/upload-artifact@v4
         with:
           name: myApp.log
