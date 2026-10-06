@@ -5,7 +5,7 @@ on:
 env:
   MY_FAVORITE_NO: 2
 
-  jobs:
+jobs:
 # --- BACKEND JOB ---
   backend-ci:
     runs-on: ubuntu-latest
