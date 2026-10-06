@@ -44,5 +44,6 @@ jobs:
     steps:
       - name: List file
         run: dir /w 
+        shell: cmd
 
           
