@@ -28,7 +28,7 @@ jobs:
       - name: Run Backend Tests
         run: dotnet test backend/backend.csproj --no-build --verbosity normal
   deployment:
-    needs: backend-ci
+    
     name: My first Job
     runs-on: windows-latest
     environment:
@@ -61,6 +61,7 @@ jobs:
           echo "Kestrel__Endpoints__Https__Url: $Kestrel__Endpoints__Https__Url"
     
   copy_log_file_job:
+    needs: [backend-ci, deployment]
     name: Copy log file job
     runs-on: windows-latest
     steps:
