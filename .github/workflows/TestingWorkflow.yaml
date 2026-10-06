@@ -77,7 +77,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Verify file existence
-        run:
+        run: |
           if [ -f "./backend/bin/Release/net10.0-windows7.0/log4net.config" ]; then
             echo "Success: File exists!"
           else
