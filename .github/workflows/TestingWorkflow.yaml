@@ -29,9 +29,9 @@ jobs:
         run: dotnet test backend/backend.csproj --no-build --verbosity normal
 
       - name: Display log file
-        run: dir /w 
+        run: dir /w .\backend\bin
         shell: cmd
-        working-directory: ./backend/bin
+        #working-directory: ./backend/bin
       - uses: actions/upload-artifact@v4
         with:
           name: myApp.log
