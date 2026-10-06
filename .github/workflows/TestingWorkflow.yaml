@@ -43,7 +43,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: List file
-        run: dir /w 
+        run: dir /w ./bin
         shell: cmd
 
           
