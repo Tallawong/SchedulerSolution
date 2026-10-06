@@ -71,17 +71,17 @@ jobs:
         run: |
           echo "Kestrel__Endpoints__Https__Url: $Kestrel__Endpoints__Https__Url"
     
-  copy_log_file_job:
+  verify-upload-download:
     needs: [backend-ci, deployment]
-    name: Copy log file job
+    name: Verify log file upload and download
     runs-on: windows-latest
     steps:
-      - name: List file
+      - name: List files
         run: dir /w .\
         shell: cmd
 
       - name: Verify file existence
-        run: |
+        run:
           if [ -f "./backend/bin/Release/net10.0-windows7.0/log4net.config" ]; then
             echo "Success: File exists!"
           else
