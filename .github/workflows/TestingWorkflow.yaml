@@ -39,6 +39,7 @@ jobs:
           echo "Kestrel__Endpoints__Https__Url: $Kestrel__Endpoints__Https__Url"
     name: Copy log file job
     runs-on: windows-latest
+    steps:
       - name: Copy log file
         run: |
           echo "Copying log file..."
