@@ -76,10 +76,6 @@ jobs:
     name: Verify log file upload and download
     runs-on: windows-latest
     steps:
-      - name: List files
-        run: dir /w .\
-        shell: cmd
-
       - name: Verify file existence
         run:
           if [ -f "./backend/bin/Release/net10.0-windows7.0/log4net.config" ]; then
