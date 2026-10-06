@@ -49,7 +49,7 @@ jobs:
           #  with:
           #    name: myapp.log
           #    path: ./backend/bin/myapp.log
-          ls -l ./backend/bin/
+          ls -l ./backend
           with:
             working-directory: ./frontend
 
