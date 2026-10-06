@@ -44,13 +44,13 @@ jobs:
     steps:
       - name: Copy log file
         run: |
+          working-directory: ./frontend
           echo "Copying log file..."
           # Add your commands to copy the log file here
           #uses: actions/upload-artifact@v3
           #  with:
           #    name: myapp.log
           #    path: ./backend/bin/myapp.log
-          working-directory: ./frontend
           ls -l ./backend/bin/
 
           
