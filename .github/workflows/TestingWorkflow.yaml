@@ -43,14 +43,6 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Copy log file
-        run: |
-          # Add your commands to copy the log file here
-          #uses: actions/upload-artifact@v3
-          #  with:
-          #    name: myapp.log
-          #    path: ./backend/bin/myapp.log
-          ls -l ./
-          #with:
-          #  working-directory: ./frontend
+        run: ls -l ./
 
           
