@@ -27,8 +27,9 @@ jobs:
 
       - name: Run Backend Tests
         run: dotnet test backend/backend.csproj --no-build --verbosity normal
+
       - name: Display log file
-        run: cat ./backend/bin/Release/net10.0/myApp.log
+        run: ls ./backend/bin/Release/net10.0
       - uses: actions/upload-artifact@v4
         with:
           name: myApp.log
