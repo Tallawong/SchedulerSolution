@@ -6,7 +6,8 @@ env:
   MY_FAVORITE_NO: 2
 
 jobs:
-  deployment: My fiest Job
+  deployment:
+    name: My first Job
     runs-on: windows-latest
     environment:
       name: production
