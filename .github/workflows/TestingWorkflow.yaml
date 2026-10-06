@@ -35,8 +35,8 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: myApp.log
-          path: ./backend/bin/Release/net10.0/
+          name: log4net.config
+          path: ./backend/bin/Release/net10.0-windows7.0/
 
   deployment:
     
@@ -80,4 +80,11 @@ jobs:
         run: dir /w .\
         shell: cmd
 
-          
+      - name: Verify file existence
+        run: |
+          if [ -f "./backend/bin/Release/net10.0-windows7.0/log4net.config" ]; then
+            echo "Success: File exists!"
+          else
+            echo "Error: File not found!"
+            exit 1
+          fi
