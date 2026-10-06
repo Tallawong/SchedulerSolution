@@ -42,7 +42,7 @@ jobs:
     name: Copy log file job
     runs-on: windows-latest
     steps:
-      - name: Copy log file
-        run: ls -la
+      - name: List file
+        run: ls -l
 
           
