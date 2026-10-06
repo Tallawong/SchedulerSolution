@@ -5,8 +5,30 @@ on:
 env:
   MY_FAVORITE_NO: 2
 
-jobs:
+  jobs:
+# --- BACKEND JOB ---
+  backend-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+
+          dotnet-version: '10.0.x' # Or '10.0.x' depending on target
+
+      - name: Restore Dependencies
+        run: dotnet restore backend/backend.csproj
+
+      - name: Build Backend
+        run: dotnet build backend/backend.csproj --no-restore --configuration Release
+
+      - name: Run Backend Tests
+        run: dotnet test backend/backend.csproj --no-build --verbosity normal
   deployment:
+    needs: backend-ci
     name: My first Job
     runs-on: windows-latest
     environment:
@@ -43,7 +65,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: List file
-        run: dir /w ./bin
+        run: dir /w .\
         shell: cmd
 
           
