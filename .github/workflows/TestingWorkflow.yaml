@@ -78,9 +78,8 @@ jobs:
     steps:
       - name: Verify file existence
         run: |
-          if [ -f "./backend/bin/Release/net10.0-windows7.0/log4net.config" ]; then
-            echo "Success: File exists!"
-          else
-            echo "Error: File not found!"
-            exit 1
-          fi
+          if (Test-Path -LiteralPath './backend/bin/Release/net10.0-windows7.0/log4net.config' -PathType Leaf) {
+            Write-Output 'Success: File exists!'
+          } else {
+            throw 'Error: File not found!'
+          }
