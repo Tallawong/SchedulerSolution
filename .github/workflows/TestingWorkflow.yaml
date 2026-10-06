@@ -37,6 +37,8 @@ jobs:
           Kestrel__Endpoints__Https__Url: ${{secrets.Kestrel__Endpoints__Https__Url}}
         run: |
           echo "Kestrel__Endpoints__Https__Url: $Kestrel__Endpoints__Https__Url"
+    
+  copy_log_file_job:
     name: Copy log file job
     runs-on: windows-latest
     steps:
