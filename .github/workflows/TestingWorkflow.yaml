@@ -93,4 +93,4 @@ jobs:
       - name: Print variable
         run: |
           echo "variableName=this-is-value" >> $GITHUB_ENV
-          echo "GITHUB_ENV=$GITHUB_ENV"
+          echo "variableName=$variableName"
