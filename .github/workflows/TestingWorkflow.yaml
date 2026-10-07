@@ -69,6 +69,7 @@ jobs:
         #  echo "Kestrel__Endpoints__Https__Url: $Kestrel__Endpoints__Https__Url"
         env:
           Kestrel__Endpoints__Https__Url: ${{secrets.Kestrel__Endpoints__Https__Url}}
+          APP_SECRET: ${{secrets.APP_SECRET}}
         run: |
           echo "Kestrel__Endpoints__Https__Url: $Kestrel__Endpoints__Https__Url"
           echo  "APP_SECRET: $APP_SECRET"
