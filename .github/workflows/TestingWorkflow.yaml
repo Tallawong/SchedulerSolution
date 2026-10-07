@@ -95,8 +95,12 @@ jobs:
         run: |
           echo "variableName=this-is-value" >> $env:GITHUB_ENV
 
-      - name: Read variable
+      - name: Set more variables
+        run: |
+          echo "current_date=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+          echo "timestamp=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >>  "$GITHUB_OUTPUT"
+      - name: Use current date
         run: |
           echo variableName: $env:variableName
-          echo "timestamp=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >>  $GITHUB_OUTPUT
-          
+          echo "The date is: ${{ steps.extract_date.outputs.current_date }}"
+          echo "The UTC timestamp is: ${{ steps.extract_date.outputs.timestamp }}"          
