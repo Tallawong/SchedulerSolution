@@ -72,7 +72,7 @@ jobs:
           APP_SECRET: ${{secrets.APP_SECRET}}
         run: |
           echo "Kestrel__Endpoints__Https__Url: $Kestrel__Endpoints__Https__Url"
-          echo  "APP_SECRET: $APP_SECRET"
+          echo  "APP_SECRET: ${{APP_SECRET}}"
 
   verify-upload-download:
     needs: [backend-ci, deployment]
