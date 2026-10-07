@@ -60,17 +60,9 @@ namespace WebApi.Controllers
         {
             try
             {
-                log.InfoFormat("Authenticating user {0} password {1} DOB {2} for ipaddress: {3}",
-                    model.Email,
-                    model.Password,
-                    model.Dob,
-                    ipAddress());
+                log.InfoFormat("Authenticating user {0} for ipaddress: {1}", model.Email, ipAddress());
                 var response = _accountService.Authenticate(model, ipAddress());
                 setTokenCookie(response.RefreshToken);
-
-                log.InfoFormat("Setting cookie - response.RefreshToken= {0} for E-mail: {1}",
-                    response.RefreshToken,
-                    model.Email);
 
                 return Ok(response);
             }
@@ -140,7 +132,6 @@ namespace WebApi.Controllers
             {
                 var refreshToken = Request.Cookies["refreshToken"];
 
-                Console.WriteLine("refreshToken is:" + refreshToken);
                 var response = _accountService.RefreshToken(refreshToken, ipAddress());
                 setTokenCookie(response.RefreshToken);
 

@@ -230,11 +230,6 @@ namespace WebApi.Services
                 {
                     var (refreshToken, account) = getRefreshToken(token);
 
-                    log.InfoFormat("Old RefreshToken= {0} for {1} {2}",
-                        refreshToken.Token,
-                        account.FirstName,
-                        account.LastName);
-
                     // replace old refresh token with a new one and save
                     var newRefreshToken = generateRefreshToken(ipAddress);
                     refreshToken.Revoked = DateTime.UtcNow;
@@ -243,11 +238,6 @@ namespace WebApi.Services
                     account.RefreshTokens.Add(newRefreshToken);
 
                     removeOldRefreshTokens(account);
-
-                    log.InfoFormat("New RefreshToken= {0} for {1} {2}",
-                        newRefreshToken.Token,
-                        account.FirstName,
-                        account.LastName);
 
                     _context.Update(account);
                     _context.SaveChanges();
@@ -3278,7 +3268,6 @@ namespace WebApi.Services
             log.InfoFormat("JWT Next expiration date for {0} {1} is {2}", account.FirstName, account.LastName, tokenDate.ToLocalTime().ToString());
             // JD
             string jwtToken = tokenHandler.WriteToken(token);
-            log.InfoFormat("JWT token {0} for {1} {2}", jwtToken, account.FirstName, account.LastName);
             return jwtToken;
         }
         /* JD Test*/
