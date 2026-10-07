@@ -85,7 +85,7 @@ jobs:
 
       - name: Set variable
         run: |
-          echo "variableName=this-is-value" >> $GITHUB_ENV
+          echo "variableName=this-is-value" >> $env:GITHUB_ENV
 
       - name: Verify file existence
         run: |
