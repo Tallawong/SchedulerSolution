@@ -90,11 +90,11 @@ jobs:
           } else {
             throw 'Error: File not found!'
           }
-      - name: Print variable
+      - name: Set variable
         run: |
           echo "variableName=this-is-value" >> $GITHUB_ENV
 
       - name: Read variable
         run: |
-          echo "The value of variableName is: ${{ env.variableName }}"
+          Write-Host $env:variableName
           
