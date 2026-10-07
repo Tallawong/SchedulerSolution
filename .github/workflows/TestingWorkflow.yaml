@@ -93,6 +93,8 @@ jobs:
       - name: Print variable
         run: |
           echo "variableName=this-is-value" >> $GITHUB_ENV
-          echo $env:variableName
-          
+
+      - name: Read variable
+        run: |
+          echo "The value of variableName is: ${{ env.variableName }}"
           
