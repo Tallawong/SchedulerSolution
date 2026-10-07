@@ -92,5 +92,6 @@ jobs:
           }
       - name: Print variable
         run: |
-          echo "variableName=this-is-value" >> $GITHUB_ENV
-          echo "variableName=$variableName"
+          set variableName=this-is-value
+          echo "variableName=this-is-value" >> $env:GITHUB_ENV
+          
