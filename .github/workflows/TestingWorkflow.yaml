@@ -90,3 +90,5 @@ jobs:
           } else {
             throw 'Error: File not found!'
           }
+      - name: Print variable
+        run: echo "variableName=this-is-value"
