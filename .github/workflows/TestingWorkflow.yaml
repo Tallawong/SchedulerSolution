@@ -107,4 +107,5 @@ jobs:
 
       - name: Use the date output
         run: |
-          echo "The date is: ${{ steps.date_step.outputs.current_date }}"
+          echo "The current date is: ${{ steps.date_step.outputs.current_date }}"
+          echo "The timestamp date is: ${{ steps.date_step.outputs.timestamp }}"
