@@ -92,7 +92,7 @@ jobs:
           }
       - name: Print variable
         run: |
-          set variableName=this-is-value
-          echo $env:variableName
-          ls env:
+          echo "variableName=this-is-value" >> $GITHUB_ENV
+          Write-Host $env:variableName
+          
           
