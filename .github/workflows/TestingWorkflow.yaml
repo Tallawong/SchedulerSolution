@@ -97,5 +97,5 @@ jobs:
 
       - name: Read variable
         run: |
-          echo variableName: ${{env.variableName}}
+          echo variableName: $env:variableName
           
