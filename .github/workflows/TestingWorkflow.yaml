@@ -98,5 +98,5 @@ jobs:
       - name: Read variable
         run: |
           echo variableName: $env:variableName
-          echo "timestamp=$(date + '%Y-%m-%d-%H-%M')" >>  $GITHUB_OUTPUT
+          echo "timestamp=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >>  $GITHUB_OUTPUT
           
