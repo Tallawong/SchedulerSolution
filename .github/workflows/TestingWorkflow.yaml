@@ -83,10 +83,6 @@ jobs:
           name: log4net.config
           path: ./backend/bin/Release/net10.0-windows7.0
 
-      - name: Set variable
-        run: |
-          echo "variableName=this-is-value" >> $env:GITHUB_ENV
-
       - name: Verify file existence
         run: |
           if (Test-Path -LiteralPath './backend/bin/Release/net10.0-windows7.0/log4net.config' -PathType Leaf) {
@@ -94,6 +90,11 @@ jobs:
           } else {
             throw 'Error: File not found!'
           }
+
+      - name: Set variable
+        run: |
+          echo "variableName=this-is-value" >> $env:GITHUB_ENV
+
       - name: Read variable
         run: |
           echo variableName: ${{env.variableName}}
