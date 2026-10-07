@@ -94,4 +94,5 @@ jobs:
         run: |
           set variableName=this-is-value
           echo $env:GITHUB_ENV
+          ls env:
           
