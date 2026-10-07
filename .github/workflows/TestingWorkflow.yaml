@@ -92,15 +92,19 @@ jobs:
           }
 
       - name: Set variable
+        id: extract_date
         run: |
           echo "variableName=this-is-value" >> $env:GITHUB_ENV
 
-      - name: Set more variables
+      - name: Get current date (PowerShell)
+        id: date_step
+        shell: pwsh
         run: |
-          echo "current_date=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
-          echo "timestamp=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >>  "$GITHUB_OUTPUT"
-      - name: Use current date
+          $date = (Get-Date -Format "yyyy-MM-dd")
+          echo "current_date=$date" >> $env:GITHUB_OUTPUT
+          $date_ss = (Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+          echo "timestamp=$date_ss" >> $env:GITHUB_OUTPUT
+
+      - name: Use the date output
         run: |
-          echo variableName: $env:variableName
-          echo "The date is: ${{ steps.extract_date.outputs.current_date }}"
-          echo "The UTC timestamp is: ${{ steps.extract_date.outputs.timestamp }}"          
+        echo "The date is: ${{ steps.date_step.outputs.current_date }}"
