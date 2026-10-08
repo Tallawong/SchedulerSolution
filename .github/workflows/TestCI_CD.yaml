@@ -102,11 +102,11 @@ jobs:
       - name: Set variable
         run: |
           echo "variableName=this-is-value" >> $env:GITHUB_ENV
-          echo "APPSETTINGS_SMTPPASS=$env:APPSETTINGS_SMTPPASS" >> $env:GITHUB_ENV
+          echo "smtp=$vars:APPSETTINGS_SMTPPASS" >> $env:GITHUB_ENV
       - name: Use variable
         run: |
           echo "variableName=$env:variableName"
-          echo "APPSETTINGS_SMTPPASS=$env:APPSETTINGS_SMTPPASS"
+          echo "smtp=$env:smtp"
 
       - name: Use variable intended for non-sensitive values such as URLs
         run: |
