@@ -7,7 +7,7 @@ env:
 
 jobs:
 # --- BACKEND JOB ---
-  backend-ci:
+  build-backend-experiments:
     runs-on: windows-latest
     steps:
       - name: Checkout Code
@@ -39,7 +39,7 @@ jobs:
           path: ./backend/bin/Release/net10.0-windows7.0/log4net.config
           if-no-files-found: error
 
-  deployment:
+  deployment-experiments:
     
     name: My first Job
     runs-on: windows-latest
@@ -74,8 +74,8 @@ jobs:
           echo "Kestrel__Endpoints__Https__Url: $Kestrel__Endpoints__Https__Url"
           echo "APP_SECRET: ${{secrets.APP_SECRET}}"
 
-  verify-upload-download:
-    needs: [backend-ci, deployment]
+  various-experiments:
+    needs: [build-backend-experiments, deployment-experiments]
     name: Verify log file upload and download
     runs-on: windows-latest
     steps:
