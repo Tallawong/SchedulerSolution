@@ -6,7 +6,7 @@ env:
   MY_FAVORITE_NO: 2
 
 jobs:
-# --- BACKEND JOB ---
+# --- BUILD BACKEND JOB ---
   build-backend-experiments:
     runs-on: windows-latest
     steps:
