@@ -103,7 +103,7 @@ jobs:
       - name: Use variable intended for non-sensitive values such as URLs
         run: |
           echo "APPSETTINGS_SMTPPASS = ${{secrets.APPSETTINGS_SMTPPASS}}"
-          echo "KESTREL__ENDPOINTS__HTTPS__URL =${{env.KESTREL__ENDPOINTS__HTTPS__URL}}"
+          echo "KESTREL__ENDPOINTS__HTTPS__URL =${{secrets.KESTREL__ENDPOINTS__HTTPS__URL}}"
 
       - name: Get current date (PowerShell)
         id: date_step
