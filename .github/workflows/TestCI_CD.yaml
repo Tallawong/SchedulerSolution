@@ -96,13 +96,17 @@ jobs:
           } else {
             throw 'Error: File not found!'
           }
-
+      # Passing variable between two steps within the job using environment variables. 
+      # This is useful for non-sensitive values such as URLs, but not recommended 
+      # for sensitive values such as passwords or API keys.
       - name: Set variable
         run: |
           echo "variableName=this-is-value" >> $env:GITHUB_ENV
+          echo "APPSETTINGS_SMTPPASS=$env:APPSETTINGS_SMTPPASS" >> $env:GITHUB_ENV
       - name: Use variable
         run: |
           echo "variableName=$env:variableName"
+          echo "APPSETTINGS_SMTPPASS=$env:APPSETTINGS_SMTPPASS"
 
       - name: Use variable intended for non-sensitive values such as URLs
         run: |
