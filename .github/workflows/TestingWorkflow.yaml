@@ -99,7 +99,6 @@ jobs:
       - name: Use variable
         run: |
           echo $variableName
-          echo 
 
       - name: Use variable intended for non-sensitive values such as URLs
         run: |
