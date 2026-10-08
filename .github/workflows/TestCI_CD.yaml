@@ -77,6 +77,10 @@ jobs:
   various-experiments:
     needs: [build-backend-experiments, deployment-experiments]
     name: Verify log file upload and download
+    environment:
+      name: production
+      url: https://github.com
+
     runs-on: windows-latest
     steps:
       - name: Download log file
@@ -102,7 +106,7 @@ jobs:
 
       - name: Use variable intended for non-sensitive values such as URLs
         run: |
-          echo "APPSETTINGS_SMTPPASS = ${{env.APPSETTINGS_SMTPPASS}}"
+          echo "APPSETTINGS_SMTPPASS = ${{vars.APPSETTINGS_SMTPPASS}}"
           echo "KESTREL__ENDPOINTS__HTTPS__URL =${{secrets.KESTREL__ENDPOINTS__HTTPS__URL}}"
 
       - name: Get current date (PowerShell)
