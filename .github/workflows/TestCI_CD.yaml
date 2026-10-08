@@ -41,7 +41,7 @@ jobs:
 
   deployment-experiments:
     
-    name: My first Job
+    name: deployment-experiments
     runs-on: windows-latest
     environment:
       name: production
@@ -76,7 +76,7 @@ jobs:
 
   various-experiments:
     needs: [build-backend-experiments, deployment-experiments]
-    name: Verify log file upload and download
+    name: various-experiments
     environment:
       name: production
       url: https://github.com
@@ -102,7 +102,7 @@ jobs:
           echo "variableName=this-is-value" >> $env:GITHUB_ENV
       - name: Use variable
         run: |
-          echo "variableName=$variableName"
+          echo "variableName=$env:variableName"
 
       - name: Use variable intended for non-sensitive values such as URLs
         run: |
