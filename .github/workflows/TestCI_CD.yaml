@@ -102,7 +102,7 @@ jobs:
           echo "variableName=this-is-value" >> $env:GITHUB_ENV
       - name: Use variable
         run: |
-          echo $variableName
+          echo "variableName=$variableName"
 
       - name: Use variable intended for non-sensitive values such as URLs
         run: |
