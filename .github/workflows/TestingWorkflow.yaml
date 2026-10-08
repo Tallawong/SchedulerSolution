@@ -1,0 +1,124 @@
+name: TestCI_CD
+on:
+  workflow_dispatch:
+
+env:
+  MY_FAVORITE_NO: 2
+
+jobs:
+# --- BACKEND JOB ---
+  backend-ci:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+
+          dotnet-version: '10.0.x' # Or '10.0.x' depending on target
+
+      - name: Restore Dependencies
+        run: dotnet restore backend/backend.csproj
+
+      - name: Build Backend
+        run: dotnet build backend/backend.csproj --no-restore --configuration Release
+
+      - name: Run Backend Tests
+        run: dotnet test backend/backend.csproj --no-build --configuration Release --verbosity normal
+
+      - name: Display log file
+        run: dir /w .\backend\bin\Release\net10.0-windows7.0
+        shell: cmd
+        #working-directory: ./backend/bin
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: log4net.config
+          path: ./backend/bin/Release/net10.0-windows7.0/log4net.config
+          if-no-files-found: error
+
+  deployment:
+    
+    name: My first Job
+    runs-on: windows-latest
+    environment:
+      name: production
+      url: https://github.com
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Greetings
+        run: echo "Hello"
+
+      - name: Print secrets
+        run: |
+          echo "APP_SECRET: ${{secrets.APP_SECRET}}"
+          echo "Kestrel__Endpoints__Https__Url: ${{secrets.Kestrel__Endpoints__Https__Url}}"
+          echo "Kestrel__Endpoints__Https__Certificate__Path: ${{secrets.Kestrel__Endpoints__Https__Certificate__Path}}"
+          echo "Kestrel__Endpoints__Https__Certificate__Password: ${{secrets.Kestrel__Endpoints__Https__Certificate__Password}}"
+          echo "AppSettings__SpryngApiToken: ${{secrets.AppSettings__SpryngApiToken}}"
+          echo "AppSettings__SmtpPass: ${{secrets.AppSettings__SmtpPass}}"
+          echo "AppSettings__JwtSecret: ${{secrets.AppSettings__JwtSecret}}"
+          echo "AppSettings__BrevoApiKey: ${{secrets.AppSettings__BrevoApiKey}}"
+
+      - name: Print secrets as environment variables
+        #run: |
+        #  echo "Kestrel__Endpoints__Https__Url: $Kestrel__Endpoints__Https__Url"
+        env:
+          Kestrel__Endpoints__Https__Url: ${{secrets.Kestrel__Endpoints__Https__Url}}
+          APP_SECRET: ${{secrets.APP_SECRET}}
+        run: |
+          echo "Kestrel__Endpoints__Https__Url: $Kestrel__Endpoints__Https__Url"
+          echo "APP_SECRET: ${{secrets.APP_SECRET}}"
+
+  verify-upload-download:
+    needs: [backend-ci, deployment]
+    name: Verify log file upload and download
+
+    # 1. YOU MUST TARGET THE SPECIFIC ENVIRONMENT HERE
+    environment: Production
+
+    runs-on: windows-latest
+    steps:
+      - name: Download log file
+        uses: actions/download-artifact@v4
+        with:
+          name: log4net.config
+          path: ./backend/bin/Release/net10.0-windows7.0
+
+      - name: Verify file existence
+        run: |
+          if (Test-Path -LiteralPath './backend/bin/Release/net10.0-windows7.0/log4net.config' -PathType Leaf) {
+            Write-Output 'Success: File exists!'
+          } else {
+            throw 'Error: File not found!'
+          }
+
+      - name: Set variable
+        run: |
+          echo "variableName=this-is-value" >> $env:GITHUB_ENV
+      - name: Use variable
+        run: |
+          echo $variableName
+
+      - name: Use variable intended for non-sensitive values such as URLs
+        run: |
+          echo "APPSETTINGS_SMTPPASS = ${{vars.APPSETTINGS_SMTPPASS}}"
+          echo "KESTREL__ENDPOINTS__HTTPS__URL =${{secrets.KESTREL__ENDPOINTS__HTTPS__URL}}"
+
+      - name: Get current date (PowerShell)
+        id: date_step
+        shell: pwsh
+        run: |
+          $date = (Get-Date -Format "yyyy-MM-dd")
+          echo "current_date=$date" >> $env:GITHUB_OUTPUT
+          $date_ss = (Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+          echo "timestamp=$date_ss" >> $env:GITHUB_OUTPUT
+
+      - name: Use the date output
+        run: |
+          echo "The current date is: ${{ steps.date_step.outputs.current_date }}"
+          echo "The timestamp date is: ${{ steps.date_step.outputs.timestamp }}"
