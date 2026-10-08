@@ -102,7 +102,7 @@ jobs:
       - name: Set variable
         run: |
           echo "variableName=this-is-value" >> $env:GITHUB_ENV
-          echo "smtp=$vars:APPSETTINGS_SMTPPASS" >> $env:GITHUB_ENV
+          echo "smtp=${{vars.APPSETTINGS_SMTPPASS}}" >> $env:GITHUB_ENV
       - name: Use variable
         run: |
           echo "variableName=$env:variableName"
