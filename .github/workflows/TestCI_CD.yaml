@@ -1,4 +1,4 @@
-name: JD Real Test
+name: TestCI_CD
 on:
   workflow_dispatch:
 
