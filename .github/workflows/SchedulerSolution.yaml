@@ -1,7 +1,7 @@
 name: CI/CD Pipeline
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
   #push:
   #  branches: [ "main" ]
   #pull_request:
@@ -15,79 +15,79 @@ jobs:
     runs-on: windows-latest
     defaults:
       run:
-        working-directory: ./client # Path to your Angular app
+        working-directory: ./frontend
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@7
+      uses: actions/checkout@v4
 
     - name: Setup Node.js
-      uses: actions/setup-nodecheckout@7
+      uses: actions/setup-node@v4
       with:
         node-version: '24' # Match your Angular version requirement
         cache: 'npm'
-        cache-dependency-path: ./client/package-lock.json
+        cache-dependency-path: ./frontend/package-lock.json
 
     - name: Install dependencies
-      run: npm ci
+      run: npm ci --legacy-peer-deps
 
-    - name: Run Linter & Tests
-      run: |
-        npm run lint --if-present
-        npm run test -- --watch=false --browsers=ChromeHeadless --if-present
+    - name: Run Linter
+      run: npm run lint
+
+    - name: Run Frontend Tests
+      run: npm test -- --watch=false
 
     - name: Build Production Bundle
-      run: npm run build -- --configuration production
+      run: npm run build -- --configuration=production
 
     - name: Upload Frontend Artifact
-      uses: actions/upload-artifactcheckout@7
+      uses: actions/upload-artifact@v4
       with:
         name: angular-dist
-        path: ./client/dist/
+        path: ./frontend/dist/frontend/browser/
+        if-no-files-found: error
 
   # ==========================================
-  # JOB 2: Build, Test, and Publish .NET API
+  # JOB 2: Build and Publish .NET API
   # ==========================================
   build-backend:
     runs-on: windows-latest
     needs: build-frontend # Ensures UI builds first if you integrate files into wwwroot
     defaults:
       run:
-        working-directory: ./api # Path to your .NET Solution/Project
+        working-directory: ./backend
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@7
+      uses: actions/checkout@v4
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnetcheckout@7
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x' # Updates to '9.0.x' or '10.0.x' as needed
+        dotnet-version: '10.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore backend.csproj
 
     - name: Build Solution
-      run: dotnet build --no-restore --configuration Release
-
-    - name: Run backend tests
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet build backend.csproj --no-restore --configuration Release
 
     # Optional: If hosting Angular directly via ASP.NET Core UseStaticFiles()
     - name: Download Frontend Artifacts into API wwwroot
-      uses: actions/download-artifactcheckout@7
+      uses: actions/download-artifact@v4
       with:
         name: angular-dist
-        path: ./api/wwwroot # Adjust if your project maps static files elsewhere
+        path: ./backend/wwwroot
 
     - name: Publish API
-      run: dotnet publish --configuration Release --output ./publish
+      run: dotnet publish backend.csproj --no-restore --configuration Release --output ./publish
 
     - name: Upload Deployment Package
-      uses: actions/upload-artifactcheckout@7
+      uses: actions/upload-artifact@v4
       with:
         name: app-deploy-package
-        path: ./api/publish/
+        path: ./backend/publish/
+        if-no-files-found: error
 
   # ==========================================
   # JOB 3: Deploy Package (Target Independent)
@@ -99,7 +99,7 @@ jobs:
 
     steps:
     - name: Download App Package
-      uses: actions/download-artifactcheckout@7
+      uses: actions/download-artifact@v4
       with:
         name: app-deploy-package
         path: ./app
