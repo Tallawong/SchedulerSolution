@@ -14,7 +14,7 @@ on:
 jobs:
   # --- BACKEND JOB ---
   backend-ci:
-    runs-on: [self-hosted, windows-latest]
+    runs-on: [self-hosted]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -36,7 +36,7 @@ jobs:
 
   # --- FRONTEND JOB ---
   frontend-ci:
-    runs-on: [self-hosted, windows-latest]
+    runs-on: [self-hosted]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
