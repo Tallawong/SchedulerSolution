@@ -19,7 +19,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@4.1.1
+      uses: actions/checkout7.0.1
 
     - name: Setup Node.js
       uses: actions/setup-node@4.1.1
@@ -57,7 +57,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@4.1.1
+      uses: actions/checkout7.0.1
 
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@4.1.1
