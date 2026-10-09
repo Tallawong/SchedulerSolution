@@ -124,6 +124,7 @@ jobs:
 
 
   job1:
+    name: Job1
     runs-on: windows-latest
     # 1. Declare the job-level outputs and map them to step outputs
     outputs:
@@ -137,6 +138,7 @@ jobs:
           echo "step_var=HelloFromJob1" >> $env:GITHUB_OUTPUT
 
   job2:
+    name: Job2
     runs-on: windows-latest
     # 3. Explicitly state dependency so job2 waits for job1 to complete
     needs: job1 
