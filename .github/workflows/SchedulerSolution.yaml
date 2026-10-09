@@ -19,10 +19,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@4.1.1
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@4.1.1
       with:
         node-version: '24' # Match your Angular version requirement
         cache: 'npm'
@@ -40,7 +40,7 @@ jobs:
       run: npm run build -- --configuration production
 
     - name: Upload Frontend Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@4.1.1
       with:
         name: angular-dist
         path: ./client/dist/
@@ -57,10 +57,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@4.1.1
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@4.1.1
       with:
         dotnet-version: '8.0.x' # Updates to '9.0.x' or '10.0.x' as needed
 
@@ -75,7 +75,7 @@ jobs:
 
     # Optional: If hosting Angular directly via ASP.NET Core UseStaticFiles()
     - name: Download Frontend Artifacts into API wwwroot
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@4.1.1
       with:
         name: angular-dist
         path: ./api/wwwroot # Adjust if your project maps static files elsewhere
@@ -84,7 +84,7 @@ jobs:
       run: dotnet publish --configuration Release --output ./publish
 
     - name: Upload Deployment Package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@4.1.1
       with:
         name: app-deploy-package
         path: ./api/publish/
@@ -99,7 +99,7 @@ jobs:
 
     steps:
     - name: Download App Package
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@4.1.1
       with:
         name: app-deploy-package
         path: ./app
