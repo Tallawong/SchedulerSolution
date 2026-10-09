@@ -108,11 +108,6 @@ jobs:
           echo "variableName=$env:variableName"
           echo "smtp=$env:smtp"
 
-      - name: Use variable intended for non-sensitive values such as URLs
-        run: |
-          echo "APPSETTINGS_SMTPPASS = ${{vars.APPSETTINGS_SMTPPASS}}"
-          echo "KESTREL__ENDPOINTS__HTTPS__URL =${{secrets.KESTREL__ENDPOINTS__HTTPS__URL}}"
-
       - name: Get current date (PowerShell)
         id: date_step
         shell: pwsh
@@ -126,3 +121,28 @@ jobs:
         run: |
           echo "The current date is: ${{ steps.date_step.outputs.current_date }}"
           echo "The timestamp date is: ${{ steps.date_step.outputs.timestamp }}"
+
+
+  job1:
+    runs-on: windows-latest
+    # 1. Declare the job-level outputs and map them to step outputs
+    outputs:
+      my_shared_var: ${{ steps.step_identifier.outputs.step_var }}
+    
+    steps:
+      - name: Generate the variable value
+        id: step_identifier # Required to reference this step's output
+        run: |
+          # 2. Write the value to the special $GITHUB_OUTPUT file
+          echo "step_var=HelloFromJob1" >> $GITHUB_OUTPUT
+
+  job2:
+    runs-on: windows-latest
+    # 3. Explicitly state dependency so job2 waits for job1 to complete
+    needs: job1 
+    
+    steps:
+      - name: Use the passed variable
+        run: |
+          # 4. Access the value using the needs context
+          echo "The value from job1 is: ${{ needs.job1.outputs.my_shared_var }}"
