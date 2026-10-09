@@ -52,10 +52,23 @@ jobs:
         run: npm ci --legacy-peer-deps
         working-directory: ./frontend
 
-      - name: Lint and Format
-        run: |
-          npm run lint -fix
-          npm run format:check
+      - name: Check formatting
+        id: format_check
+        run: npm run format:check
+        continue-on-error: true
+        working-directory: ./frontend
+
+      - name: Fix formatting if needed
+        if: steps.format_check.outcome == 'failure'
+        run: npm run format
+        working-directory: ./frontend
+
+      - name: Verify formatting
+        run: npm run format:check
+        working-directory: ./frontend
+
+      - name: Lint
+        run: npm run lint
         working-directory: ./frontend
 
       - name: Run Frontend Tests
