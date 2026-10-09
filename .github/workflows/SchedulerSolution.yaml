@@ -57,7 +57,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout7.0.1
+      uses: actions/checkout@7.0.1
 
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@7.0.1
