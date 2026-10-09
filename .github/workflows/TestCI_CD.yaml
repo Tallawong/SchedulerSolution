@@ -134,7 +134,7 @@ jobs:
         id: step_identifier # Required to reference this step's output
         run: |
           # 2. Write the value to the special $GITHUB_OUTPUT file
-          echo "step_var=HelloFromJob1" >> $GITHUB_OUTPUT
+          echo "step_var=HelloFromJob1" >> $env:GITHUB_OUTPUT
 
   job2:
     runs-on: windows-latest
