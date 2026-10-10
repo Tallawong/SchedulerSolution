@@ -125,7 +125,7 @@ export class ScheduleAllocatorComponent implements OnInit, AfterViewInit {
 
     this.connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl(environment.baseUrl + '/update')
+      .withUrl(environment.apiUrl + '/update')
       .build();
 
     this.connection
