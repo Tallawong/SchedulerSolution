@@ -73,20 +73,19 @@ namespace Backend.Services
 
                 // Send the email
                 var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
-                var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    log.Info($"Success sending email via Brevo (FREE!)\n {subject}: {subject}\n Message: {html}\n To: {to}");
+                    log.Info("Email sent via Brevo.");
                 }
                 else
                 {
-                    log.Error($"Failed to send email via Brevo\n Subject: {subject}\n To: {to}\n Status: {response.StatusCode}\n Response: {responseContent}");
+                    log.Error($"Failed to send email via Brevo. Status: {response.StatusCode}");
                 }
             }
             catch (Exception ex)
             {
-                log.Error($"Exception sending email via Brevo\n Subject: {subject}\n Message: {html}\n To: {to}\n Error: {ex.Message}", ex);
+                log.Error($"Exception sending email via Brevo: {ex.GetType().Name}");
             }
         }
     }

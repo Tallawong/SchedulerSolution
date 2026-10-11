@@ -256,7 +256,7 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in RefreshToken:");
+                    log.Error(Thread.CurrentThread.Name + "Error occurred in RefreshToken:", ex);
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
@@ -3223,12 +3223,12 @@ namespace WebApi.Services
             //var account = _context.Accounts.SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
             if (account == null)
             {
-                throw new AppException("Account null for token:"+ token);
+                throw new AppException("Account not found for refresh token");
             }
             var refreshToken = account.RefreshTokens.Single(x => x.Token == token);
             if (!refreshToken.IsActive)
             {
-                throw new AppException("Account found but token is not active:"+ token);
+                throw new AppException("Refresh token is not active");
             }
             return (refreshToken, account);
         }

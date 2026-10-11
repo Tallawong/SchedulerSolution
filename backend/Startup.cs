@@ -38,7 +38,6 @@ using Microsoft.AspNetCore.Http;
 using Scalar.AspNetCore;
 using Backend.Services;
 
-[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config", Watch = true)]
 namespace WebApi
 {
     public class Startup

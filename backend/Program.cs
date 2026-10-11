@@ -1,4 +1,5 @@
 ﻿using log4net;
+using log4net.Config;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Http;
@@ -16,6 +17,14 @@ namespace WebApi
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public static void Main(string[] args)
         {
+            var home = Environment.GetEnvironmentVariable("HOME");
+            var logDirectory = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME")) && !string.IsNullOrWhiteSpace(home)
+                ? Path.Combine(home, "LogFiles", "Application")
+                : Path.Combine(AppContext.BaseDirectory, "logs");
+            Directory.CreateDirectory(logDirectory);
+            GlobalContext.Properties["LogFilePath"] = Path.Combine(logDirectory, "myapp.log");
+            XmlConfigurator.Configure(LogManager.GetRepository(typeof(Program).Assembly), new FileInfo(Path.Combine(AppContext.BaseDirectory, "log4net.config")));
+
             CancellationTokenSource tokenSource = new CancellationTokenSource(); // Create a token source.
 
             // Create an AutoResetEvent to signal the timeout threshold in the

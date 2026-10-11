@@ -65,6 +65,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Update="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
     <None Update="Agents2TasksConsole.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
