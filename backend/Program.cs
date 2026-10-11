@@ -1,5 +1,7 @@
 ﻿using log4net;
+using log4net.Appender;
 using log4net.Config;
+using log4net.Repository.Hierarchy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Http;
@@ -23,7 +25,11 @@ namespace WebApi
                 : Path.Combine(AppContext.BaseDirectory, "logs");
             Directory.CreateDirectory(logDirectory);
             GlobalContext.Properties["LogFilePath"] = Path.Combine(logDirectory, "myapp.log");
-            XmlConfigurator.Configure(LogManager.GetRepository(typeof(Program).Assembly), new FileInfo(Path.Combine(AppContext.BaseDirectory, "log4net.config")));
+            var repository = LogManager.GetRepository(typeof(Program).Assembly);
+            var configFile = new FileInfo(Path.Combine(AppContext.BaseDirectory, "log4net.config"));
+            XmlConfigurator.Configure(repository, configFile);
+            var fileAppender = Array.Find(((Hierarchy)repository).GetAppenders(), appender => appender is RollingFileAppender) as RollingFileAppender;
+            Console.WriteLine($"log4net file: {fileAppender?.File ?? "not configured"}; exists: {File.Exists(fileAppender?.File)}; config found: {configFile.Exists}");
 
             CancellationTokenSource tokenSource = new CancellationTokenSource(); // Create a token source.
 
