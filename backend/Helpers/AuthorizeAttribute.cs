@@ -5,7 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebApi.Entities;
-using log4net;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
@@ -23,7 +24,6 @@ using System.Security.Claims;
 //[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
 public class AuthorizeAttribute : Attribute, Microsoft.AspNetCore.Mvc.Filters.IAuthorizationFilter
 {
-    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
     private readonly IList<Role> _roles;
 
@@ -51,7 +51,8 @@ public class AuthorizeAttribute : Attribute, Microsoft.AspNetCore.Mvc.Filters.IA
         var account = (Account)context.HttpContext.Items["Account"];
         if (account == null || (_roles.Any() && !_roles.Contains(account.Role)))
         {
-            log.Info("Not logged in or role not authorized for action: " + context.ActionDescriptor.DisplayName);
+            context.HttpContext.RequestServices.GetRequiredService<ILogger<AuthorizeAttribute>>()
+                .LogInformation("Not logged in or role not authorized for action: {Action}", context.ActionDescriptor.DisplayName);
             // not logged in or role not authorized
             context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
         }

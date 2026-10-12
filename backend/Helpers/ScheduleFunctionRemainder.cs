@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System;
-using log4net;
+using Microsoft.Extensions.Logging;
 using WebApi.Entities;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Services;
@@ -24,7 +24,7 @@ namespace WebApi.Helpers
     {
         public static TimeSpan HOUR_TIMEOUT = new TimeSpan(0, /*1*/0, /*0*/1, 0);         // Hourly timeout
 
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static ILogger<ScheduleFunctionRemainder> log;
 
         private static bool terminate = false;
         private static DataContext _context;
@@ -35,6 +35,7 @@ namespace WebApi.Helpers
 
         public ScheduleFunctionRemainder(IServiceProvider provider)
         {
+            log = provider.GetRequiredService<ILogger<ScheduleFunctionRemainder>>();
             scope = provider.CreateScope();
             _context = scope.ServiceProvider.GetRequiredService<DataContext>();
             _emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
@@ -72,7 +73,7 @@ namespace WebApi.Helpers
             {
                 // Reset the counter and signal the waiting thread.
                 _context.Dispose();
-                log.InfoFormat("Timer reminding the function to attend has exited gracefully. {0} ", "");
+                log.LogInformation("Timer reminding the function to attend has exited gracefully.");
             }
         }
         public void Terminate()

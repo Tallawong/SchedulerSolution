@@ -1,10 +1,10 @@
-﻿using Aspose.Pdf.Operators;
+﻿﻿using Aspose.Pdf.Operators;
 using AutoMapper;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
-using log4net;
+using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -32,9 +32,7 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class AccountsController : BaseController
     {
-        #region log4net
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        #endregion //log4net
+        private readonly ILogger<AccountsController> log;
 
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
@@ -46,8 +44,10 @@ namespace WebApi.Controllers
             IAccountService accountService,
             IMapper mapper,
             IOptions<AppSettings> appSettings,
-            Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment)
+            Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment,
+            ILogger<AccountsController> logger)
         {
+            log = logger;
             _accountService = accountService;
             _mapper = mapper;
             _appSettings = appSettings.Value;
@@ -60,7 +60,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                log.InfoFormat("Authenticating user {0} for ipaddress: {1}", model.Email, ipAddress());
+                log.LogInformation("Authenticating user {0} for ipaddress: {1}", model.Email, ipAddress());
                 var response = _accountService.Authenticate(model, ipAddress());
                 setTokenCookie(response.RefreshToken);
 
@@ -77,7 +77,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                log.InfoFormat("Authenticating user with MFA {0} for ipaddress: {1}",
+                log.LogInformation("Authenticating user with MFA {0} for ipaddress: {1}",
                     model.Email,
                     ipAddress());
                 
@@ -85,13 +85,13 @@ namespace WebApi.Controllers
                 
                 if (response.MfaRequired)
                 {
-                    log.InfoFormat("MFA required for user {0}", model.Email);
+                    log.LogInformation("MFA required for user {0}", model.Email);
                 }
                 else
                 {
                     // MFA not enabled, return tokens directly
                     // Note: This path is less common - typically you'd use /authenticate endpoint if MFA is not enabled
-                    log.InfoFormat("MFA not required for user {0}", model.Email);
+                    log.LogInformation("MFA not required for user {0}", model.Email);
                     setTokenCookie(response.RefreshToken);
                 }
 
@@ -99,7 +99,7 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                log.Error($"Error in AuthenticateWithMfa for {model.Email}", ex);
+                log.LogError(ex, $"Error in AuthenticateWithMfa for {model.Email}");
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -109,17 +109,17 @@ namespace WebApi.Controllers
         {
             try
             {
-                log.InfoFormat("Verifying MFA for user {0}", model.Email);
+                log.LogInformation("Verifying MFA for user {0}", model.Email);
                 
                 var response = await _accountService.VerifyMfaAsync(model, ipAddress());
                 setTokenCookie(response.RefreshToken);
 
-                log.InfoFormat("MFA verification successful for user {0}", model.Email);
+                log.LogInformation("MFA verification successful for user {0}", model.Email);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                log.Error($"Error in VerifyMfa for {model.Email}", ex);
+                log.LogError(ex, $"Error in VerifyMfa for {model.Email}");
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -220,12 +220,12 @@ namespace WebApi.Controllers
 
                 await _accountService.EnableMfaAsync(id, model.PhoneNumber);
                 
-                log.InfoFormat("MFA enabled for user {0}", id);
+                log.LogInformation("MFA enabled for user {0}", id);
                 return Ok(new { message = "MFA enabled successfully. You will receive SMS verification codes for future logins." });
             }
             catch (Exception ex)
             {
-                log.Error($"Error enabling MFA for user {id}", ex);
+                log.LogError(ex, $"Error enabling MFA for user {id}");
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -242,12 +242,12 @@ namespace WebApi.Controllers
 
                 await _accountService.DisableMfaAsync(id);
                 
-                log.InfoFormat("MFA disabled for user {0}", id);
+                log.LogInformation("MFA disabled for user {0}", id);
                 return Ok(new { message = "MFA disabled successfully." });
             }
             catch (Exception ex)
             {
-                log.Error($"Error disabling MFA for user {id}", ex);
+                log.LogError(ex, $"Error disabling MFA for user {id}");
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -268,7 +268,7 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                log.Error($"Error getting MFA status for user {id}", ex);
+                log.LogError(ex, $"Error getting MFA status for user {id}");
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -276,7 +276,7 @@ namespace WebApi.Controllers
         [HttpPost("verify-")]
         public IActionResult VerifyEmail(VerifyEmailRequest model)
         {
-            //log.Info("VerifyEmail before calling Parse");
+            //log.LogInformation("VerifyEmail before calling Parse");
             //DateTime dateTime = DateTime.Parse(model.Dob);
             _accountService.VerifyEmail(model/*model.Token, dateTime*/);
             return Ok(new { message = "Verification successful, you can now login" });
@@ -330,7 +330,7 @@ namespace WebApi.Controllers
             // users can get their own account and admins can get any account
             if (id != Account.Id && Account.Role != Role.Admin)
             {
-                log.ErrorFormat("User Id:{0} First Name:{1} Last Name:{2} e-mail:{3} tried to get the info about \n " +
+                log.LogError("User Id:{0} First Name:{1} Last Name:{2} e-mail:{3} tried to get the info about \n " +
                     "Id:{4} First Name:{5} Last Name:{6} e-mail:{7}",
                     Account.Id,
                     Account.FirstName,

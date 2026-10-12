@@ -1,4 +1,3 @@
-using log4net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
@@ -12,7 +11,6 @@ namespace WebApi.Helpers
 {
     public class DataContext : IdentityDbContext<Account>
     {
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public DbSet<SystemInfo> SystemInformation { get; set; }
 
         public DbSet<Account> Accounts { get; set; }

@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using log4net;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WebApi.Helpers;
 
@@ -11,14 +11,15 @@ namespace WebApi.Services
 {
     public class SpryngSmsService : ISpryngSmsService
     {
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILogger<SpryngSmsService> log;
         private readonly HttpClient _httpClient;
         private readonly string _apiToken;
         private readonly string _sender;
         private const string SPRYNG_API_URL = "https://rest.spryngsms.com/v1/messages";
 
-        public SpryngSmsService(IHttpClientFactory httpClientFactory, IOptions<AppSettings> appSettings)
+        public SpryngSmsService(IHttpClientFactory httpClientFactory, IOptions<AppSettings> appSettings, ILogger<SpryngSmsService> logger)
         {
+            log = logger;
             _httpClient = httpClientFactory.CreateClient();
             _apiToken = appSettings.Value.SpryngApiToken;
             _sender = appSettings.Value.SpryngSender ?? "ScheduleMe";
@@ -30,7 +31,7 @@ namespace WebApi.Services
             {
                 if (string.IsNullOrEmpty(_apiToken))
                 {
-                    log.Error("Spryng API token is not configured");
+                    log.LogError("Spryng API token is not configured");
                     return false;
                 }
 
@@ -56,19 +57,19 @@ namespace WebApi.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    log.InfoFormat("SMS sent successfully to {0}", phoneNumber);
+                    log.LogInformation("SMS sent successfully to {0}", phoneNumber);
                     return true;
                 }
                 else
                 {
-                    log.ErrorFormat("Failed to send SMS to {0}. Status: {1}, Response: {2}", 
+                    log.LogError("Failed to send SMS to {0}. Status: {1}, Response: {2}",
                         phoneNumber, response.StatusCode, responseContent);
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                log.Error($"Error sending SMS to {phoneNumber}", ex);
+                log.LogError(ex, $"Error sending SMS to {phoneNumber}");
                 return false;
             }
         }

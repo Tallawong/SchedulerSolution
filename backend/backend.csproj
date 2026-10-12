@@ -15,6 +15,7 @@
   <!-- Transitive dependency overrides to resolve known security vulnerabilities -->
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.12" />
     <PackageReference Include="NuGet.Packaging" Version="6.13.1" />
     <PackageReference Include="NuGet.Protocol" Version="6.13.1" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.16.16" />
@@ -39,7 +40,6 @@
     <PackageReference Include="Google.Apis.Drive.v3" Version="1.75.0.4210" />
     <PackageReference Include="Google.Apis.Gmail.v1" Version="1.74.0.4162" />
     <PackageReference Include="itext" Version="9.7.0" />
-    <PackageReference Include="log4net" Version="3.3.2" />
     <PackageReference Include="MailKit" Version="4.17.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="10.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.10" />
@@ -65,10 +65,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Update="log4net.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </None>
     <None Update="Agents2TasksConsole.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

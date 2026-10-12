@@ -1,14 +1,10 @@
-﻿using log4net;
-using log4net.Appender;
-using log4net.Config;
-using log4net.Repository.Hierarchy;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Threading;
-using System.Net.Http;
 
 using WebApi.Helpers;
 
@@ -16,21 +12,8 @@ namespace WebApi
 {
     public class Program
     {
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public static void Main(string[] args)
         {
-            var home = Environment.GetEnvironmentVariable("HOME");
-            var logDirectory = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME")) && !string.IsNullOrWhiteSpace(home)
-                ? Path.Combine(home, "LogFiles", "Application")
-                : Path.Combine(AppContext.BaseDirectory, "logs");
-            Directory.CreateDirectory(logDirectory);
-            GlobalContext.Properties["LogFilePath"] = Path.Combine(logDirectory, "myapp.log");
-            var repository = LogManager.GetRepository(typeof(Program).Assembly);
-            var configFile = new FileInfo(Path.Combine(AppContext.BaseDirectory, "log4net.config"));
-            XmlConfigurator.Configure(repository, configFile);
-            var fileAppender = Array.Find(((Hierarchy)repository).GetAppenders(), appender => appender is RollingFileAppender) as RollingFileAppender;
-            Console.WriteLine($"log4net file: {fileAppender?.File ?? "not configured"}; exists: {File.Exists(fileAppender?.File)}; config found: {configFile.Exists}");
-
             CancellationTokenSource tokenSource = new CancellationTokenSource(); // Create a token source.
 
             // Create an AutoResetEvent to signal the timeout threshold in the
@@ -46,7 +29,7 @@ namespace WebApi
             // Start thread
             backgroundThread.Start();
 
-            log.Info("Schedule reminder started");
+            ihost.Services.GetRequiredService<ILogger<Program>>().LogInformation("Schedule reminder started");
 
             //Timer stateTimer = new Timer(scheduleFunctionRemainder.CheckStatus, autoEvent, 0, 1000 * 60 * 5);
             ihost.Run();
@@ -64,6 +47,14 @@ namespace WebApi
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
+                {
+                    var home = Environment.GetEnvironmentVariable("HOME");
+                    var logDirectory = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME")) && !string.IsNullOrWhiteSpace(home)
+                        ? Path.Combine(home, "LogFiles", "Application")
+                        : Path.Combine(AppContext.BaseDirectory, "logs");
+                    logging.AddProvider(new RollingFileLoggerProvider(Path.Combine(logDirectory, "myapp.log")));
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()

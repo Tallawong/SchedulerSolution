@@ -380,7 +380,7 @@ export default {
 ## ?? Need Help?
 
 1. Check `MFA_IMPLEMENTATION_GUIDE.md` for detailed docs
-2. Review logs in your log4net output
+2. Review console logs or `logs/myapp.log` (on Azure App Service: `$HOME/LogFiles/Application/myapp.log`)
 3. Test endpoints with Postman first
 4. Verify Spryng API credentials
 5. Check database migration status

@@ -1,6 +1,7 @@
 #nullable enable
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
 using System.Text;
@@ -8,7 +9,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 //using Backend.Helpers;
 using WebApi.Helpers;
-using log4net;
 
 namespace Backend.Services
 {
@@ -20,14 +20,14 @@ namespace Backend.Services
 
     public class EmailService : IEmailService
     {
-        // Use explicit type to avoid possible null being passed to GetLogger and satisfy nullable analysis
-        private static readonly ILog log = LogManager.GetLogger(typeof(EmailService));
+        private readonly ILogger<EmailService> log;
         private readonly AppSettings _appSettings;
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
 
-        public EmailService(IOptions<AppSettings> appSettings, IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public EmailService(IOptions<AppSettings> appSettings, IHttpClientFactory httpClientFactory, IConfiguration configuration, ILogger<EmailService> logger)
         {
+            log = logger;
             _appSettings = appSettings.Value;
             _httpClient = httpClientFactory.CreateClient();
             _configuration = configuration;
@@ -49,7 +49,7 @@ namespace Backend.Services
                 
                 if (string.IsNullOrWhiteSpace(apiKey))
                 {
-                    log.Error("Brevo API key is not configured at AppSettings:BrevoApiKey");
+                    log.LogError("Brevo API key is not configured at AppSettings:BrevoApiKey");
                     throw new InvalidOperationException("Email service is not properly configured. Brevo API key is missing.");
                 }
 
@@ -76,16 +76,16 @@ namespace Backend.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    log.Info("Email sent via Brevo.");
+                    log.LogInformation("Email sent via Brevo.");
                 }
                 else
                 {
-                    log.Error($"Failed to send email via Brevo. Status: {response.StatusCode}");
+                    log.LogError($"Failed to send email via Brevo. Status: {response.StatusCode}");
                 }
             }
             catch (Exception ex)
             {
-                log.Error($"Exception sending email via Brevo: {ex.GetType().Name}");
+                log.LogError($"Exception sending email via Brevo: {ex.GetType().Name}");
             }
         }
     }

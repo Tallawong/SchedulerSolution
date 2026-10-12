@@ -386,7 +386,7 @@ dotnet ef database update
 ## Support
 
 For issues or questions:
-1. Check logs in `log4net` output
+1. Check console output or `logs/myapp.log` (on Azure App Service: `$HOME/LogFiles/Application/myapp.log`)
 2. Verify Spryng API credentials
 3. Review database migration status
 4. Test with Postman/curl before frontend integration

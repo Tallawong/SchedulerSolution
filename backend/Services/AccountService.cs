@@ -9,7 +9,7 @@ using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
-using log4net;
+using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -134,9 +134,11 @@ namespace WebApi.Services
             UserManager<Account> userManager,
             IConfiguration configuration,
             IUserStore<Account> userStore,
-            Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment
+            Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment,
+            ILogger<AccountService> logger
             )
         {
+            log = logger;
             _context = context;
             _mapper = mapper;
             _appSettings = appSettings.Value;
@@ -165,7 +167,7 @@ namespace WebApi.Services
 
         public AuthenticateResponse Authenticate(AuthenticateRequest model, string ipAddress)
         {
-            log.Info("Authenticate before locking");
+            log.LogInformation("Authenticate before locking");
             semaphoreObject.Wait();
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
             {
@@ -207,21 +209,21 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in Authenticate:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in Authenticate:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("Authenticate after locking");
+                    log.LogInformation("Authenticate after locking");
                 }
             }
         }
 
         public AuthenticateResponse RefreshToken(string token, string ipAddress)
         {
-            log.Info("RefreshToken before locking");
+            log.LogInformation("RefreshToken before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -256,21 +258,21 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in RefreshToken:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in RefreshToken:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("RefreshToken after locking");
+                    log.LogInformation("RefreshToken after locking");
                 }
             }
         }
 
         public void RevokeToken(string token, string ipAddress)
         {
-            log.Info("RevokeToken before locking");
+            log.LogInformation("RevokeToken before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -290,20 +292,20 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in RevokeToken:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in RevokeToken:");
                     ExceptionDispatchInfo.Throw(ex);
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("RevokeToken after locking");
+                    log.LogInformation("RevokeToken after locking");
                 }
             }
         }
 
         public IdentityResult Register(RegisterRequest model, string origin)
         {
-            log.Info("Register before locking");
+            log.LogInformation("Register before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -351,7 +353,7 @@ namespace WebApi.Services
                         sendVerificationEmail(user, origin);
                     }
                     transaction.Commit();
-                    log.WarnFormat("Registration successful for = '{0}' ", model.Email);
+                    log.LogWarning("Registration successful for = '{0}' ", model.Email);
                     return result;
                  
 
@@ -377,7 +379,7 @@ namespace WebApi.Services
                     
 
                     transaction.Commit();
-                    log.WarnFormat("Registration successful for = {0} ", model.Email);
+                    log.LogWarning("Registration successful for = {0} ", model.Email);
                     return IdentityResult.Success;
                     */
                 }
@@ -385,21 +387,21 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in Register:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in Register:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("Register after locking");
+                    log.LogInformation("Register after locking");
                 }
             }
         }
 
         public AccountResponse Create(CreateRequest model)
         {
-            log.Info("Create before locking");
+            log.LogInformation("Create before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -433,21 +435,21 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in Create:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in Create:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("Create after locking");
+                    log.LogInformation("Create after locking");
                 }
             }
         }
 
         public AccountResponse Update(string id, AccountRequest model)
         {
-            log.Info("Update before locking"); ;
+            log.LogInformation("Update before locking"); ;
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -480,21 +482,21 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in Update:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in Update:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("Update after locking"); ;
+                    log.LogInformation("Update after locking"); ;
                 }
             }
         }
 
         public void VerifyEmail(VerifyEmailRequest model)
         {
-            log.Info("VerifyEmail before locking");
+            log.LogInformation("VerifyEmail before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -516,20 +518,20 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name);
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in VerifyEmail:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in VerifyEmail:");
                     ExceptionDispatchInfo.Throw(ex);
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("VerifyEmail after locking");
+                    log.LogInformation("VerifyEmail after locking");
                 }
             }
         }
 
         public void ForgotPassword(ForgotPasswordRequest model, string origin)
         {
-            log.Info("ForgotPassword before locking");
+            log.LogInformation("ForgotPassword before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -560,20 +562,20 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in ForgotPassword:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in ForgotPassword:");
                     ExceptionDispatchInfo.Throw(ex);
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("ForgotPassword after locking");
+                    log.LogInformation("ForgotPassword after locking");
                 }
             }
         }
 
         public void ValidateResetToken(ValidateResetTokenRequest model)
         {
-            log.Info("ValidateResetToken before locking");
+            log.LogInformation("ValidateResetToken before locking");
             semaphoreObject.Wait();
             try
             {
@@ -585,19 +587,19 @@ namespace WebApi.Services
             catch (Exception ex)
             {
                 Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                log.Error(Thread.CurrentThread.Name + "Error occurred in ValidateResetToken:", ex);
+                log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in ValidateResetToken:");
                 ExceptionDispatchInfo.Throw(ex);
             }
             finally
             {
                 semaphoreObject.Release();
-                log.Info("ValidateResetToken after locking");
+                log.LogInformation("ValidateResetToken after locking");
             }
         }
 
         public void ResetPassword(ResetPasswordRequest model)
         {
-            log.Info("ResetPassword before locking");
+            log.LogInformation("ResetPassword before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -626,20 +628,20 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in ResetPassword:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in ResetPassword:");
                     ExceptionDispatchInfo.Throw(ex);
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("ResetPassword after locking");
+                    log.LogInformation("ResetPassword after locking");
                 }
             }
         }
 
         public IEnumerable<AccountResponse> GetAll()
         {
-            log.Info("GetAll before locking");
+            log.LogInformation("GetAll before locking");
             semaphoreObject.Wait();
 
             try
@@ -650,20 +652,20 @@ namespace WebApi.Services
             catch (Exception ex)
             {
                 Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                log.Error(Thread.CurrentThread.Name + "Error occurred in GetAll:", ex);
+                log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in GetAll:");
                 ExceptionDispatchInfo.Throw(ex);
                 throw;
             }
             finally
             {
                 semaphoreObject.Release();
-                log.Info("GetAll after locking");
+                log.LogInformation("GetAll after locking");
             }
         }
 
         public IEnumerable<AccountResponse> GetAccountsForDateAndTask(AccountsByDateAndTaskDTO accountsByDateAndTaskDTO)
         {
-            log.Info("GetAccountsForDate before locking");
+            log.LogInformation("GetAccountsForDate before locking");
             semaphoreObject.Wait();
 
             try
@@ -679,20 +681,20 @@ namespace WebApi.Services
             catch (Exception ex)
             {
                 Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                log.Error(Thread.CurrentThread.Name + "Error occurred in GetAccountsForDate:", ex);
+                log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in GetAccountsForDate:");
                 ExceptionDispatchInfo.Throw(ex);
                 throw;
             }
             finally
             {
                 semaphoreObject.Release();
-                log.Info("GetAccountsForDate after locking");
+                log.LogInformation("GetAccountsForDate after locking");
             }
         }
 
         public ScheduleDateTimeResponse GetAllDates()
         {
-            log.Info("GetAllDates before locking");
+            log.LogInformation("GetAllDates before locking");
             semaphoreObject.Wait();
             try
             {
@@ -701,20 +703,20 @@ namespace WebApi.Services
             catch (Exception ex)
             {
                 Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                log.Error(Thread.CurrentThread.Name + "Error occurred in GetAllDates:", ex);
+                log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in GetAllDates:");
                 ExceptionDispatchInfo.Throw(ex);
                 throw;
             }
             finally
             {
                 semaphoreObject.Release();
-                log.Info("GetAllDates after locking");
+                log.LogInformation("GetAllDates after locking");
             }
         }
 
         public DateFunctionTeamResponse GetTeamsByFunctionForDate(string dateStr)
         {
-            log.Info("GetTeamsByFunctionForDate before locking");
+            log.LogInformation("GetTeamsByFunctionForDate before locking");
             semaphoreObject.Wait();
 
             try
@@ -724,20 +726,20 @@ namespace WebApi.Services
             catch (Exception ex)
             {
                 Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                log.Error(Thread.CurrentThread.Name + "Error occurred in GetTeamsByFunctionForDate:", ex);
+                log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in GetTeamsByFunctionForDate:");
                 ExceptionDispatchInfo.Throw(ex);
                 throw;
             }
             finally
             {
                 semaphoreObject.Release();
-                log.Info("GetTeamsByFunctionForDate after locking");
+                log.LogInformation("GetTeamsByFunctionForDate after locking");
             }
         }
 
         public AccountResponse GetById(string id)
         {
-            log.Info("GetById before locking");
+            log.LogInformation("GetById before locking");
             semaphoreObject.Wait();
 
             try
@@ -751,20 +753,20 @@ namespace WebApi.Services
             catch (Exception ex)
             {
                 Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                log.Error(Thread.CurrentThread.Name + "Error occurred in GetById:", ex);
+                log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in GetById:");
                 ExceptionDispatchInfo.Throw(ex);
                 throw;
             }
             finally
             {
                 semaphoreObject.Release();
-                log.Info("GetById after locking");
+                log.LogInformation("GetById after locking");
             }
         }
 
         public AccountResponse DeleteSchedule(string id, UpdateScheduleRequest scheduleReq)
         {
-            log.InfoFormat("DeleteSchedule before locking");
+            log.LogInformation("DeleteSchedule before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -790,7 +792,7 @@ namespace WebApi.Services
                     }
                     else
                     {
-                        log.Info("DeleteSchedule got NULL from Schedules");
+                        log.LogInformation("DeleteSchedule got NULL from Schedules");
                         throw new AppException("The schedule has been already deleted");
                     }
 
@@ -808,7 +810,7 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.", ex);
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in DeleteSchedule:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in DeleteSchedule:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
@@ -821,7 +823,7 @@ namespace WebApi.Services
         }
         public void DeleteSchedules4Date(string dateStr)
         {
-            log.InfoFormat("DeleteSchedules4Date before locking");
+            log.LogInformation("DeleteSchedules4Date before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -839,7 +841,7 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.", ex);
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in DeleteSchedules4Date:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in DeleteSchedules4Date:");
                     ExceptionDispatchInfo.Throw(ex);
                 }
                 finally
@@ -851,7 +853,7 @@ namespace WebApi.Services
         }
         public IEnumerable<UpdateScheduleRequest> DeleteAllSchedules()
         {
-            log.Info("DeleteAllSchedules before locking");
+            log.LogInformation("DeleteAllSchedules before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -871,21 +873,21 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in DeleteAllSchedules:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in DeleteAllSchedules:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("DeleteAllSchedules after locking");
+                    log.LogInformation("DeleteAllSchedules after locking");
                 }
             }
         }
 
         public Boolean DeleteAllTimeSlots()
         {
-            log.Info("DeleteAllTimeSlots before locking");
+            log.LogInformation("DeleteAllTimeSlots before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -903,21 +905,21 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in DeleteAllTimeSlots:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in DeleteAllTimeSlots:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("DeleteAllTimeSlots after locking");
+                    log.LogInformation("DeleteAllTimeSlots after locking");
                 }
             }
         }
 
         public AccountResponse AddSchedule(string id, UpdateScheduleRequest scheduleReq)
         {
-            log.Info("AddSchedule before locking");
+            log.LogInformation("AddSchedule before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -952,21 +954,21 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in AddSchedule:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in AddSchedule:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("AddSchedule after locking");
+                    log.LogInformation("AddSchedule after locking");
                 }
             }
         }
 
         public AccountResponse UpdateSchedule(string id, UpdateScheduleRequest scheduleReq)
         {
-            log.Info("UpdateSchedule before locking");
+            log.LogInformation("UpdateSchedule before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -1003,20 +1005,20 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in UpdateSchedule:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in UpdateSchedule:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("UpdateSchedule after locking");
+                    log.LogInformation("UpdateSchedule after locking");
                 }
             }
         }
         public IEnumerable<AccountResponse> GetSchedules4Date(string dateStr)
         {
-            log.Info("GetSchedules4Date before locking");
+            log.LogInformation("GetSchedules4Date before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -1032,21 +1034,21 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in GetSchedules4Date:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in GetSchedules4Date:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("GetSchedules4Date after locking");
+                    log.LogInformation("GetSchedules4Date after locking");
                 }
             }
         }
 
         public (AccountResponse, string) DeleteFunction(string id, AgentTask task)
         {
-            log.Info("DeleteFunction before locking");
+            log.LogInformation("DeleteFunction before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -1089,21 +1091,21 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in DeleteFunction:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in DeleteFunction:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("DeleteFunction after locking"); ;
+                    log.LogInformation("DeleteFunction after locking"); ;
                 }
             }
         }
 
         public AccountResponse AddFunction(string id, AgentTask task)
         {
-            log.Info("AddFunction before locking");
+            log.LogInformation("AddFunction before locking");
             semaphoreObject.Wait();
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
             {
@@ -1156,21 +1158,21 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in AddFunction:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in AddFunction:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("AddFunction after locking");
+                    log.LogInformation("AddFunction after locking");
                 }
             }
         }
 
         public IEnumerable<Account> TestAddFunction(string id, AgentTask task)
         {
-            log.Info("TestAddFunction before locking");
+            log.LogInformation("TestAddFunction before locking");
             semaphoreObject.Wait();
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
             {
@@ -1197,14 +1199,14 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in TestAddFunction:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in TestAddFunction:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("TestAddFunction after locking");
+                    log.LogInformation("TestAddFunction after locking");
                 }
             }
         }
@@ -1216,7 +1218,7 @@ namespace WebApi.Services
         {
             var autoEmail = GetAutoEmail();
 
-            log.Info("MoveSchedule2Pool before locking");
+            log.LogInformation("MoveSchedule2Pool before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -1224,7 +1226,7 @@ namespace WebApi.Services
                 try
                 {
                     var account = getAccount(id);
-                    log.InfoFormat("MoveSchedule2Pool before locking for {0}. Date {1} function {2}",
+                    log.LogInformation("MoveSchedule2Pool before locking for {0}. Date {1} function {2}",
                         account.FirstName, scheduleReq.Date, scheduleReq.UserFunction);
 
                     Schedule toRemove = null;
@@ -1240,7 +1242,7 @@ namespace WebApi.Services
                     }
                     if (toRemove != null)
                     {
-                        log.Info("MoveSchedule2Pool putting: " + scheduleReq.Date + "/" + scheduleReq.UserFunction + " to pool");
+                        log.LogInformation("MoveSchedule2Pool putting: " + scheduleReq.Date + "/" + scheduleReq.UserFunction + " to pool");
                         PushToPool(account, scheduleReq);
 
                         account.Schedules.Remove(toRemove);
@@ -1257,7 +1259,7 @@ namespace WebApi.Services
                     }
                     else
                     {
-                        log.WarnFormat("Schedule did not exist in the schdule functions for {0}. Date {1} function {2}",
+                        log.LogWarning("Schedule did not exist in the schdule functions for {0}. Date {1} function {2}",
                             account.FirstName, scheduleReq.Date, scheduleReq.UserFunction);
                         throw new AppException("The schedule has been already removed");
                     }
@@ -1268,14 +1270,14 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in MoveSchedule2Pool:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in MoveSchedule2Pool:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("MoveSchedule2Pool after locking");
+                    log.LogInformation("MoveSchedule2Pool after locking");
                 }
             }
         }
@@ -1283,13 +1285,13 @@ namespace WebApi.Services
         public AccountResponse GetScheduleFromPool(string id, UpdateScheduleRequest scheduleReq)
         {
 
-            log.Info("GetScheduleFromPool before locking");
+            log.LogInformation("GetScheduleFromPool before locking");
             semaphoreObject.Wait();
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
             {
                 try
                 {
-                    log.Info("GetScheduleFromPool removing: " + scheduleReq.Date + "/" + scheduleReq.UserFunction + " from pool");
+                    log.LogInformation("GetScheduleFromPool removing: " + scheduleReq.Date + "/" + scheduleReq.UserFunction + " from pool");
 
                     var account = getAccount(id);
 
@@ -1322,7 +1324,7 @@ namespace WebApi.Services
                     else
                     {
                         // Pool element not found - do nothing for now
-                        log.Info("GetScheduleFromPool got NULL from Pool elements");
+                        log.LogInformation("GetScheduleFromPool got NULL from Pool elements");
                         account = null;
                         throw new AppException("The schedule has been already taken");
                     }
@@ -1331,21 +1333,21 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in GetScheduleFromPool:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in GetScheduleFromPool:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("GetScheduleFromPool after locking");
+                    log.LogInformation("GetScheduleFromPool after locking");
                 }
             }
         }
         public SchedulePoolElementsResponse GetAllAvailablePoolElements()
         {
             SchedulePoolElementsResponse response = new SchedulePoolElementsResponse();
-            log.Info("GetAllAvailablePoolElements before locking");
+            log.LogInformation("GetAllAvailablePoolElements before locking");
             semaphoreObject.Wait();
             try
             {
@@ -1354,7 +1356,7 @@ namespace WebApi.Services
             finally
             {
                 semaphoreObject.Release();
-                log.Info("GetAllAvailablePoolElements after locking");
+                log.LogInformation("GetAllAvailablePoolElements after locking");
             }
 
             return response;
@@ -1363,7 +1365,7 @@ namespace WebApi.Services
         public SchedulePoolElementsResponse GetAvailablePoolElementsForAccount(string id)
         {
             SchedulePoolElementsResponse response = new SchedulePoolElementsResponse();
-            log.Info("GetAvailablePoolElementsForAccount before locking");
+            log.LogInformation("GetAvailablePoolElementsForAccount before locking");
             semaphoreObject.Wait();
             try
             {
@@ -1386,13 +1388,13 @@ namespace WebApi.Services
             finally
             {
                 semaphoreObject.Release();
-                log.Info("GetAvailablePoolElementsForAccount after locking");
+                log.LogInformation("GetAvailablePoolElementsForAccount after locking");
             }
             return response;
         }
         public SchedulePoolElement RemoveFromPool(int id, string email, string userFunction)
         {
-            log.Info("GetScheduleFromPool before locking");
+            log.LogInformation("GetScheduleFromPool before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -1426,19 +1428,19 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in RemoveFromPool:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in RemoveFromPool:");
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("GetScheduleFromPool after locking");
+                    log.LogInformation("GetScheduleFromPool after locking");
                 }
             }
             return null;
         }
         public void Delete(string id)
         {
-            log.Info("Delete before locking");
+            log.LogInformation("Delete before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -1455,19 +1457,19 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in Delete:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in Delete:");
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("Delete after locking");
+                    log.LogInformation("Delete after locking");
                 }
             }
         }
 
         public Byte[] DownloadSchedules()
         {
-            log.Info("DownloadSchedules before locking");
+            log.LogInformation("DownloadSchedules before locking");
             semaphoreObject.Wait();
 
             using (MemoryStream memory = new MemoryStream())
@@ -1575,14 +1577,14 @@ namespace WebApi.Services
                         {
                             transaction.Rollback();
                             Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                            log.Error(Thread.CurrentThread.Name + "Error occurred in DownloadSchedules:", ex);
+                            log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in DownloadSchedules:");
                             ExceptionDispatchInfo.Throw(ex);
                             throw;
                         }
                         finally
                         {
                             semaphoreObject.Release();
-                            log.Info("DownloadSchedules after locking");
+                            log.LogInformation("DownloadSchedules after locking");
                         }
                     }
                 }
@@ -1591,7 +1593,7 @@ namespace WebApi.Services
 
         public List<AgentTaskConfig> GetAllAgentTaskConfigs()
         {
-            log.Info("GetAllAgentTaskConfigs before locking");
+            log.LogInformation("GetAllAgentTaskConfigs before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -1605,20 +1607,20 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in GetAllAgentTaskConfigs:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in GetAllAgentTaskConfigs:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("GetAllAgentTaskConfigs after locking");
+                    log.LogInformation("GetAllAgentTaskConfigs after locking");
                 }
             }
         }
         public AgentTaskConfig[] UpdateAgentTaskConfig(string id, UpdateAgentTaskConfigRequest agentTaskConfigReq)
         {
-            log.Info("CreateAgentTaskConfig before locking");
+            log.LogInformation("CreateAgentTaskConfig before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -1643,20 +1645,20 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in CreateAgentTaskConfig:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in CreateAgentTaskConfig:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("CreateAgentTaskConfig after locking");
+                    log.LogInformation("CreateAgentTaskConfig after locking");
                 }
             }
         }
         public void DeleteAgentTaskConfig(string id)
         {
-            log.InfoFormat("DeleteAgentTaskConfig before locking");
+            log.LogInformation("DeleteAgentTaskConfig before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -1673,7 +1675,7 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.", ex);
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in DeleteAgentTaskConfig:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in DeleteAgentTaskConfig:");
                     ExceptionDispatchInfo.Throw(ex);
                 }
                 finally
@@ -1685,7 +1687,7 @@ namespace WebApi.Services
         }
         public void DeleteAllAgentTaskConfigs()
         {
-            log.Info("DeleteAllAgentTaskConfigs before locking");
+            log.LogInformation("DeleteAllAgentTaskConfigs before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -1702,13 +1704,13 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in DeleteAllAgentTaskConfigs:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in DeleteAllAgentTaskConfigs:");
                     ExceptionDispatchInfo.Throw(ex);
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("DeleteAllAgentTaskConfigs after locking");
+                    log.LogInformation("DeleteAllAgentTaskConfigs after locking");
                 }
             }
         }
@@ -1730,19 +1732,19 @@ namespace WebApi.Services
             catch (Exception ex)
             {
                 Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                log.Error(Thread.CurrentThread.Name + "Error occurred in UploadAccounts:", ex);
+                log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in UploadAccounts:");
                 ExceptionDispatchInfo.Throw(ex);
             }
             finally
             {
-                log.Info("UploadAccounts after locking");
+                log.LogInformation("UploadAccounts after locking");
             }
         }
         public Boolean GenerateSchedules()
         {
             DeleteAllSchedules();
 
-            log.Info("UploadTimeSlots before locking");
+            log.LogInformation("UploadTimeSlots before locking");
             semaphoreObject.Wait();
 
             try
@@ -1772,20 +1774,20 @@ namespace WebApi.Services
             catch (Exception ex)
             {
                 Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                log.Error(Thread.CurrentThread.Name + "Error occurred in UploadAccounts:", ex);
+                log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in UploadAccounts:");
                 ExceptionDispatchInfo.Throw(ex);
                 throw;
             }
             finally
             {
-                log.Info("UploadAccounts after locking");
+                log.LogInformation("UploadAccounts after locking");
                 semaphoreObject.Release();
             }
         }
 
         public TimeSlotTasks[] GetTimeSlotsTasks()
         {
-            log.Info("GetTimeSlotsTasks before locking");
+            log.LogInformation("GetTimeSlotsTasks before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -1799,21 +1801,21 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in GetTimeSlotsTasks:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in GetTimeSlotsTasks:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("GetTimeSlotsTasks after locking");
+                    log.LogInformation("GetTimeSlotsTasks after locking");
                 }
             }
         }
 
         public TimeSlotTasks[] SetTimeSlotsTasks(TimeSlotTasks slotFromClient)
         {
-            log.Info("SetTimeSlotsTasks before locking");
+            log.LogInformation("SetTimeSlotsTasks before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -1838,21 +1840,21 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in SetTimeSlotsTasks:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in SetTimeSlotsTasks:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("SetTimeSlotsTasks after locking");
+                    log.LogInformation("SetTimeSlotsTasks after locking");
                 }
             }
         }
 
         public Boolean DeleteTimeSlotsTasks(TimeSlotTasks slotFromClient)
         {
-            log.Info("DeleteTimeSlotsTasks before locking");
+            log.LogInformation("DeleteTimeSlotsTasks before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -1871,14 +1873,14 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in DeleteTimeSlotsTasks:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in DeleteTimeSlotsTasks:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("DeleteTimeSlotsTasks after locking");
+                    log.LogInformation("DeleteTimeSlotsTasks after locking");
                 }
             }
         }
@@ -1964,20 +1966,20 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in WriteTimeSlots2TasksInputFile:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in WriteTimeSlots2TasksInputFile:");
                     ExceptionDispatchInfo.Throw(ex);
                 }
                 //finally
                 //{
                 //    semaphoreObject.Release();
-                //    log.Info("WriteTimeSlots2TasksInputFile after locking");
+                //    log.LogInformation("WriteTimeSlots2TasksInputFile after locking");
                 //}
             }
         }
 
         public IEnumerable<AccountResponse> DeleteAllUserAccounts()
         {
-            log.Info("DeleteAllUserAccounts before locking");
+            log.LogInformation("DeleteAllUserAccounts before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -1997,14 +1999,14 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in Delete:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in Delete:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("Delete after locking");
+                    log.LogInformation("Delete after locking");
                 }
             }
         }
@@ -2041,7 +2043,7 @@ namespace WebApi.Services
 
         public Boolean GetAutoEmail()
         {
-            log.Info("GetAutoEmail before locking");
+            log.LogInformation("GetAutoEmail before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -2058,20 +2060,20 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in GetAutoEmail:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in GetAutoEmail:");
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("GetAutoEmail after locking");
+                    log.LogInformation("GetAutoEmail after locking");
                 }
             }
         }
 
         public Boolean SetAutoEmail(Boolean autoEmail)
         {
-            log.Info("SetAutoEmail before locking");
+            log.LogInformation("SetAutoEmail before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -2088,28 +2090,28 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in SetAutoEmail:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in SetAutoEmail:");
                     ExceptionDispatchInfo.Throw(ex);
                     throw;
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("SetAutoEmail after locking");
+                    log.LogInformation("SetAutoEmail after locking");
                 }
             }
         }
 
         public void SendRemindingEmail4Functions()
         {
-            log.Info("SendRemindingEmail4Functions before locking");
+            log.LogInformation("SendRemindingEmail4Functions before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
             {
                 try
                 {
-                    log.Debug("\n");
+                    log.LogDebug("\n");
                     var accountAll = _context.Accounts.Include(x => x.UserFunctions).Include(x => x.Schedules).ToList();
 
                     IEnumerable<Account> query = accountAll.TakeWhile((a) => a.UserFunctions != null);
@@ -2122,11 +2124,11 @@ namespace WebApi.Services
 
                             DateTime dt = DateTime.Now;
                             DateTime now = dt;
-                            log.DebugFormat("scheduleDate {0} now {1}",
+                            log.LogDebug("scheduleDate {0} now {1}",
                                 scheduleDate,
                                 now);
 
-                            log.DebugFormat("Schedule `{0}` is now {1} days ahead of execution (negative means it's over)",
+                            log.LogDebug("Schedule `{0}` is now {1} days ahead of execution (negative means it's over)",
                                 s.Date,
                                 (scheduleDate - now).TotalMilliseconds / (1000 * 60 * 60 * 24));
 
@@ -2140,7 +2142,7 @@ namespace WebApi.Services
                                     html: message
                                 );
                                 s.NotifiedWeekBefore = true;
-                                log.DebugFormat("Schedule ready for week ahead of reminder for an account is: {0} {1} {2}", a.FirstName, a.LastName, a.Email);
+                                log.LogDebug("Schedule ready for week ahead of reminder for an account is: {0} {1} {2}", a.FirstName, a.LastName, a.Email);
                             }
                             if ((scheduleDate - now) < THREE_DAYS_TIMEOUT && a.NotifyThreeDaysBefore == true && s.NotifiedThreeDaysBefore == false)
                             {
@@ -2152,7 +2154,7 @@ namespace WebApi.Services
                                     html: message
                                 );
                                 s.NotifiedThreeDaysBefore = true;
-                                log.DebugFormat("Schedule ready for 3 days ahead of reminder for an account is: {0} {1} {2}", a.FirstName, a.LastName, a.Email);
+                                log.LogDebug("Schedule ready for 3 days ahead of reminder for an account is: {0} {1} {2}", a.FirstName, a.LastName, a.Email);
                             }
                             _context.Accounts.Update(a);
                             _context.SaveChanges();
@@ -2163,7 +2165,7 @@ namespace WebApi.Services
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in SendRemindingEmail4Functions:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in SendRemindingEmail4Functions:");
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
                     if (ex.GetType() == typeof(DbUpdateConcurrencyException))
                     {
@@ -2200,7 +2202,7 @@ namespace WebApi.Services
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("SendRemindingEmail4Functions after locking");
+                    log.LogInformation("SendRemindingEmail4Functions after locking");
                 }
             }
         }
@@ -2211,7 +2213,7 @@ namespace WebApi.Services
         {
             try
             {
-                log.InfoFormat("Authenticating user with MFA {0}", model.Email);
+                log.LogInformation("Authenticating user with MFA {0}", model.Email);
                 semaphoreObject.Wait();
 
                 var account = await _context.Accounts
@@ -2229,14 +2231,14 @@ namespace WebApi.Services
 
                     if (!codeSent)
                     {
-                        log.ErrorFormat("Failed to send MFA code to user {0}", account.Id);
+                        log.LogError("Failed to send MFA code to user {0}", account.Id);
                         throw new AppException("Failed to send verification code. Please try again.");
                     }
 
                     // Generate a temporary token for MFA verification
                     var tempToken = generateJwtToken(account, isTemp: true);
 
-                    log.InfoFormat("MFA code sent to user {0}", account.Email);
+                    log.LogInformation("MFA code sent to user {0}", account.Email);
 
                     return new MfaResponse
                     {
@@ -2248,7 +2250,7 @@ namespace WebApi.Services
                 else
                 {
                     // MFA not enabled, proceed with regular authentication
-                    log.InfoFormat("MFA not enabled for user {0}, proceeding with regular auth", account.Email);
+                    log.LogInformation("MFA not enabled for user {0}, proceeding with regular auth", account.Email);
 
                     var jwtToken = generateJwtToken(account);
                     var refreshToken = generateRefreshToken(ipAddress);
@@ -2269,7 +2271,7 @@ namespace WebApi.Services
             }
             catch (Exception ex)
             {
-                log.Error($"Error in AuthenticateWithMfaAsync for {model.Email}", ex);
+                log.LogError(ex, $"Error in AuthenticateWithMfaAsync for {model.Email}");
                 throw;
             }
             finally
@@ -2282,7 +2284,7 @@ namespace WebApi.Services
         {
             try
             {
-                log.InfoFormat("Verifying MFA code for user {0}", model.Email);
+                log.LogInformation("Verifying MFA code for user {0}", model.Email);
                 semaphoreObject.Wait();
 
                 using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -2301,7 +2303,7 @@ namespace WebApi.Services
 
                         if (!isValid)
                         {
-                            log.WarnFormat("Invalid MFA code for user {0}", account.Email);
+                            log.LogWarning("Invalid MFA code for user {0}", account.Email);
                             throw new AppException("Invalid or expired verification code");
                         }
 
@@ -2319,21 +2321,21 @@ namespace WebApi.Services
                         response.RefreshToken = refreshToken.Token;
 
                         transaction.Commit();
-                        log.InfoFormat("MFA verification successful for user {0}", account.Email);
+                        log.LogInformation("MFA verification successful for user {0}", account.Email);
 
                         return response;
                     }
                     catch (Exception ex)
                     {
                         transaction.Rollback();
-                        log.Error($"Error in VerifyMfaAsync transaction for {model.Email}", ex);
+                        log.LogError(ex, $"Error in VerifyMfaAsync transaction for {model.Email}");
                         throw;
                     }
                 }
             }
             catch (Exception ex)
             {
-                log.Error($"Error in VerifyMfaAsync for {model.Email}", ex);
+                log.LogError(ex, $"Error in VerifyMfaAsync for {model.Email}");
                 throw;
             }
             finally
@@ -2345,13 +2347,13 @@ namespace WebApi.Services
         public async Task EnableMfaAsync(string userId, string phoneNumber)
         {
             await _mfaService.EnableMfaAsync(userId, phoneNumber);
-            log.InfoFormat("MFA enabled for user {0}", userId);
+            log.LogInformation("MFA enabled for user {0}", userId);
         }
 
         public async Task DisableMfaAsync(string userId)
         {
             await _mfaService.DisableMfaAsync(userId);
-            log.InfoFormat("MFA disabled for user {0}", userId);
+            log.LogInformation("MFA disabled for user {0}", userId);
         }
 
         public bool IsMfaEnabled(string userId)
@@ -2381,7 +2383,7 @@ namespace WebApi.Services
         private const string A2T_OUTPUT = "a2t_result.txt";
         private const string A2T_EXE = "Agents2Tasks.exe";
         private const string CLEANER = "Cleaner";
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILogger<AccountService> log;
         private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly AppSettings _appSettings;
@@ -2433,7 +2435,7 @@ namespace WebApi.Services
 
             var offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
 
-            log.InfoFormat("Date requested string {0} parsed value {1} offset {2}",
+            log.LogInformation("Date requested string {0} parsed value {1} offset {2}",
                             dateStr,
                             dateTime,
                             offset);
@@ -2673,7 +2675,7 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in WriteTimeSlots2Tasks2InputFile:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in WriteTimeSlots2Tasks2InputFile:");
                     ExceptionDispatchInfo.Throw(ex);
                 }
             }
@@ -2690,7 +2692,7 @@ namespace WebApi.Services
                             .WithValidation(CommandResultValidation.None)
                             .ExecuteAsync().GetAwaiter().GetResult()
                             ;
-            log.Info("Result=" + result);
+            log.LogInformation("Result=" + result);
             if (result.ExitCode != 0)
             {
                 switch (result.ExitCode)
@@ -2731,7 +2733,7 @@ namespace WebApi.Services
 
         private void CreateSchedulesFromOutput(string outputFile)
         {
-            //log.Info("CreateSchedulesFromOutput before locking");
+            //log.LogInformation("CreateSchedulesFromOutput before locking");
             //semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -2746,7 +2748,7 @@ namespace WebApi.Services
                             line.Trim();
                             if (line.StartsWith("A"))
                             {
-                                log.Info("Read: " + line);
+                                log.LogInformation("Read: " + line);
                                 if (line.Contains("_group"))
                                 {
                                     // This is lead agent name - skip it - see "File format" documentation by James Bremner
@@ -2810,13 +2812,13 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in CreateSchedulesFromOutput:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in CreateSchedulesFromOutput:");
                     ExceptionDispatchInfo.Throw(ex);
                 }
                 finally
                 {
                     //semaphoreObject.Release();
-                    //log.Info("CreateSchedulesFromOutput after locking");
+                    //log.LogInformation("CreateSchedulesFromOutput after locking");
                 }
             }
         }
@@ -2840,7 +2842,7 @@ namespace WebApi.Services
             List<AgentTask> functions = new List<AgentTask>();
             CreateRequest request = new CreateRequest();
 
-            log.Info("PopulateUsers before locking");
+            log.LogInformation("PopulateUsers before locking");
             semaphoreObject.Wait();
 
             using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
@@ -2917,13 +2919,13 @@ namespace WebApi.Services
                 {
                     transaction.Rollback();
                     Console.WriteLine(Thread.CurrentThread.Name + "Error occurred.");
-                    log.Error(Thread.CurrentThread.Name + "Error occurred in Create:", ex);
+                    log.LogError(ex, Thread.CurrentThread.Name + "Error occurred in Create:");
                     ExceptionDispatchInfo.Throw(ex);
                 }
                 finally
                 {
                     semaphoreObject.Release();
-                    log.Info("PopulateUsers after locking");
+                    log.LogInformation("PopulateUsers after locking");
                 }
             }
         }
@@ -3265,7 +3267,7 @@ namespace WebApi.Services
             var ticks = long.Parse(tokenExp);
             var tokenDate = DateTimeOffset.FromUnixTimeSeconds(ticks).UtcDateTime;
             var Expires = DateTime.Now.AddMinutes(isTemp ? 10 : 15);
-            log.InfoFormat("JWT Next expiration date for {0} {1} is {2}", account.FirstName, account.LastName, tokenDate.ToLocalTime().ToString());
+            log.LogInformation("JWT Next expiration date for {0} {1} is {2}", account.FirstName, account.LastName, tokenDate.ToLocalTime().ToString());
             // JD
             string jwtToken = tokenHandler.WriteToken(token);
             return jwtToken;

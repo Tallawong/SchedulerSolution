@@ -1,4 +1,3 @@
-using log4net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -13,7 +12,6 @@ namespace WebApi.Middleware
 {
     public class JwtMiddleware
     {
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly RequestDelegate _next;
         private readonly AppSettings _appSettings;
 

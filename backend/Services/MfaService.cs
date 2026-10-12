@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using log4net;
+using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Entities;
 using WebApi.Helpers;
@@ -12,7 +12,7 @@ namespace WebApi.Services
 {
     public class MfaService : IMfaService
     {
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILogger<MfaService> log;
         private readonly DataContext _context;
         private readonly ISpryngSmsService _smsService;
 
@@ -21,8 +21,9 @@ namespace WebApi.Services
         private const int CODE_EXPIRY_MINUTES = 10;
         private const int CODE_LENGTH = 6;
 
-        public MfaService(DataContext context, ISpryngSmsService smsService)
+        public MfaService(DataContext context, ISpryngSmsService smsService, ILogger<MfaService> logger)
         {
+            log = logger;
             _context = context;
             _smsService = smsService;
         }
@@ -47,12 +48,12 @@ namespace WebApi.Services
                     _mfaCodes[userId] = entry;
                 }
 
-                log.InfoFormat("MFA code generated for user {0}", userId);
+                log.LogInformation("MFA code generated for user {0}", userId);
                 return code;
             }
             catch (Exception ex)
             {
-                log.Error($"Error generating MFA code for user {userId}", ex);
+                log.LogError(ex, $"Error generating MFA code for user {userId}");
                 throw;
             }
         }
@@ -66,7 +67,7 @@ namespace WebApi.Services
                 {
                     if (!_mfaCodes.TryGetValue(userId, out entry))
                     {
-                        log.WarnFormat("No MFA code found for user {0}", userId);
+                        log.LogWarning("No MFA code found for user {0}", userId);
                         return false;
                     }
                 }
@@ -74,7 +75,7 @@ namespace WebApi.Services
                 // Check if expired
                 if (DateTime.UtcNow > entry.ExpiresAt)
                 {
-                    log.WarnFormat("MFA code expired for user {0}", userId);
+                    log.LogWarning("MFA code expired for user {0}", userId);
                     lock (_mfaCodes)
                     {
                         _mfaCodes.Remove(userId);
@@ -85,7 +86,7 @@ namespace WebApi.Services
                 // Check attempts (prevent brute force)
                 if (entry.Attempts >= 3)
                 {
-                    log.WarnFormat("Too many MFA attempts for user {0}", userId);
+                    log.LogWarning("Too many MFA attempts for user {0}", userId);
                     lock (_mfaCodes)
                     {
                         _mfaCodes.Remove(userId);
@@ -98,7 +99,7 @@ namespace WebApi.Services
                 // Validate code
                 if (entry.Code == code)
                 {
-                    log.InfoFormat("MFA code validated successfully for user {0}", userId);
+                    log.LogInformation("MFA code validated successfully for user {0}", userId);
                     lock (_mfaCodes)
                     {
                         _mfaCodes.Remove(userId);
@@ -106,12 +107,12 @@ namespace WebApi.Services
                     return true;
                 }
 
-                log.WarnFormat("Invalid MFA code for user {0}", userId);
+                log.LogWarning("Invalid MFA code for user {0}", userId);
                 return false;
             }
             catch (Exception ex)
             {
-                log.Error($"Error validating MFA code for user {userId}", ex);
+                log.LogError(ex, $"Error validating MFA code for user {userId}");
                 return false;
             }
         }
@@ -125,18 +126,18 @@ namespace WebApi.Services
                 
                 if (sent)
                 {
-                    log.InfoFormat("MFA code sent via SMS to user {0}", userId);
+                    log.LogInformation("MFA code sent via SMS to user {0}", userId);
                 }
                 else
                 {
-                    log.ErrorFormat("Failed to send MFA code via SMS to user {0}", userId);
+                    log.LogError("Failed to send MFA code via SMS to user {0}", userId);
                 }
 
                 return sent;
             }
             catch (Exception ex)
             {
-                log.Error($"Error sending MFA code via SMS for user {userId}", ex);
+                log.LogError(ex, $"Error sending MFA code via SMS for user {userId}");
                 return false;
             }
         }
@@ -158,11 +159,11 @@ namespace WebApi.Services
                 _context.Accounts.Update(account);
                 await _context.SaveChangesAsync();
 
-                log.InfoFormat("MFA enabled for user {0}", userId);
+                log.LogInformation("MFA enabled for user {0}", userId);
             }
             catch (Exception ex)
             {
-                log.Error($"Error enabling MFA for user {userId}", ex);
+                log.LogError(ex, $"Error enabling MFA for user {userId}");
                 throw;
             }
         }
@@ -183,11 +184,11 @@ namespace WebApi.Services
                 _context.Accounts.Update(account);
                 await _context.SaveChangesAsync();
 
-                log.InfoFormat("MFA disabled for user {0}", userId);
+                log.LogInformation("MFA disabled for user {0}", userId);
             }
             catch (Exception ex)
             {
-                log.Error($"Error disabling MFA for user {userId}", ex);
+                log.LogError(ex, $"Error disabling MFA for user {userId}");
                 throw;
             }
         }

@@ -1,5 +1,4 @@
 using AutoMapper;
-using log4net;
 using System;
 using System.Collections.Generic;
 using WebApi.Entities;
@@ -9,7 +8,6 @@ namespace WebApi.Helpers
 {
     public class AutoMapperProfile : Profile
     {
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         // mappings between model and entity objects
         public AutoMapperProfile()
         {

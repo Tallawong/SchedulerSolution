@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿﻿using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,12 +15,13 @@ namespace WebApi.Middleware
 {
     public class WebApiActionFilter : IActionFilter
     {
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILogger<WebApiActionFilter> log;
         private readonly AppSettings _appSettings;
         private DataContext _context;
 
-        public WebApiActionFilter(IOptions<AppSettings> appSettings, DataContext context)
+        public WebApiActionFilter(IOptions<AppSettings> appSettings, DataContext context, ILogger<WebApiActionFilter> logger)
         {
+            log = logger;
             _appSettings = appSettings.Value;
             _context = context;
         }
@@ -56,7 +57,7 @@ namespace WebApi.Middleware
                 if (account != null)
                 {
                     //Account account = (Account)context.HttpContext.Items["Account"];
-                    log.InfoFormat("\n\n----------------------- Start processing request for  Id:{0} First Name:{1} Last Name:{2} e-mail:{3}  path:{4}",
+                    log.LogInformation("\n\n----------------------- Start processing request for  Id:{0} First Name:{1} Last Name:{2} e-mail:{3}  path:{4}",
                     account.Id,
                     account.FirstName,
                     account.LastName,
@@ -71,7 +72,7 @@ namespace WebApi.Middleware
                 // account is not attached to context so request won't have access to secure routes
                 //var account = context.HttpContext.Items["Account"];
                 Console.WriteLine("Failed:" + error);
-                //log.Error("JWT (expired): for path: " + context.HttpContext.Request.Path);
+                //log.LogError("JWT (expired): for path: " + context.HttpContext.Request.Path);
             }
         }
 
@@ -106,7 +107,7 @@ namespace WebApi.Middleware
                 var account = _context.Accounts.Include(x => x.RefreshTokens).SingleOrDefault(x => x.Id == Id);
                 if (account != null)
                 {
-                    log.InfoFormat("\n----------------------- Finish processing request for  Id:{0} First Name:{1} Last Name:{2} e-mail:{3} path:{4}\n\n",
+                    log.LogInformation("\n----------------------- Finish processing request for  Id:{0} First Name:{1} Last Name:{2} e-mail:{3} path:{4}\n\n",
                     account.Id,
                     account.FirstName,
                     account.LastName,
@@ -121,11 +122,11 @@ namespace WebApi.Middleware
                 // account is not attached to context so request won't have access to secure routes
                 //var account = context.HttpContext.Items["Account"];
                 Console.WriteLine("Failed:" + error);
-                //log.Warn("JWT (expired): for path: " + context.HttpContext.Request.Path);
+                //log.LogWarning("JWT (expired): for path: " + context.HttpContext.Request.Path);
             }
         }
 
-        public static bool CheckTokenIsValid(string token)
+        public static bool CheckTokenIsValid(string token, ILogger<WebApiActionFilter> logger)
         {
             var tokenTicks = GetTokenExpirationTime(token);
             var tokenDate = DateTimeOffset.FromUnixTimeSeconds(tokenTicks).UtcDateTime;
@@ -133,10 +134,10 @@ namespace WebApi.Middleware
             var now = DateTime.Now.ToUniversalTime();
 
             var valid = tokenDate >= now;
-            log.Info("JWT expiration date - local time: " + tokenDate.ToLocalTime() + " Now: " + now.ToLocalTime());
+            logger.LogInformation("JWT expiration date - local time: {Expiration} Now: {Now}", tokenDate.ToLocalTime(), now.ToLocalTime());
             if (!valid)
             {
-                log.Info("JWT expiration date (expired): " + tokenDate.ToLocalTime() + " Now: " + now.ToLocalTime());
+                logger.LogInformation("JWT expiration date (expired): {Expiration} Now: {Now}", tokenDate.ToLocalTime(), now.ToLocalTime());
             }
             return valid;
         }

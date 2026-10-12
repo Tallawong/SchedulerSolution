@@ -100,7 +100,7 @@ POST /accounts/verify-mfa
 ? **Secure** - 10-minute expiration, 3-attempt limit
 ? **User Control** - Users can enable/disable MFA
 ? **Optional** - MFA is opt-in per user
-? **Logging** - Comprehensive log4net integration
+? **Logging** - ASP.NET Core `ILogger` with console and rolling-file output
 ? **Production Ready** - Error handling, validation
 
 ## Architecture Highlights
@@ -124,7 +124,7 @@ For production deployment, consider:
 
 - **Implementation Guide**: `MFA_IMPLEMENTATION_GUIDE.md`
 - **Spryng API Docs**: https://www.spryngsms.com/en/docs/
-- **Logs**: Check log4net output for debugging
+- **Logs**: Check console output or `logs/myapp.log` for debugging
 
 ## Testing Checklist
 

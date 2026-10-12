@@ -11,8 +11,7 @@ using WebApi.Middleware;
 using WebApi.Services;
 using Microsoft.Extensions.Hosting;
 
-using log4net;
-using log4net.Config;
+using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Google.Apis.Auth.AspNetCore3;
 using Google.Apis.Auth.OAuth2;
@@ -42,17 +41,11 @@ namespace WebApi
 {
     public class Startup
     {
-        #region log4net
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        #endregion //log4net
-
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            //BasicConfigurator.Configure();
-            log.Info("\n\n######################################## PROGRAM STARTED ########################################");
         }
 
         // add services to the DI container
@@ -150,8 +143,10 @@ namespace WebApi
         }
 
         // configure the HTTP request pipeline
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context, IHostApplicationLifetime lifetime)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context, IHostApplicationLifetime lifetime, ILogger<Startup> log)
         {
+            log.LogInformation("######################################## PROGRAM STARTED ########################################");
+
             // migrate database changes on startup (includes initial db creation)
             context.Database.Migrate();
 
@@ -196,11 +191,11 @@ namespace WebApi
                 using var scope = app.ApplicationServices.CreateScope();
                 var db = scope.ServiceProvider.GetRequiredService<DataContext>();
                 var canConnect = db.Database.CanConnect();
-                log.Info($"Database connectivity check: CanConnect={canConnect}");
+                log.LogInformation("Database connectivity check: CanConnect={CanConnect}", canConnect);
             }
             catch (Exception ex)
             {
-                log.Error("Database connectivity check failed.", ex);
+                log.LogError(ex, "Database connectivity check failed.");
             }
 
             lifetime.ApplicationStarted.Register(() =>
@@ -212,17 +207,17 @@ namespace WebApi
                         ? string.Join(";", addresses)
                         : "unknown";
 
-                    log.Info($"Listening on: {urls}");
+                    log.LogInformation("Listening on: {Urls}", urls);
                 }
                 catch (Exception ex)
                 {
-                    log.Warn("Failed to determine server listening addresses.", ex);
+                    log.LogWarning(ex, "Failed to determine server listening addresses.");
                 }
             });
 
-            log.Info($"ASPNETCORE_URLS={Environment.GetEnvironmentVariable("ASPNETCORE_URLS")}");
-            log.Info($"ASPNETCORE_HTTP_PORTS={Environment.GetEnvironmentVariable("ASPNETCORE_HTTP_PORTS")}");
-            log.Info($"ASPNETCORE_HTTPS_PORTS={Environment.GetEnvironmentVariable("ASPNETCORE_HTTPS_PORTS")}");
+            log.LogInformation("ASPNETCORE_URLS={Urls}", Environment.GetEnvironmentVariable("ASPNETCORE_URLS"));
+            log.LogInformation("ASPNETCORE_HTTP_PORTS={HttpPorts}", Environment.GetEnvironmentVariable("ASPNETCORE_HTTP_PORTS"));
+            log.LogInformation("ASPNETCORE_HTTPS_PORTS={HttpsPorts}", Environment.GetEnvironmentVariable("ASPNETCORE_HTTPS_PORTS"));
 
             app.UseHttpLogging();
             app.Use(async (context, next) => {
