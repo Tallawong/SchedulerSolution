@@ -1,5 +1,6 @@
 using Aspose.Cells;
 using AutoMapper;
+using Backend.Interfaces;
 using Backend.Services;
 using CliWrap;
 using iText.Kernel.Colors;
@@ -45,80 +46,6 @@ using Backend.Helpers;
 
 namespace WebApi.Services
 {
-    public interface IAccountService
-    {
-        AuthenticateResponse Authenticate(AuthenticateRequest model, string ipAddress);
-        Task<MfaResponse> AuthenticateWithMfaAsync(AuthenticateRequest model, string ipAddress);
-        Task<AuthenticateResponse> VerifyMfaAsync(VerifyMfaRequest model, string ipAddress);
-        AuthenticateResponse RefreshToken(string token, string ipAddress);
-        void RevokeToken(string token, string ipAddress);
-        IdentityResult Register(RegisterRequest model, string origin);
-        void VerifyEmail(VerifyEmailRequest model);
-        void ForgotPassword(ForgotPasswordRequest model, string origin);
-        void ValidateResetToken(ValidateResetTokenRequest mode);
-        void ResetPassword(ResetPasswordRequest model);
-        IEnumerable<AccountResponse> GetAll();
-        IEnumerable<AccountResponse> GetAccountsForDateAndTask(AccountsByDateAndTaskDTO accountsByDateAndTaskDTO);
-
-        AccountResponse GetById(string id);
-
-        ScheduleDateTimeResponse GetAllDates();
-        DateFunctionTeamResponse GetTeamsByFunctionForDate(string date);
-
-        AccountResponse Create(CreateRequest model);
-        AccountResponse Update(string id, AccountRequest model);
-        AccountResponse DeleteSchedule(string id, UpdateScheduleRequest scheduleReq);
-        void DeleteSchedules4Date(string dateStr);
-
-        IEnumerable<UpdateScheduleRequest> DeleteAllSchedules();
-        Boolean DeleteAllTimeSlots();
-
-        AccountResponse AddSchedule(string id, UpdateScheduleRequest scheduleReq);
-        AccountResponse UpdateSchedule(string id, UpdateScheduleRequest scheduleReq);
-        IEnumerable<AccountResponse> GetSchedules4Date(string dateStr);
-        (AccountResponse, string) DeleteFunction(string id, AgentTask functionReq);
-        AccountResponse AddFunction(string id, AgentTask functionReq);
-        IEnumerable<Account> TestAddFunction(string id, AgentTask task);
-        AccountResponse GetScheduleFromPool(string id, UpdateScheduleRequest scheduleReq);
-        AccountResponse MoveSchedule2Pool(string id, UpdateScheduleRequest scheduleReq);
-
-        SchedulePoolElementsResponse GetAvailablePoolElementsForAccount(string id);
-        SchedulePoolElementsResponse GetAllAvailablePoolElements();
-
-        SchedulePoolElement RemoveFromPool(int id, string email, string userFunction);
-
-        void Delete(string id);
-
-        List<AgentTaskConfig> GetAllAgentTaskConfigs();
-
-        AgentTaskConfig[] UpdateAgentTaskConfig(string id, UpdateAgentTaskConfigRequest agentTaskConfigReq);
-
-        void DeleteAgentTaskConfig(string id);
-
-        void DeleteAllAgentTaskConfigs();
-
-        void UploadUserAccounts(string path);
-        Boolean GenerateSchedules();
-        void ImportTimeSlotsTasks(string xlsmfullPath);
-
-        Byte[] DownloadSchedules();
-
-        TimeSlotTasks[] GetTimeSlotsTasks();
-
-        TimeSlotTasks[] SetTimeSlotsTasks(TimeSlotTasks tasks);
-        Boolean DeleteTimeSlotsTasks(TimeSlotTasks slotFromClient);
-
-        IEnumerable<AccountResponse> DeleteAllUserAccounts();
-        bool GetAutoEmail();
-        bool SetAutoEmail(bool autoEmail);
-        void SendRemindingEmail4Functions();
-
-        // MFA methods
-        Task EnableMfaAsync(string userId, string phoneNumber);
-        Task DisableMfaAsync(string userId);
-        bool IsMfaEnabled(string userId);
-    }
-
     public class AccountService : IAccountService
     {
         public static TimeSpan THREE_DAYS_TIMEOUT = new TimeSpan(3, 0, 0, 0);   // Three days time span
@@ -2137,11 +2064,11 @@ namespace WebApi.Services
                             {
                                 string message = $@"This is a weekly reminder that <row>{a.FirstName} {a.LastName}</row> is scheduled to attend their duties.";
                                 string subject = $@"Reminder: {a.FirstName} {a.LastName} is {s.UserFunction} on {scheduleDate.ToString(ConstantsDefined.DateTimeFormat)}";
-                                _emailService.Send(
+                                _emailService.SendEmailAsync(
                                     to: a.Email,
                                     subject: subject,
-                                    html: message
-                                );
+                                    body: message
+                                ).GetAwaiter().GetResult();
                                 s.NotifiedWeekBefore = true;
                                 log.LogDebug("Schedule ready for week ahead of reminder for an account is: {0} {1} {2}", a.FirstName, a.LastName, a.Email);
                             }
@@ -2149,11 +2076,11 @@ namespace WebApi.Services
                             {
                                 string message = $@"This is a three-day reminder that <row>{a.FirstName} {a.LastName}</row> is scheduled to attend their duties.";
                                 string subject = $@"Reminder: {a.FirstName} {a.LastName} is {s.UserFunction} on {scheduleDate.ToString(ConstantsDefined.DateTimeFormat)}";
-                                _emailService.Send(
+                                _emailService.SendEmailAsync(
                                     to: a.Email,
                                     subject: subject,
-                                    html: message
-                                );
+                                    body: message
+                                ).GetAwaiter().GetResult();
                                 s.NotifiedThreeDaysBefore = true;
                                 log.LogDebug("Schedule ready for 3 days ahead of reminder for an account is: {0} {1} {2}", a.FirstName, a.LastName, a.Email);
                             }
@@ -3181,11 +3108,11 @@ namespace WebApi.Services
                 {
                     string message = $@"<row>{a.FirstName} {a.LastName}</row> is unable to attend their duties on " + scheduleDate;
                     string subject = $@"Warning Administrator: {account.FirstName} {account.LastName}, {schedule.UserFunction}" + " is needed";
-                    _emailService.Send(
+                    _emailService.SendEmailAsync(
                         to: account.Email,
                         subject: subject,
-                        html: message
-                    );
+                        body: message
+                    ).GetAwaiter().GetResult();
                 }
 
                 foreach (var f in account.UserFunctions)
@@ -3194,11 +3121,11 @@ namespace WebApi.Services
                     {
                         string message = $@"<row>{a.FirstName} {a.LastName}</row> is unable to attend their duties on " + scheduleDate;
                         string subject = $@"{account.FirstName} {account.LastName}, {f.UserFunction}" + " is needed";
-                        _emailService.Send(
+                        _emailService.SendEmailAsync(
                             to: account.Email,
                             subject: subject,
-                            html: message
-                        );
+                            body: message
+                        ).GetAwaiter().GetResult();
                         break;
                     }
                 }

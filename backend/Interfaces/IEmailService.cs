@@ -1,9 +1,10 @@
+#nullable enable
 using System.Threading.Tasks;
 
 namespace Backend.Interfaces;
 
 public interface IEmailService
 {
-    void Send(string to, string subject, string html, string? from = null);
-    Task SendEmailAsync(string to, string subject, string html, string? from = null);
+    /// <summary>Sends an email asynchronously and returns whether the provider accepted it.</summary>
+    Task<bool> SendEmailAsync(string to, string subject, string body);
 }

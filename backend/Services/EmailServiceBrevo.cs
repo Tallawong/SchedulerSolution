@@ -1,4 +1,6 @@
+#nullable enable
 using Backend.Helpers;
+using Backend.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Services;
 
-public sealed class EmailServiceBrevo : Backend.Interfaces.IEmailService
+public sealed class EmailServiceBrevo : IEmailService
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<EmailServiceBrevo> _logger;
@@ -38,9 +40,15 @@ public sealed class EmailServiceBrevo : Backend.Interfaces.IEmailService
             ?? "BackEnd").Trim();
     }
 
-    public async Task<bool> SendEmailAsync(string to, string subject, string body)
+    public Task<bool> SendEmailAsync(string to, string subject, string body)
     {
-        if (string.IsNullOrWhiteSpace(_brevoApiKey) || string.IsNullOrWhiteSpace(_fromEmail))
+        return SendEmailCoreAsync(to, subject, body, null);
+    }
+
+    private async Task<bool> SendEmailCoreAsync(string to, string subject, string body, string? from)
+    {
+        var fromEmail = from ?? _fromEmail;
+        if (string.IsNullOrWhiteSpace(_brevoApiKey) || string.IsNullOrWhiteSpace(fromEmail))
         {
             throw new HttpStatusException(
                 statusCode: StatusCodes.Status500InternalServerError,
@@ -50,7 +58,7 @@ public sealed class EmailServiceBrevo : Backend.Interfaces.IEmailService
 
         var payload = new
         {
-            sender = new { email = _fromEmail, name = _fromName },
+            sender = new { email = fromEmail, name = _fromName },
             to = new[] { new { email = to } },
             subject,
             htmlContent = body

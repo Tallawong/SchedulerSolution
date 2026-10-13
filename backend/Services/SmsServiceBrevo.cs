@@ -68,7 +68,7 @@ public sealed class SmsServiceBrevo : ISmsService
         return false;
     }
 
-    public Task<bool> SendMfaCodeAsync(string phoneNumber, string code)
+    public Task<bool> SendSmsMfaCodeAsync(string phoneNumber, string code)
     {
         var message = $"Your verification code is: {code}. This code expires in 5 minutes.";
         return SendSmsAsync(phoneNumber, message);

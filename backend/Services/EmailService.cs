@@ -1,4 +1,5 @@
 #nullable enable
+using Backend.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
@@ -12,12 +13,6 @@ using WebApi.Helpers;
 
 namespace Backend.Services
 {
-    public interface IEmailService
-    {
-        void Send(string to, string subject, string html, string? from = null);
-        Task SendEmailAsync(string to, string subject, string html, string? from = null);
-    }
-
     public class EmailService : IEmailService
     {
         private readonly ILogger<EmailService> log;
@@ -33,12 +28,12 @@ namespace Backend.Services
             _configuration = configuration;
         }
 
-        public void Send(string to, string subject, string html, string? from = null)
+        public Task<bool> SendEmailAsync(string to, string subject, string body)
         {
-            SendEmailAsync(to, subject, html, from).ConfigureAwait(false).GetAwaiter().GetResult();
+            return SendEmailCoreAsync(to, subject, body, null);
         }
 
-        public async Task SendEmailAsync(string to, string subject, string html, string? from = null)
+        private async Task<bool> SendEmailCoreAsync(string to, string subject, string html, string? from)
         {
             try
             {
@@ -53,7 +48,7 @@ namespace Backend.Services
                     throw new InvalidOperationException("Email service is not properly configured. Brevo API key is missing.");
                 }
 
-                var request = new HttpRequestMessage(HttpMethod.Post, "https://api.brevo.com/v3/smtp/email");
+                using var request = new HttpRequestMessage(HttpMethod.Post, "https://api.brevo.com/v3/smtp/email");
                 request.Headers.Add("api-key", apiKey);
 
                 // Build email JSON
@@ -72,7 +67,7 @@ namespace Backend.Services
                 );
 
                 // Send the email
-                var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
+                using var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -82,10 +77,12 @@ namespace Backend.Services
                 {
                     log.LogError($"Failed to send email via Brevo. Status: {response.StatusCode}");
                 }
+                return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
             {
                 log.LogError($"Exception sending email via Brevo: {ex.GetType().Name}");
+                return false;
             }
         }
     }

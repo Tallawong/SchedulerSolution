@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Backend.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Entities;
@@ -122,7 +123,7 @@ namespace WebApi.Services
             try
             {
                 var code = await GenerateMfaCodeAsync(userId);
-                var sent = await _smsService.SendVerificationCodeAsync(phoneNumber, code);
+                var sent = await _smsService.SendSmsVerificationCodeAsync(phoneNumber, code);
                 
                 if (sent)
                 {

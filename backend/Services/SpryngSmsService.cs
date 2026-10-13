@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Backend.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WebApi.Helpers;
@@ -74,7 +75,7 @@ namespace WebApi.Services
             }
         }
 
-        public async Task<bool> SendVerificationCodeAsync(string phoneNumber, string code)
+        public async Task<bool> SendSmsVerificationCodeAsync(string phoneNumber, string code)
         {
             var message = $"Your verification code is: {code}. Valid for 10 minutes.";
             return await SendSmsAsync(phoneNumber, message);

@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using Newtonsoft.Json.Linq;
 using Microsoft.EntityFrameworkCore.Storage;
-using Backend.Services;
+using Backend.Interfaces;
 
 namespace WebApi.Helpers
 {

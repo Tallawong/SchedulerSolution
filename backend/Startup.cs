@@ -35,6 +35,7 @@ using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Http;
 using Scalar.AspNetCore;
+using Backend.Interfaces;
 using Backend.Services;
 
 namespace WebApi
@@ -86,7 +87,7 @@ namespace WebApi
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ISpryngSmsService, SpryngSmsService>();
-            services.AddHttpClient<Backend.Interfaces.IEmailService, EmailServiceBrevo>();
+            services.AddHttpClient<EmailServiceBrevo>();
             services.AddHttpClient<Backend.Interfaces.ISmsService, SmsServiceBrevo>();
             services.AddScoped<IMfaService, MfaService>();
 
