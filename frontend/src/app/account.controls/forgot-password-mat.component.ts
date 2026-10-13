@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-//import { AccountService, AlertService } from '../_services';
+import { finalize } from 'rxjs';
+import { AccountService } from '../services';
 import { Constants } from '../core/helpers/constants';
 import { TimeHandler } from '../core/helpers/time.handler';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,11 +36,12 @@ export class ForgotPasswordMatComponent implements OnInit {
   loading = false;
   model = { email: '', dob: '' };
   error = '';
+  success = '';
 
   constructor(
     private formBuilder: FormBuilder,
-    //private accountService: AccountService,
-    //private alertService: AlertService
+    private accountService: AccountService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -61,6 +63,9 @@ export class ForgotPasswordMatComponent implements OnInit {
 
   onSubmit(): void {
     this.error = '';
+    if (this.loading || this.success) {
+      return;
+    }
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -70,8 +75,24 @@ export class ForgotPasswordMatComponent implements OnInit {
     const dobValue = this.form.get('dob')?.value;
 
     this.loading = true;
-    this.submitted.emit({ email, dob: this.formatDob(dobValue) });
-    this.loading = false;
+    const dob = this.formatDob(dobValue);
+    this.accountService
+      .forgotPassword({ email, dob })
+      .pipe(finalize(() => {
+        this.loading = false;
+        this.changeDetectorRef.markForCheck();
+      }))
+      .subscribe({
+        next: () => {
+          this.success = 'Please check your email for password reset instructions';
+          this.changeDetectorRef.markForCheck();
+          this.submitted.emit({ email, dob });
+        },
+        error: (err) => {
+          this.error = err?.error?.message || 'Failed to submit request.';
+          this.changeDetectorRef.markForCheck();
+        },
+      });
   }
 
   private reset(): void {
@@ -79,6 +100,7 @@ export class ForgotPasswordMatComponent implements OnInit {
     this.form.reset({ email: '', dob: '' });
     this.loading = false;
     this.error = '';
+    this.success = '';
     this.visible = false;
   }
 

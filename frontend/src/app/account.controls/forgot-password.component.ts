@@ -46,6 +46,9 @@ export class ForgotPasswordComponent implements OnInit {
 
   onSubmit(): void {
     this.error = '';
+    if (this.loading || this.success) {
+      return;
+    }
     if (!this.model.email) {
       this.error = 'Please enter your email.';
       return;

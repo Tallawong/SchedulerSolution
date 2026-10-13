@@ -4,6 +4,7 @@ import { RegisterDialogComponent } from './registration-dialog.component';
 import { VerifyEmailComponent } from './verify-email.component';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { ResetPasswordComponent } from './reset-password.component';
+import { ForgotPasswordMatComponent } from './forgot-password-mat.component';
 
 export const ACCOUNT_ROUTES: Routes = [
   {
@@ -16,7 +17,7 @@ export const ACCOUNT_ROUTES: Routes = [
     data: { title: 'Create Account', message: 'Sign up to get started' },
   },
   { path: 'verify-email', component: VerifyEmailComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'forgot-password', component: ForgotPasswordMatComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];

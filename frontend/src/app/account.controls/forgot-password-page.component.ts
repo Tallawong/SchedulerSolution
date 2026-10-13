@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ForgotPasswordComponent } from './forgot-password.component';
-import { ForgotPasswordRequest } from '../dto/requests/forgot-password-request';
-import { AccountService } from '../services';
 
 @Component({
   standalone: true,
@@ -15,60 +12,14 @@ import { AccountService } from '../services';
     >
       <div class="row w-100">
         <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 mx-auto">
-          @if (message) {
-            <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
-              {{ message }}
-            </div>
-          }
-          @if (error) {
-            <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
-              {{ error }}
-            </div>
-          }
-          <app-forgot-password
-            (submitted)="onSubmitted($event)"
-            (cancelled)="onCancelled()"
-          ></app-forgot-password>
+          <app-forgot-password (cancelled)="onCancelled()"></app-forgot-password>
         </div>
       </div>
     </div>
   `,
 })
 export class ForgotPasswordPageComponent {
-  message = '';
-  error = '';
-  loading = false;
-
-  constructor(
-    private userService: AccountService,
-    private router: Router,
-  ) {}
-
-  onSubmitted(payload: { email: string; dob: string }) {
-    this.message = '';
-    this.error = '';
-    this.loading = true;
-
-    const request: ForgotPasswordRequest = {
-      email: payload.email,
-      dob: payload.dob || undefined,
-    };
-
-    this.userService.forgotPassword(request).subscribe({
-      next: (res: { message?: string } | null) => {
-        this.loading = false;
-        this.message =
-          res?.message || 'If the account exists, a password reset email has been sent.';
-        setTimeout(() => {
-          this.router.navigate(['/']);
-        }, 3000);
-      },
-      error: (err: HttpErrorResponse) => {
-        this.loading = false;
-        this.error = err?.error?.message || err?.message || 'Request failed';
-      },
-    });
-  }
+  constructor(private router: Router) {}
 
   onCancelled() {
     this.router.navigate(['/']);
