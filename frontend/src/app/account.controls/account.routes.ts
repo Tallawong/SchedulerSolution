@@ -17,7 +17,7 @@ export const ACCOUNT_ROUTES: Routes = [
     data: { title: 'Create Account', message: 'Sign up to get started' },
   },
   { path: 'verify-email', component: VerifyEmailComponent },
-  { path: 'forgot-password', component: ForgotPasswordMatComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];
