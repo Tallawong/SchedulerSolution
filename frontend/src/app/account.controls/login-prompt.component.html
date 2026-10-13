@@ -14,36 +14,19 @@
         <label for="password">Password</label>
         <input type="password" class="lp-input" [formField]="loginForm.password" />
 
-        <!--label for="dob">Date of birth (DOB)</label>
-  <ngxsmk-datepicker [formField]="loginForm.dateInQuestion"
-               mode="single"
-               placeholder="Select a date">
-  </ngxsmk-datepicker-->
-        <!--mat-form-field appearance="outline">
-    <mat-label>Select Date</mat-label>
-
-  </mat-form-field-->
-        <label for="dob">Choose a date</label>
-        <input [formField]="loginForm.dob" type="date" id="dob" class="lp-input" />
-
-        <!--mat-form-field appearance="outline">
-          <mat-label>Choose a date</mat-label>
-          <input [formField]="loginForm.dateInQuestion" matInput [matDatepicker]="picker" />
-          <mat-hint>MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field-->
-
-        <!--ngxsmk-datepicker mode="single"
-                     dateFormatPattern="'DD-MM-YYYY'"
-                     displayFormat="'DD-MM-YYYY'"
-                     inputMask="'DD-MM-YYYY'"
-                     placeholder="DD-MM-YYYY"
-                     [showCalendarButton]="true"
-                     [allowTyping]="true"
-                     [formField]="loginForm.dateInQuestion"
-                     locale="en-AU">
-  </ngxsmk-datepicker-->
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Date of birth</mat-label>
+          <input
+            matInput
+            id="dob"
+            [formControl]="dobControl"
+            [matDatepicker]="dobPicker"
+            placeholder="dd-MM-yyyy"
+          />
+          <mat-datepicker-toggle matIconSuffix [for]="dobPicker"></mat-datepicker-toggle>
+          <mat-datepicker #dobPicker></mat-datepicker>
+          <mat-hint>dd-MM-yyyy</mat-hint>
+        </mat-form-field>
         @if (errorMessage) {
           <div class="lp-error">{{ errorMessage }}</div>
         }

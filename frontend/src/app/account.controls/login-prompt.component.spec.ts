@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { DateTime } from 'luxon';
 import { EMPTY, of, Subject, throwError } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MfaResponse } from '../dto/responses/mfa-response';
@@ -82,23 +83,46 @@ describe('LoginPromptComponent', () => {
     expect(component.loading).toBe(false);
   });
 
-  it('preserves the calendar date selected in the native input', async () => {
+  it('displays the selected DOB as dd-MM-yyyy and submits the same calendar date', async () => {
     component.loginModel.set({
       email: 'user@example.test',
       password: 'password',
       dob: '2000-01-01',
     });
-    fixture.detectChanges();
-    const input: HTMLInputElement = fixture.nativeElement.querySelector('input[type="date"]');
-    input.value = '2026-09-22';
-    input.dispatchEvent(new Event('input', { bubbles: true }));
+    component.dobControl.setValue(DateTime.local(2026, 9, 22));
     fixture.detectChanges();
     await fixture.whenStable();
 
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input[matInput][id="dob"]');
+    expect(input.type).toBe('text');
+    expect(input.value).toBe('22-09-2026');
     expect(component.loginModel().dob).toBe('2026-09-22');
     component.onSubmit();
 
     expect(login).toHaveBeenCalledExactlyOnceWith('user@example.test', 'password', '22-09-2026');
+  });
+
+  it('parses a typed dd-MM-yyyy DOB and rejects an invalid calendar date', async () => {
+    component.loginModel.update((model) => ({ ...model, email: 'user@example.test' }));
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input[matInput][id="dob"]');
+    input.value = '29-02-2000';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.loginModel().dob).toBe('2000-02-29');
+    component.onSubmit();
+    expect(login).toHaveBeenCalledExactlyOnceWith('user@example.test', '', '29-02-2000');
+
+    login.mockClear();
+    input.value = '31-02-2000';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    component.onSubmit();
+    expect(login).not.toHaveBeenCalled();
+    expect(component.errorMessage).toBe('Enter a valid date of birth.');
   });
 
   it.each(['', 'not a date', '2026-02-31'])('rejects an invalid DOB: %s', (dob) => {

@@ -11,8 +11,10 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { finalize, Subscription } from 'rxjs';
+import { DateTime } from 'luxon';
+import { MAT_LUXON_DATE_FORMATS, provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 
 import { AccountModalService } from '../account.controls/account-modal.service';
 import { LoginRequest } from '../dto/requests/login-request';
@@ -37,6 +39,12 @@ interface LoginData {
 
 @Component({
   standalone: true,
+  providers: [
+    provideLuxonDateAdapter({
+      parse: { ...MAT_LUXON_DATE_FORMATS.parse, dateInput: Constants.dateFormat },
+      display: { ...MAT_LUXON_DATE_FORMATS.display, dateInput: Constants.dateFormat },
+    }),
+  ],
   imports: [
     FormField,
     FormsModule,
@@ -69,12 +77,9 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
   readonly loginModel = signal<LoginData>({
     email: '',
     password: '',
-
-    /* Native HTML <input type="date"> uses yyyy-MM-dd for its underlying value,
-      as defined by the HTML standard.Native HTML <input type="date"> uses yyyy-MM-dd
-      for its underlying value, as defined by the HTML standard.*/
     dob: toDateTime(new Date()).toISODate() ?? '',
   });
+  readonly dobControl = new FormControl<DateTime | null>(toDateTime(this.loginModel().dob));
 
   // Keep existing imports, importing form and validators from @angular/forms/signals.
   // Do not import or call objectSchema.
@@ -99,6 +104,15 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
     this.loading = false;
     this.modalService.showLogin();
 
+    this.subs.push(
+      this.dobControl.valueChanges.subscribe((value) => {
+        this.loginModel.update((model) => ({
+          ...model,
+          dob: value?.isValid ? (value.toISODate() ?? '') : '',
+        }));
+      }),
+    );
+
     // Sync visibility with shared modal service
     this.subs.push(
       this.modalService.loginVisible$.subscribe((v) => {
@@ -119,7 +133,7 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
     this.errorMessage = '';
     const { email, password, dob } = this.loginModel();
     const dateOfBirth = toDateTime(dob);
-    if (!dateOfBirth.isValid) {
+    if (this.dobControl.invalid || !dateOfBirth.isValid) {
       this.errorMessage = 'Enter a valid date of birth.';
       this.loading = false;
       return;
