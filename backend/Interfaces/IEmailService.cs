@@ -4,5 +4,6 @@ namespace Backend.Interfaces;
 
 public interface IEmailService
 {
-    Task<bool> SendEmailAsync(string to, string subject, string body);
+    void Send(string to, string subject, string html, string? from = null);
+    Task SendEmailAsync(string to, string subject, string html, string? from = null);
 }
