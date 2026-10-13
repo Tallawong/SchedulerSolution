@@ -1,0 +1,9 @@
+﻿@backend_HostAddress = https://schedulerserver-h3heb5cqetggafey.eastasia-01.azurewebsites.net
+
+GET {{backend_HostAddress}}/accounts
+
+###
+
+GET {{backend_HostAddress}}/accounts
+
+###

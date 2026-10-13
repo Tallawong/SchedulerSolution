@@ -78,34 +78,6 @@ namespace WebApi
             services.AddSignalR();
 
             services.AddHttpLogging();
-            /* Add authenticate */
-            //services.AddAuthentication(options =>
-            //{
-            //    // This forces challenge results to be handled by Google OpenID Handler, so there's no
-            //    // need to add an AccountController that emits challenges for Login.
-            //    options.DefaultChallengeScheme = GoogleOpenIdConnectDefaults.AuthenticationScheme;
-
-            //    // This forces forbid results to be handled by Google OpenID Handler, which checks if
-            //    // extra scopes are required and does automatic incremental auth.
-            //    options.DefaultForbidScheme = GoogleOpenIdConnectDefaults.AuthenticationScheme;
-
-            //    // Default scheme that will handle everything else.
-            //    // Once a user is authenticated, the OAuth2 token info is stored in cookies.
-            //    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            //})
-            //.AddCookie(options =>
-            //{
-            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-            //})
-            //.AddGoogleOpenIdConnect(options =>
-            //{
-            //    var secrets = GoogleClientSecrets.FromFile("client_secret.json").Secrets;
-            //    options.ClientId = secrets.ClientId;
-            //    options.ClientSecret = secrets.ClientSecret;
-            //});
-
-            /* End authenticate */
-
 
             // configure strongly typed settings object
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
@@ -114,24 +86,9 @@ namespace WebApi
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ISpryngSmsService, SpryngSmsService>();
+            services.AddHttpClient<Backend.Interfaces.IEmailService, EmailServiceBrevo>();
+            services.AddHttpClient<Backend.Interfaces.ISmsService, SmsServiceBrevo>();
             services.AddScoped<IMfaService, MfaService>();
-
-
-            // 
-            //services.AddIdentity<Account, IdentityRole>(options =>
-            //{
-            //    options.User.RequireUniqueEmail = false;
-
-            //})
-            //.AddEntityFrameworkStores<DataContext>()
-            //.AddDefaultTokenProviders();
-
-            //services.Configure<IdentityOptions>(options =>
-            //{
-            //    // Default User settings.
-            //    options.User.RequireUniqueEmail = false;
-
-            //});
 
             /* JD experiment start */
             //services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>,

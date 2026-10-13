@@ -24,7 +24,7 @@ export class ForgotPasswordComponent implements OnInit {
   error = '';
   success = '';
 
-  constructor(private userService: AccountService) {}
+  constructor(private accountService: AccountService) {}
   ngOnInit(): void {
     // Initialize component state and guard against stray values
     this.model.dob = '';
@@ -56,7 +56,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.setCursor('wait');
 
     const req = { email: this.model.email, dob: this.model.dob || undefined };
-    this.userService
+    this.accountService
       .forgotPassword(req)
       .pipe(
         finalize(() => {
