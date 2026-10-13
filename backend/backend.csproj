@@ -14,6 +14,7 @@
   </PropertyGroup>
   <!-- Transitive dependency overrides to resolve known security vulnerabilities -->
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.12" />
     <PackageReference Include="NuGet.Packaging" Version="6.13.1" />
@@ -30,7 +31,6 @@
   <ItemGroup>
     <PackageReference Include="Aspose.Cells" Version="26.7.0" />
     <PackageReference Include="Aspose.PDF" Version="26.7.0" />
-    <PackageReference Include="AutoMapper" Version="16.2.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
     <PackageReference Include="brevo_csharp" Version="1.1.2" />
     <PackageReference Include="CliWrap" Version="3.10.2" />
