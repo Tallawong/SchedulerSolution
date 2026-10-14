@@ -336,4 +336,34 @@ describe('LoginPromptComponent', () => {
     component.onSubmit();
     expect(login).toHaveBeenCalledExactlyOnceWith('user@example.test', '', '03-02-2001');
   });
+
+  it('updates errorMessage/loading state on login failure/success', async () => {
+    const response: MfaResponse = { dob: '01-01-2000', mfaRequired: false, jwtToken: 'jwt' };
+    login.mockReturnValue(of(response));
+    component.loginModel.set({ email: 'user@example.test', password: 'password', dob: '2000-01-01' });
+
+    component.onSubmit();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.loading).toBe(false);
+    expect(component.errorMessage).toBe('');
+
+    login.mockReturnValue(throwError(() => new HttpErrorResponse({ status: 400 })));
+
+    component.onSubmit();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.loading).toBe(false);
+    expect(component.errorMessage).toBe('Invalid login attempt.');
+
+    login.mockReturnValue(of(response));
+    component.onSubmit();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.loading).toBe(false);
+    expect(component.errorMessage).toBe('');
+  });
 });

@@ -3,10 +3,8 @@ import { Component, signal } from '@angular/core';
 import { form, FormField } from '@angular/forms/signals';
 
 import {
-  ChangeDetectorRef,
   EventEmitter,
   Input,
-  NgZone,
   OnDestroy,
   OnInit,
   Output,
@@ -43,13 +41,6 @@ interface LoginData {
   ],
   imports: [
     FormField,
-    // FormsModule,
-    // ReactiveFormsModule,
-    // MatFormFieldModule,
-    // MatInputModule,
-    // MatDatepickerModule,
-
-    //MfaDialogComponent,
   ],
   selector: 'app-login-prompt',
   templateUrl: './login-prompt.component.html',
@@ -63,8 +54,8 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
   @Output() register = new EventEmitter<void>();
   @Output() forgotPassword = new EventEmitter<void>();
 
-  errorMessage = '';
-  loading: boolean = false;
+  errorMessage = signal('');
+  loading = signal(false);
   // MFA UI state
   showMfa: boolean = false;
   mfaEmail: string = '';
@@ -76,18 +67,11 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
     dob: toDateTime(new Date()).toISODate() ?? '',
   });
 
-  // Keep existing imports, importing form and validators from @angular/forms/signals.
-  // Do not import or call objectSchema.
-  readonly loginForm = form(this.loginModel); //, (schema) => {
-  // Retain existing email, password, and dateInQuestion validation rules here,
-  // using Angular Signal Forms schema validators directly, not objectSchema.
-  //});
+  readonly loginForm = form(this.loginModel);
 
   constructor(
-    private userService: AccountService,
+    private accountService: AccountService,
     private router: Router,
-    private cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
     private modalService: AccountModalService,
   ) {
     console.log('LoginPromptComponent initialized');
@@ -95,21 +79,14 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Initialize the component
 
-    this.errorMessage = '';
-    this.loading = false;
+    this.errorMessage.set('');
+    this.loading.set(false);
     this.modalService.showLogin();
 
     this.subs.push(
-      // this.dobControl.valueChanges.subscribe((value) => {
-      //   this.loginModel.update((model) => ({
-      //     ...model,
-      //     dob: value?.isValid ? (value.toISODate() ?? '') : '',
-      //   }));
-      // }),
       // Sync visibility with shared modal service
       this.modalService.loginVisible$.subscribe((v) => {
         this.visible = v;
-        this.cdr.detectChanges();
       }),
     );
   }
@@ -117,27 +94,26 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
   onCancel(): void {
     this.visible = false;
     this.modalService.hideLogin();
-    this.loading = false;
+    this.loading.set(false);
     this.cancelled.emit();
     this.router.navigate(['/']);
   }
   onSubmit(): void {
-    this.errorMessage = '';
+    this.errorMessage.set('');
     const { email, password, dob } = this.loginModel();
     const dateOfBirth = toDateTime(dob);
     if (!dateOfBirth.isValid) {
-      this.errorMessage = 'Enter a valid date of birth.';
-      this.loading = false;
+      this.errorMessage.set('Enter a valid date of birth.');
+      this.loading.set(false);
       return;
     }
 
-    this.loading = true;
-    this.userService
+    this.loading.set(true);
+    this.accountService
       .login(email, password, dateOfBirth.toFormat(Constants.dateFormat))
       .pipe(
         finalize(() => {
-          this.loading = false;
-          this.cdr.detectChanges();
+          this.loading.set(false);
         }),
       )
       .subscribe({
@@ -155,10 +131,10 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
           }
 
           // Unexpected response
-          this.errorMessage = 'Unexpected login response';
+          this.errorMessage.set('Unexpected login response');
         },
         error: (err: unknown) => {
-          this.errorMessage = this.getErrorMessage(err, 'Login failed');
+          this.errorMessage.set(this.getErrorMessage(err, 'Login failed'));
         },
       });
   }
@@ -180,14 +156,13 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
 
   // MFA dialog handlers
   onMfaVerify(code: string): void {
-    this.errorMessage = '';
-    this.loading = true;
-    this.userService
+    this.errorMessage.set('');
+    this.loading.set(true);
+    this.accountService
       .verifyMfa(this.mfaEmail, code)
       .pipe(
         finalize(() => {
-          this.loading = false;
-          this.cdr.detectChanges();
+          this.loading.set(false);
         }),
       )
       .subscribe({
@@ -197,7 +172,7 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
             !response.jwtToken?.trim() ||
             (isMfaResponse(response) && response.mfaRequired)
           ) {
-            this.errorMessage = 'Unexpected MFA verification response';
+            this.errorMessage.set('Unexpected MFA verification response');
             return;
           }
 
@@ -205,7 +180,7 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
         },
         error: (err: unknown) => {
           const msg = this.getErrorMessage(err, 'Invalid code');
-          this.errorMessage = msg;
+          this.errorMessage.set(msg);
           // If the server indicates the code expired, close the MFA dialog so
           // the login error message is visible and user can retry login.
           if (/expire/i.test(msg)) {
@@ -219,11 +194,8 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
   private completeLogin(): void {
     this.showMfa = false;
     this.mfaEmail = '';
-    this.ngZone.run(() => {
-      this.modalService.hideLogin();
-      this.cdr.detectChanges();
-      this.router.navigate(['/profile']);
-    });
+    this.modalService.hideLogin();
+    this.router.navigate(['/profile']);
   }
 
   private getErrorMessage(error: unknown, fallback: string): string {
@@ -241,8 +213,7 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
   onMfaCancelled(): void {
     this.showMfa = false;
     this.mfaEmail = '';
-    this.loading = false;
-    this.cdr.detectChanges();
+    this.loading.set(false);
   }
 
   ngOnDestroy(): void {
