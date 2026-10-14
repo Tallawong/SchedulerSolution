@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:5002',
+  apiUrl: 'https://schedulerserver-h3heb5cqetggafey.eastasia-01.azurewebsites.netschedulerserver-h3heb5cqetggafey.eastasia-01.azurewebsites.net',
 };
