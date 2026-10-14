@@ -16,13 +16,13 @@
 
         <label for="dob">Date of birth</label>
         <input id="dob" type="date" class="lp-input" [formField]="loginForm.dob" />
-        @if (errorMessage) {
-          <div class="lp-error">{{ errorMessage }}</div>
+        @if (errorMessage()) {
+          <div class="lp-error">{{ errorMessage() }}</div>
         }
 
         <div class="lp-actions">
-          <button type="submit" class="btn-primary" [disabled]="loading">
-            {{ loading ? 'Signing in...' : 'Sign in' }}
+          <button type="submit" class="btn-primary" [disabled]="loading()">
+            {{ loading() ? 'Signing in...' : 'Sign in' }}
           </button>
         </div>
 
