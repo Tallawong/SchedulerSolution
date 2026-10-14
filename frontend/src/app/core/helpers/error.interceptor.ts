@@ -12,7 +12,10 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((err: unknown) => {
       console.error('ErrorInterceptor:', getErrorMessage(err), err);
       if (isHttpErrorResponse(err)) {
-        if ([401, 403].includes(err.status) && accountService.accountValue) {
+        // Revocation is best-effort: a stale token must not start another logout
+        // while the original logout request is still being processed.
+        if ([401, 403].includes(err.status) && accountService.accountValue &&
+            !req.url.split('?')[0].endsWith('/Accounts/revoke-token')) {
           accountService.logout();
         }
         // dump the raw parsed response body so backend validation details aren't lost to console collapsing

@@ -1,11 +1,14 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output, signal } from '@angular/core';
+import { A11yModule } from '@angular/cdk/a11y';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { AccountService } from '../services';
+import { AccountModalService } from './account-modal.service';
 
 @Component({
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, A11yModule],
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css'],
@@ -18,18 +21,23 @@ export class ForgotPasswordComponent implements OnInit {
   model = { email: '', dob: '' };
   // `dobDate` is the Date selected via material datepicker.
   dobDate: Date | null = null;
-  // String value bound to native date input (yyyy-MM-dd)
-  dobInput: string = '';
+  // The native date input stores yyyy-MM-dd in an Angular signal.
+  readonly dobModel = signal({ dob: '' });
   loading = false;
   error = '';
   success = '';
 
-  constructor(private accountService: AccountService) {}
+  constructor(
+    private accountService: AccountService,
+    private modalService: AccountModalService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private router: Router,
+  ) {}
   ngOnInit(): void {
     // Initialize component state and guard against stray values
     this.model.dob = '';
     this.dobDate = null;
-    this.dobInput = '';
+    this.dobModel.set({ dob: '' });
     console.log('[ForgotPassword] ngOnInit dobDate:', this.dobDate, 'model.dob:', this.model.dob);
   }
 
@@ -42,6 +50,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.reset();
     this.cancelled.emit();
     this.visible = false;
+    void this.router.navigate(['/account/login']);
   }
 
   onSubmit(): void {
@@ -65,15 +74,18 @@ export class ForgotPasswordComponent implements OnInit {
         finalize(() => {
           this.loading = false;
           this.resetCursor();
+          this.changeDetectorRef.markForCheck();
         }),
       )
       .subscribe({
         next: () => {
           this.success = 'Please check your email for password reset instructions';
+          this.changeDetectorRef.markForCheck();
           this.submitted.emit({ email: this.model.email, dob: this.model.dob });
         },
         error: (err) => {
           this.error = err?.error?.message || 'Failed to submit request.';
+          this.changeDetectorRef.markForCheck();
         },
       });
   }
@@ -92,10 +104,14 @@ export class ForgotPasswordComponent implements OnInit {
     }
   }
 
-  onDateInputChange(): void {
-    if (this.dobInput) {
-      const d = new Date(this.dobInput);
-      if (isNaN(d.getTime())) {
+  onDateInputChange(event: Event): void {
+    const input = (event.target as HTMLInputElement).value;
+    this.dobModel.set({ dob: input });
+    if (input) {
+      const [year, month, day] = input.split('-').map(Number);
+      const d = new Date(year, month - 1, day);
+      if (isNaN(d.getTime()) || d.getFullYear() !== year ||
+          d.getMonth() + 1 !== month || d.getDate() !== day) {
         this.dobDate = null;
         this.model.dob = '';
       } else {
@@ -111,6 +127,7 @@ export class ForgotPasswordComponent implements OnInit {
   private reset(): void {
     this.model = { email: '', dob: '' };
     this.dobDate = null;
+    this.dobModel.set({ dob: '' });
     this.loading = false;
     this.error = '';
     this.success = '';

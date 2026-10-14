@@ -75,7 +75,14 @@ export class AccountService {
   logout() {
     this.api
       .accountsRevokeTokenPost({}, 'body', false, accountApiOptions({ withCredentials: true }))
-      .subscribe();
+      .subscribe({
+        error: (err) => {
+          // Ignore 401 errors (including expired JWT or stale refresh cookie)
+          if (err.status !== 401) {
+            console.error('Revoke token error', err);
+          }
+        },
+      });
     this.stopRefreshTokenTimer();
     this.accountSubject.next(null);
     this.router.navigate(['/account/login']);

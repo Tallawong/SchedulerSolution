@@ -14,19 +14,8 @@
         <label for="password">Password</label>
         <input type="password" class="lp-input" [formField]="loginForm.password" />
 
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Date of birth</mat-label>
-          <input
-            matInput
-            id="dob"
-            [formControl]="dobControl"
-            [matDatepicker]="dobPicker"
-            placeholder="dd-MM-yyyy"
-          />
-          <mat-datepicker-toggle matIconSuffix [for]="dobPicker"></mat-datepicker-toggle>
-          <mat-datepicker #dobPicker></mat-datepicker>
-          <mat-hint>dd-MM-yyyy</mat-hint>
-        </mat-form-field>
+        <label for="dob">Date of birth</label>
+        <input id="dob" type="date" class="lp-input" [formField]="loginForm.dob" />
         @if (errorMessage) {
           <div class="lp-error">{{ errorMessage }}</div>
         }
@@ -35,7 +24,6 @@
           <button type="submit" class="btn-primary" [disabled]="loading">
             {{ loading ? 'Signing in...' : 'Sign in' }}
           </button>
-          <button type="button" class="btn-secondary" (click)="onCancel()">Cancel</button>
         </div>
 
         <div class="lp-secondary-actions">

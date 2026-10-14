@@ -89,7 +89,7 @@ describe('LoginPromptComponent', () => {
       password: 'password',
       dob: '2000-01-01',
     });
-    component.dobControl.setValue(DateTime.local(2026, 9, 22));
+    component['#dob'].setValue(DateTime.local(2026, 9, 22));
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -322,5 +322,18 @@ describe('LoginPromptComponent', () => {
     expect(component.mfaEmail).toBe('');
     expect(component.loading).toBe(false);
     expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it('keeps the correct dob signal value when typing in the native date input', async () => {
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input[id="dob"]');
+    input.value = '2001-02-03';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.loginModel().dob).toBe('2001-02-03');
+
+    component.onSubmit();
+    expect(login).toHaveBeenCalledExactlyOnceWith('user@example.test', '', '03-02-2001');
   });
 });

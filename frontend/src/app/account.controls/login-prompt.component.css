@@ -5,7 +5,7 @@
 /* Dialog appearance is defined centrally in src/styles/dialog-theme.css.
    This component opts in with the app-dialog-theme host class. */
 
-/* Preserve any existing non-dialog/date-picker-specific rules below. */
+/* Preserve any existing non-dialog rules below. */
 
 .lp-secondary-actions {
   display: flex;

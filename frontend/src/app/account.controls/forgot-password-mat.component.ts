@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { A11yModule } from '@angular/cdk/a11y';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { AccountService } from '../services';
@@ -17,6 +18,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: 'forgot-password-mat.component.html',
   selector: 'app-forgot-password-mat',
   imports: [
+    A11yModule,
     RouterLink,
     MatFormFieldModule,
     MatInputModule,
@@ -51,7 +53,6 @@ export class ForgotPasswordMatComponent implements OnInit {
     });
   }
 
-  // convenience getter for easy access to form fields
   get f() {
     return this.form.controls;
   }

@@ -35,7 +35,8 @@ describe('ForgotPasswordMatComponent', () => {
       email: 'user@example.test',
       dob: '01-01-2000',
     });
-    expect(fixture.nativeElement.querySelector('.alert-success')).toBeNull();
+    expect(fixture.nativeElement.querySelector('[role="alertdialog"]')).toBeNull();
+    expect(fixture.nativeElement.querySelector('form')).not.toBeNull();
     expect(submitted).not.toHaveBeenCalled();
 
     response.next();
@@ -43,12 +44,20 @@ describe('ForgotPasswordMatComponent', () => {
     expect(component.success).toBe('Please check your email for password reset instructions');
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('[role="status"]').textContent).toContain(
+    expect(fixture.nativeElement.querySelector('[role="alertdialog"] #fp-mat-confirmation-message').textContent).toBe(
       'Please check your email for password reset instructions',
     );
+    expect(fixture.nativeElement.querySelector('form')).toBeNull();
     expect(submitted).toHaveBeenCalledOnce();
     component.onSubmit();
     expect(forgotPassword).toHaveBeenCalledOnce();
+
+    const cancelled = vi.fn();
+    component.cancelled.subscribe(cancelled);
+    fixture.nativeElement.querySelector('.fp-mat-confirmation button').click();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[role="alertdialog"]')).toBeNull();
+    expect(cancelled).toHaveBeenCalledOnce();
   });
 
   it('shows errors without claiming an email was sent', () => {
@@ -60,7 +69,9 @@ describe('ForgotPasswordMatComponent', () => {
     expect(fixture.nativeElement.querySelector('[role="alert"]').textContent).toContain(
       'Request failed',
     );
-    expect(fixture.nativeElement.querySelector('.alert-success')).toBeNull();
+    expect(fixture.nativeElement.querySelector('[role="alertdialog"]')).toBeNull();
+    expect(fixture.nativeElement.querySelector('form')).not.toBeNull();
     expect(component.loading).toBe(false);
   });
+
 });

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { ForgotPasswordComponent } from './forgot-password.component';
 
 @Component({
@@ -12,16 +11,10 @@ import { ForgotPasswordComponent } from './forgot-password.component';
     >
       <div class="row w-100">
         <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 mx-auto">
-          <app-forgot-password (cancelled)="onCancelled()"></app-forgot-password>
+          <app-forgot-password></app-forgot-password>
         </div>
       </div>
     </div>
   `,
 })
-export class ForgotPasswordPageComponent {
-  constructor(private router: Router) {}
-
-  onCancelled() {
-    this.router.navigate(['/']);
-  }
-}
+export class ForgotPasswordPageComponent {}
