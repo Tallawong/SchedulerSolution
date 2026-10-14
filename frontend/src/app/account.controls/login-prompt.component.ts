@@ -98,7 +98,9 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
     this.cancelled.emit();
     this.router.navigate(['/']);
   }
-  onSubmit(): void {
+  onSubmit(event?: Event): void {
+    event?.preventDefault(); // Prevent default form submission behavior
+
     this.errorMessage.set('');
     const { email, password, dob } = this.loginModel();
     const dateOfBirth = toDateTime(dob);

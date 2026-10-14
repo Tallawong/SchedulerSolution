@@ -14,7 +14,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       if (isHttpErrorResponse(err)) {
         // Revocation is best-effort: a stale token must not start another logout
         // while the original logout request is still being processed.
-        if ([401, 403].includes(err.status) && accountService.accountValue &&
+        // A 403 means the account is authenticated but not permitted to use
+        // this endpoint. It must not discard the user's session.
+        if (err.status === 401 && accountService.accountValue &&
             !req.url.split('?')[0].endsWith('/Accounts/revoke-token')) {
           accountService.logout();
         }

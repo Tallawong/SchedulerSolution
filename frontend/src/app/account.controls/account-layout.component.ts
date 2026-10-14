@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
-import { TokenService } from '../services/token/token.service';
+import { AccountService } from '../services/account/account.service';
 
 @Component({
   standalone: true,
@@ -28,11 +28,11 @@ import { TokenService } from '../services/token/token.service';
 })
 export class AccountLayoutComponent implements OnInit {
   private router = inject(Router);
-  private tokenService = inject(TokenService);
+  private accountService = inject(AccountService);
 
   ngOnInit(): void {
     // Redirect away from auth pages if already logged in, but allow profile/verify-email
-    if (this.tokenService.isLoggedIn()) {
+    if (this.accountService.accountValue) {
       const url = this.router.url || '';
       const allow =
         url.includes('/account/verify-email') ||

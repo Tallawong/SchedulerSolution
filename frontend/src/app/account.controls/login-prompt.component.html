@@ -7,7 +7,7 @@
       </div>
 
       <!--form [formGroup]="myForm"-->
-      <form (ngSubmit)="onSubmit()" class="lp-form">
+      <form (submit)="onSubmit($event)" class="lp-form">
         <label for="email">Email</label>
         <input type="email" class="lp-input" [formField]="loginForm.email" />
 

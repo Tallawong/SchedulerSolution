@@ -366,4 +366,17 @@ describe('LoginPromptComponent', () => {
     expect(component.loading).toBe(false);
     expect(component.errorMessage).toBe('');
   });
+
+  it('prevents default form submission behavior', () => {
+    const form = fixture.nativeElement.querySelector('.lp-form');
+    const submitSpy = vi.fn();
+    const event = new Event('submit', { bubbles: true, cancelable: true });
+
+    Object.defineProperty(event, 'preventDefault', { value: submitSpy });
+
+    form.dispatchEvent(event);
+
+    expect(submitSpy).toHaveBeenCalled();
+    expect(event.defaultPrevented).toBe(true);
+  });
 });
