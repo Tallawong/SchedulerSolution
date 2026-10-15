@@ -168,6 +168,7 @@
           <input
             type="password"
             formControlName="password"
+            autocomplete="new-password"
             class="form-control"
             [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
           />
@@ -187,6 +188,7 @@
           <input
             type="password"
             formControlName="confirmPassword"
+            autocomplete="new-password"
             class="form-control"
             [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }"
           />
