@@ -18,7 +18,7 @@ const routes: Routes = [
         (x) => x.AddEditModule,
       ) /* component: AddEditComponent */,
   },
-  { path: 'import-accounts', component: UploadAccountsComponent },
+  { path: 'import-accounts', component:  UploadAccountsComponent },
   {
     path: 'import-timeslots-tasks',
     loadChildren: () =>

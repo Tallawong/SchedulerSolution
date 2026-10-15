@@ -1,39 +1,3 @@
-<!-- <form [formGroup]="form" *ngIf="isLoaded && !isAdmin">
-<div class="border-primary">
-  <div class="row" *ngIf="isLoggedAsAdmin">
-    <div class="mb-3 col-5">
-      <label>Choose Duties for {{account.firstName}}</label>
-      <select formControlName="function" class="form-select"
-        [ngClass]="{ 'is-invalid': submitted && f['function'].errors }" (change)="onTaskChanged()"
-        #functionSelected>
-        @for(item of possibleTasks; track item) {
-          <option>{{ item.userFunction }}
-          </option>
-        }
-      </select>
-
-      <div *ngIf="submitted && form.controls['function'].hasError('invalidFunction')"
-        class="alert alert-danger">Duty
-      can't be empty</div>
-    </div>
-
-
-    <div class="col-3" *ngIf="isGroupTaskSelected">
-      <div class="row">
-        <div class="col-1 pb-3">
-          <label for="group">Team</label>
-          <input type="text" #data formControlName="groupTask" name="group"
-            placeholder="Specify a group" />
-        </div>
-      </div>
-      <div *ngIf="submitted && form.controls['groupTask'].hasError('invalidGroup')"
-        class="alert alert-danger">Group
-      can't be empty</div>
-    </div>
-  </div>
-</div>
-</form> -->
-
 @if (isLoaded && !isAdmin) {
   <form [formGroup]="form" (ngSubmit)="onAddTask()">
     <fieldset>

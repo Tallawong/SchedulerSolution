@@ -2800,7 +2800,7 @@ namespace WebApi.Services
                         // User and functions have been red in
                         request.Role = Role.User.ToString();
 
-                        Account account = _context.Accounts.SingleOrDefault(x => x.Email == request.Email && x.DOB == request.Dob);
+                        Account account = _context.Accounts.Include(x => x.UserFunctions).SingleOrDefault(x => x.Email == request.Email && x.DOB == request.Dob);
                         // Validate
                         if (account == null)
                         {

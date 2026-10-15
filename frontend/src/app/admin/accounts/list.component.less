@@ -5,18 +5,107 @@
   transform: translateX(-50%) translateY(-50%);
 }
 
-// Defs for fieldset & legend
-fieldset {
-  margin: 8px;
-  border: 1px solid silver;
-  padding: 8px;
-  border-radius: 4px;
+.accounts-page {
+  padding: 1.5rem;
 }
 
-legend {
-  background-color: #000;
-  color: #fff;
-  padding: 3px 6px;
+.accounts-page-header {
+  margin-bottom: 1.5rem;
+}
+
+.accounts-page-header h1 {
+  margin-bottom: 0.25rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.accounts-sidebar {
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  background: #f1f5f9;
+}
+
+.accounts-nav-heading {
+  margin: 1rem 0 0.25rem;
+  padding: 0 0.75rem;
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.accounts-nav-heading:first-child {
+  margin-top: 0.25rem;
+}
+
+.accounts-nav-action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 0;
+  border-radius: 0.5rem;
+  color: #334155;
+  text-align: left;
+}
+
+.accounts-nav-action svg {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.accounts-nav-action:hover,
+.accounts-nav-action:focus-visible {
+  background: #e2e8f0;
+  color: #1e40af;
+}
+
+.accounts-nav-action.active {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.accounts-nav-danger {
+  color: #b91c1c;
+}
+
+.accounts-nav-danger:hover,
+.accounts-nav-danger:focus-visible {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.accounts-nav .dropdown-menu {
+  min-width: 100%;
+}
+
+.accounts-toolbar {
+  min-height: 3.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.accounts-filter {
+  width: min(100%, 20rem);
+}
+
+.accounts-table-region {
+  overflow-x: auto;
+}
+
+.accounts-table {
+  min-width: 620px;
+  box-shadow: none;
+}
+
+.accounts-table mat-header-row {
+  background: #f1f5f9;
+}
+
+.accounts-paginator {
+  box-shadow: none;
 }
 
 // Defs for highlight selected row in material table

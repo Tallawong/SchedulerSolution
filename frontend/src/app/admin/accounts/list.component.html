@@ -1,39 +1,28 @@
-<div class="container">
-  <div class="row">
-    <!-- <div class="mb-3 col-5">
-    <fieldset>
-      <legend>Auto Email</legend>
-      <label class="sendEmailClass pe-3" for="send">Send e-mails:</label>
-      <input type="checkbox" id="send" #tr (click)="onChangeAutoEmail($event, tr)" [checked]="autoEmail"
-        [disabled]="false" />
-    </fieldset>
-  </div> -->
-  </div>
-</div>
+<section class="accounts-page container-fluid">
+  <header class="accounts-page-header d-flex flex-wrap align-items-center justify-content-between gap-3">
+    <div>
+      <h1>Accounts</h1>
+      <p class="text-muted mb-0">Manage accounts, imports, and schedules.</p>
+    </div>
+    <button
+      type="button"
+      routerLink="add-edit/add"
+      class="btn btn-primary"
+      [disabled]="generatingSchedules || downloadingSchedules"
+    >Create Account</button>
+  </header>
 
-<div class="container">
-  <form>
-    <fieldset>
-      <legend>Accounts</legend>
-      <div class="row">
-        <div class="col-2">
-          <nav class="navbar bg-body-tertiary">
-            <!-- <div class="mx-auto custom-container p-4 text-center">
-            <nav class="navbar navbar-expand-lg bg-body-tertiary">
-              <div class="container-fluid">
-                <h1>
-                  <a class="navbar-brand" href="#">Menu</a>
-                </h1>
-              </div>
-            </nav>
-          </div> -->
-
-            <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-primary rounded-5 shadow-sm">
-              <li class="nav-item mt-2">
+  <div class="row g-4">
+    <aside class="col-12 col-lg-3 col-xl-2">
+      <nav class="accounts-sidebar" aria-label="Account administration">
+        <ul class="accounts-nav list-unstyled mb-0">
+          <li class="accounts-nav-heading">Setup</li>
+          <li>
                 <button
                   routerLink="agenttaskdefinition-edit"
                   type="button"
-                  class="btn3d btn btn-sm btn-primary mb-2"
+                  class="btn btn-sm accounts-nav-action"
+                  routerLinkActive="active"
                   data-toggle="tooltip"
                   data-placement="top"
                   title="Define Agent Tasks"
@@ -62,11 +51,11 @@
                 </button>
               </li>
 
-              <li class="nav-item dropdown">
-                <a
-                  class="dropdown-toggle btn3d btn btn-sm btn-primary mb-2"
-                  href="#"
-                  role="button"
+              <li class="accounts-nav-heading">Import</li>
+              <li class="dropdown">
+                <button
+                  type="button"
+                  class="dropdown-toggle btn btn-sm accounts-nav-action"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                   data-placement="top"
@@ -118,12 +107,13 @@
                       from the Noun Project
                     </text></svg
                   >&emsp;Importing
-                </a>
+                </button>
                 <ul class="dropdown-menu">
                   <li>
                     <a
-                      class="dropdown-item btn3d btn btn-sm"
+                      class="dropdown-item"
                       routerLink="import-accounts"
+                      routerLinkActive="active"
                       data-placement="top"
                       title="Import Accounts"
                     >
@@ -144,8 +134,9 @@
                   </li>
                   <li>
                     <a
-                      class="dropdown-item btn3d btn btn-sm"
+                      class="dropdown-item"
                       routerLink="import-timeslots-tasks/import"
+                      routerLinkActive="active"
                       data-placement="top"
                       title="Import TimeSlots Tasks"
                     >
@@ -169,12 +160,13 @@
                 </ul>
               </li>
 
-              <li class="nav-item">
+              <li class="accounts-nav-heading">Accounts</li>
+              <li>
                 <button
                   routerLink="./"
                   (click)="onDeleteAllUserAccounts()"
                   type="button"
-                  class="btn3d btn btn-sm btn-danger mb-2"
+                  class="btn btn-sm accounts-nav-action accounts-nav-danger"
                   data-placement="top"
                   title="Delete Accounts"
                   [ngClass]="{ disabled: generatingSchedules || downloadingSchedules }"
@@ -197,34 +189,13 @@
                   }
                 </button>
               </li>
-              <li class="nav-item">
-                <button
-                  routerLink="add-edit/add"
-                  class="btn3d btn btn-sm btn-primary mb-2"
-                  data-placement="top"
-                  title="Create Account"
-                  [ngClass]="{ disabled: generatingSchedules || downloadingSchedules }"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="32"
-                    height="32"
-                    fill="currentColor"
-                    class="bi bi-file-earmark-person"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                    <path
-                      d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2v9.255S12 12 8 12s-5 1.755-5 1.755V2a1 1 0 0 1 1-1h5.5z"
-                    /></svg
-                  >&nbsp;Create Account
-                </button>
-              </li>
-              <li class="nav-item">
+              <li class="accounts-nav-heading">Schedules</li>
+              <li>
                 <button
                   routerLink="timeslotstasks-edit"
                   type="button"
-                  class="btn3d btn btn-sm btn-primary mb-2"
+                  class="btn btn-sm accounts-nav-action"
+                  routerLinkActive="active"
                   data-toggle="tooltip"
                   data-placement="top"
                   title="Create Time Slots"
@@ -247,12 +218,12 @@
                   >&nbsp;Create Time Slots
                 </button>
               </li>
-              <li class="nav-item">
+              <li>
                 <button
                   routerLink="."
                   (click)="generateSchedules()"
                   type="button"
-                  class="btn3d btn btn-sm btn-primary mb-2"
+                  class="btn btn-sm accounts-nav-action"
                   data-toggle="tooltip"
                   data-placement="top"
                   title="Generate Schedules"
@@ -275,11 +246,12 @@
                   >&nbsp;Gen. Schedules
                 </button>
               </li>
-              <li class="nav-item">
+              <li>
                 <button
                   routerLink="schedule-modify"
                   type="button"
-                  class="btn3d btn btn-sm btn-primary mb-2"
+                  class="btn btn-sm accounts-nav-action"
+                  routerLinkActive="active"
                   data-toggle="tooltip"
                   data-placement="top"
                   title="View\Edit Schedules"
@@ -304,11 +276,11 @@
                 </button>
               </li>
 
-              <li class="nav-item mb-2">
+              <li>
                 <button
                   type="button"
                   (click)="downloadSchedules()"
-                  class="btn3d btn btn-sm btn-primary mb-2"
+                  class="btn btn-sm accounts-nav-action"
                   data-placement="top"
                   title="View Schedules in .pdf format"
                   [ngClass]="{ disabled: generatingSchedules || downloadingSchedules }"
@@ -330,19 +302,22 @@
                   >&nbsp;View Schedules
                 </button>
               </li>
-            </ul>
-          </nav>
-        </div>
+        </ul>
+      </nav>
+    </aside>
 
-        <div class="col-10">
-          <form>
-            <mat-form-field appearance="outline">
-              <mat-label>Filter</mat-label>
-              <input matInput (keyup)="applyFilter(input)" placeholder="Search columns" #input />
-            </mat-form-field>
-            <mat-table
+    <main class="col-12 col-lg-9 col-xl-10">
+      <div class="accounts-toolbar d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <mat-form-field appearance="outline" class="accounts-filter">
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter(input)" placeholder="Search columns" #input />
+        </mat-form-field>
+        <span class="text-muted small">{{ accounts().length }} accounts</span>
+      </div>
+      <div class="accounts-table-region">
+        <mat-table
               matSort
-              class="lessons-table mat-elevation-z8"
+              class="lessons-table accounts-table"
               [dataSource]="dataSource"
               (matSortChange)="sortData($event)"
             >
@@ -385,13 +360,13 @@
                   <button
                     routerLink="add-edit/edit/{{ account.id }}"
                     [disabled]="!account.isVerified || generatingSchedules || downloadingSchedules"
-                    class="btn btn-sm btn-primary mr-1 btn3d"
+                    class="btn btn-sm btn-outline-primary me-2"
                   >
                     Edit
                   </button>
                   <button
                     (click)="deleteAccount(account.id)"
-                    class="btn btn-sm btn-danger btn-delete-account btn3d"
+                    class="btn btn-sm btn-outline-danger btn-delete-account"
                     [disabled]="
                       account.isDeleting ||
                       account.role == Role.Admin ||
@@ -416,10 +391,10 @@
                 (mouseover)="row.hovered = true"
                 (mouseout)="row.hovered = false"
               ></mat-row>
-            </mat-table>
-            <mat-paginator
+        </mat-table>
+        <mat-paginator
               #paginator
-              class="lessons-table mat-elevation-z8"
+              class="lessons-table accounts-paginator"
               pageSize="{{ pageSize }}"
               pageIndex="{{ pageIndex }}"
               [length]="accounts().length"
@@ -427,10 +402,8 @@
               showFirstLastButtons
               (page)="onChangePageSettings($event)"
             >
-            </mat-paginator>
-          </form>
-        </div>
+        </mat-paginator>
       </div>
-    </fieldset>
-  </form>
-</div>
+    </main>
+  </div>
+</section>

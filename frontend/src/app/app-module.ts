@@ -24,6 +24,7 @@ import { initializeApp } from './core/helpers/app.initializer';
 import { AccountService } from './services/account/account.service';
 import { provideApi } from './shared/openapi-api-client/provide-api';
 import { DatePickerExampleComponent } from './date-picker-example/date-picker-example.component';
+import { accountApiInterceptor } from './services/account/account-api.interceptor';
 
 @NgModule({
   exports: [MaterialModule],
@@ -45,7 +46,7 @@ import { DatePickerExampleComponent } from './date-picker-example/date-picker-ex
   providers: [
     provideRouter(routes, withDebugTracing()),
     provideBrowserGlobalErrorListeners(),
-    provideHttpClient(withInterceptors([jwtInterceptor, errorInterceptor])),
+    provideHttpClient(withInterceptors([accountApiInterceptor,jwtInterceptor, errorInterceptor])),
     provideApi({ basePath: environment.apiUrl, withCredentials: true }),
     provideAppInitializer(() => initializeApp(inject(AccountService))()),
   ],

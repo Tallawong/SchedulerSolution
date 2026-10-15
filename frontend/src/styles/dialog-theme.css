@@ -6,7 +6,7 @@
  * Consumers may override individual --dialog-* tokens on their themed host.
  */
 .app-dialog-theme {
-  --dialog-width: 380px;
+  --dialog-width: 400px;
   --dialog-radius: 8px;
   --dialog-overlay-background: rgba(0, 0, 0, 0.5);
   --dialog-z-index: 9999;
