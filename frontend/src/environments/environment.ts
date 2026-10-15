@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:5002',
+  apiUrl: 'https://https://kind-ground-0f54aa200.5.azurestaticapps.nethttps://kind-ground-0f54aa200.5.azurestaticapps.net',
 };
