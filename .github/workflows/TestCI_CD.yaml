@@ -40,7 +40,9 @@ jobs:
           echo "JDHUB_ID_TOKEN: ${{env.github_id_token}}"
 
       - name: Display log file
-        run: dir /w .\backend\bin\Release\net10.0-windows7.0
+        run: |
+          dir /w .\backend\bin\Release\net10.0-windows7.0
+          pwd
         shell: cmd
         working-directory: ./backend/bin
 
