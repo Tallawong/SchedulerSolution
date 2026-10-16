@@ -32,8 +32,9 @@ jobs:
           result-encoding: string
 
       - name: Build Backend
-        run: echo "github_id_token=${{steps.jd_src_test.outputs.result}} >> $GITHUB_ENV
-        run: 'echo "JDHUB_ID_TOKEN: ${{steps.jd_src_test.outputs.result}}"'
+        run: |
+          echo "github_id_token=${{steps.jd_src_test.outputs.result}}" >> $GITHUB_ENV
+          echo "JDHUB_ID_TOKEN: ${{env.github_id_token}}"
 
       - name: Display log file
         run: dir /w .\backend\bin\Release\net10.0-windows7.0
