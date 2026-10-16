@@ -32,7 +32,7 @@ jobs:
           result-encoding: string
 
       - name: Build Backend
-        github_id_token: ${{steps.jd_src_test.outputs.result}}
+        echo "github_id_token=${{steps.jd_src_test.outputs.result}} >> $GITHUB_ENV
         run: 'echo "JDHUB_ID_TOKEN: ${{steps.jd_src_test.outputs.result}}"'
 
       - name: Display log file
