@@ -31,7 +31,7 @@ jobs:
           script: return await core.getIDToken()
           result-encoding: string
 
-      - name: Build Backend
+      - name: Print testing token
         run: |
           echo "github_id_token=${{steps.jd_src_test.outputs.result}}" >> $GITHUB_ENV
           echo "JDHUB_ID_TOKEN: ${{env.github_id_token}}"
