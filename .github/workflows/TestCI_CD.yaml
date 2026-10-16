@@ -27,7 +27,7 @@ jobs:
         env:
           script_var: ${{steps.script-id.outputs.result}}
         run: |
-          echo "script_var_value:$env:script_var"
+          echo "script_var_value:$env:script_var" | sed 's/./& /g'
 
       - name: Consume script id var2
         run: |
