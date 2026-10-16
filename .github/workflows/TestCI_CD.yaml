@@ -46,13 +46,6 @@ jobs:
       - name: Display log file
         run: dir /w .\backend\bin\Release\net10.0-windows7.0
         shell: cmd
-        #Dworking-directory: ./backend/bin
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: log4net.config
-          path: ./backend/bin/Release/net10.0-windows7.0/log4net.config
-          if-no-files-found: error
 
   deployment-experiments:
     
