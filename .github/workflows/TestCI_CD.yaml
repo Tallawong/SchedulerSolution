@@ -45,6 +45,7 @@ jobs:
         #Dworking-directory: ./backend/bin
 
       - name: Build Backend
+        working-directory: ./backend/bin
         run: dotnet build backend/backend.csproj --configuration Release
         shell: cmd
 
