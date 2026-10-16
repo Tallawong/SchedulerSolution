@@ -27,8 +27,9 @@ jobs:
           result-encoding: string
 
       - name: Build Backend
-        github_id_token: ${{ steps.jd_src_test.outputs.result }}
+        #github_id_token: ${{ steps.jd_src_test.outputs.result }}
         run: echo "JDHUB_ID_TOKEN: ${{ github_id_token }}"
+
       - name: Display log file
         run: dir /w .\backend\bin\Release\net10.0-windows7.0
         shell: cmd
