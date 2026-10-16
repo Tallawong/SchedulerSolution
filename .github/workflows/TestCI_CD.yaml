@@ -22,11 +22,16 @@ jobs:
         with:
           script: return await core.getIDToken()
           result-encoding: string
-      - name: Consume script id var
+      - name: Consume script id var1
         env:
           script-var: ${{steps.script-id.outputs.result}}
         run: |
           echo "script-var-value:$env:script-var"
+
+      - name: Consume script id var2
+        run: |
+          echo "script-var-value:${{steps.script-id.outputs.result}}" >> $env:GITHUB_ENV
+          echo "new-var-value:$env:script-var-value
 
       - name: Produce variable to share with another step
         id: produce_var
