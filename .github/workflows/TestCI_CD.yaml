@@ -39,15 +39,14 @@ jobs:
           echo "github_id_token=${{steps.jd_src_test.outputs.result}}" >> $env:GITHUB_ENV
           echo "JDHUB_ID_TOKEN: ${{env.github_id_token}}"
 
+      - name: Build Backend
+        run: dotnet build backend/backend.csproj --configuration Release
+        shell: cmd
+
       - name: Display log file
         run: dir /w .\backend\bin\Release\net10.0-windows7.0
         shell: cmd
         #Dworking-directory: ./backend/bin
-
-      - name: Build Backend
-        working-directory: ./backend/bin
-        run: dotnet build backend/backend.csproj --configuration Release
-        shell: cmd
 
       - uses: actions/upload-artifact@v4
         with:
