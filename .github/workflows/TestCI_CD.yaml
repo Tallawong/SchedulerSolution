@@ -43,8 +43,8 @@ jobs:
         run: |
           pwd
           #dir /w .\backend\bin\Release\net10.0-windows7.0
-        shell: cmd
-        working-directory: ./backend/bin
+        #shell: cmd
+        #working-directory: ./backend/bin
 
       - uses: actions/upload-artifact@v4
         with:
