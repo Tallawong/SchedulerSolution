@@ -30,8 +30,11 @@ jobs:
 
       - name: Consume script id var2
         run: |
-          echo "script-var-value:${{steps.script-id.outputs.result}}" >> $GITHUB_ENV
-          echo "new-var-value: $env:script-var-value"
+          echo "script-var-value=${{steps.script-id.outputs.result}}" >> $env:GITHUB_ENV
+
+      - name: Display script id var2
+        run: |
+          echo "new-var-value $env:script-var-value"
 
       - name: Produce variable to share with another step
         id: produce_var
