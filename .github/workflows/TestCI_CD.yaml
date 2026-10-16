@@ -1,4 +1,4 @@
-name: Variables
+name: Experiments with Variables
 on:
   workflow_dispatch:
 
