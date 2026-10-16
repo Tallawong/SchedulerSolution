@@ -91,19 +91,6 @@ jobs:
 
     runs-on: windows-latest
     steps:
-      - name: Download log file
-        uses: actions/download-artifact@v4
-        with:
-          name: log4net.config
-          path: ./backend/bin/Release/net10.0-windows7.0
-
-      - name: Verify file existence
-        run: |
-          if (Test-Path -LiteralPath './backend/bin/Release/net10.0-windows7.0/log4net.config' -PathType Leaf) {
-            Write-Output 'Success: File exists!'
-          } else {
-            throw 'Error: File not found!'
-          }
       # Passing variable between two steps within the job using environment variables. 
       # This is useful for non-sensitive values such as URLs, but not recommended 
       # for sensitive values such as passwords or API keys.
