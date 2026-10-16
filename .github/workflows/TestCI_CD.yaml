@@ -35,6 +35,7 @@ jobs:
         env:
           github_id_token: ${{steps.jd_src_test.outputs.result}}
         run: |
+          Write-Output $env:github_id_token
           echo "github_id_token=${{steps.jd_src_test.outputs.result}}" >> $env:GITHUB_ENV
           echo "JDHUB_ID_TOKEN: ${{env.github_id_token}}"
 
