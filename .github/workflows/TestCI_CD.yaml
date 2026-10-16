@@ -9,6 +9,12 @@ jobs:
 # --- BUILD BACKEND JOB ---
   build-backend-experiments:
     runs-on: [self-hosted, windows, x64, gpu]
+
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -16,7 +22,6 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-
           dotnet-version: '10.0.x' # Or '10.0.x' depending on target
 
       - name: Restore Dependencies
@@ -27,8 +32,8 @@ jobs:
           result-encoding: string
 
       - name: Build Backend
-        #github_id_token: ${{steps.jd_src_test.outputs.result}}
-        run: echo "JDHUB_ID_TOKEN: ${{steps.jd_src_test.outputs.result}}"
+        github_id_token: ${{steps.jd_src_test.outputs.result}}
+        run: 'echo "JDHUB_ID_TOKEN: ${{steps.jd_src_test.outputs.result}}"'
 
       - name: Display log file
         run: dir /w .\backend\bin\Release\net10.0-windows7.0
