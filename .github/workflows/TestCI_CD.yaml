@@ -34,6 +34,7 @@ jobs:
         id: step-id
         run: |
           echo "step_sharing_var=renia" >> $env:GITHUB_ENV
+          echo "step_sharing_var=renia" >> $env:GITHUB_OUTPUT
 
       - name: Reference step sharing variable
         run: |
