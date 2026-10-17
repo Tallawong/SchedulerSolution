@@ -38,7 +38,7 @@ jobs:
         run: |
           echo "step sharing var $env:step_sharing_var"
       ###############################################################
-      - name: Reference production env variable: APPSETTINGS_SMTPPASS
+      - name: Reference production env variable APPSETTINGS_SMTPPASS
         run: |
           echo "APPSETTINGS_SMTPPASS is {{var:APPSETTINGS_SMTPPASS}}" | & 'C:\Users\Janusz\Downloads\PortableGit\usr\bin\sed.exe' 's/./& /g'
 
