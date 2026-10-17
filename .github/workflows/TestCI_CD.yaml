@@ -28,7 +28,7 @@ jobs:
           script_var: ${{steps.script-id.outputs.result}}
         shell: bash
         run: |
-          echo "script_var_value:$env:script_var" | sed 's/./& /g'
+          echo "script_var_value:$env:script_var" | & "C:\Users\Janusz\Downloads\PortableGit\usr\bin\sed.exe" -i 's/./& /g'
 
       - name: Consume script id var2
         run: |
