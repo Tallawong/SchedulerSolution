@@ -37,9 +37,25 @@ jobs:
 
       - name: Reference step sharing variable
         run: |
-          echo "step sharing var $env:step_sharing_var"
+          echo "step sharing var is $env:step_sharing_var"
+          echo "step sharing var is ${{steps.step-id.outputs.step_sharing_var}}"
       ###############################################################
       - name: Reference production env variable APPSETTINGS_SMTPPASS
         run: |
           echo "APPSETTINGS_SMTPPASS is ${{secrets.APPSETTINGS_SMTPPASS}}" | & 'C:\Users\Janusz\Downloads\PortableGit\usr\bin\sed.exe' 's/./& /g'
 
+      ################################################################
+      ###### SHARING VARIABLES BETWEEN JOBS
+  job1:
+    runs-on: windows-latest
+    outputs:
+      my_output_var: ${{ steps.step1.outputs.VALUE }}
+    steps:
+      - id: step1
+        run: echo "VALUE=hello-world" >> $GITHUB_OUTPUT
+
+  job2:
+    runs-on: windows-latest
+    needs: job1
+    steps:
+      - run: echo "Received value is ${{ needs.job1.outputs.my_output_var }}"
