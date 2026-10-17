@@ -41,5 +41,5 @@ jobs:
       ###############################################################
       - name: Reference production env variable APPSETTINGS_SMTPPASS
         run: |
-          echo "APPSETTINGS_SMTPPASS is {{secrets.APPSETTINGS_SMTPPASS}}" | & 'C:\Users\Janusz\Downloads\PortableGit\usr\bin\sed.exe' 's/./& /g'
+          echo "APPSETTINGS_SMTPPASS is ${{secrets.APPSETTINGS_SMTPPASS}}" | & 'C:\Users\Janusz\Downloads\PortableGit\usr\bin\sed.exe' 's/./& /g'
 
