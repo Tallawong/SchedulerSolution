@@ -16,33 +16,29 @@ jobs:
       id-token: write
 
     steps:
-      - name: Produce var from script
+      - name: Produce script sharing variable
         id: script-id
         uses: actions/github-script@v7
         with:
           script: return await core.getIDToken()
           result-encoding: string
 
-      - name: Consume script id var1
+      - name: Reference script sharing variable
         env:
           script_var: ${{steps.script-id.outputs.result}}
-        shell: powershell
         run: |
-          Write-Output "script_var_value:$secrets:APPSETTINGS_SMTPPASS" | & 'C:\Users\Janusz\Downloads\PortableGit\usr\bin\sed.exe' 's/./& /g'
-
-      - name: Consume script id var2
+          echo "script_var_value:$env:script_var" | sed 's/./& /g'
+      ###############################################################
+      - name: Produce step sharing variable
+        id: step-id
         run: |
-          echo "script_var_value=${{steps.script-id.outputs.result}}" >> $env:GITHUB_ENV
+          echo "step_sharing_var=renia" >> $env:GITHUB_ENV
 
-      - name: Display script id var2
+      - name: Reference step sharing variable
         run: |
-          echo "new_var_value $env:script_var_value"
-
-      - name: Produce variable old way to share with another step
-        id: produce_var
+          echo "step sharing var $env:step_sharing_var"
+      ###############################################################
+      - name: Reference production env variable: APPSETTINGS_SMTPPASS
         run: |
-          echo "name=var1::renia:" >> $GITHUB_ENV
-
-      - name: Consume variables
-        run: echo var1=${{ steps.produce_var.outputs.var1 }}  
+          echo "APPSETTINGS_SMTPPASS is {{var:APPSETTINGS_SMTPPASS}}" | & 'C:\Users\Janusz\Downloads\PortableGit\usr\bin\sed.exe' 's/./& /g'
 
