@@ -26,9 +26,9 @@ jobs:
       - name: Consume script id var1
         env:
           script_var: ${{steps.script-id.outputs.result}}
-        shell: bash
+        shell: powershell
         run: |
-          echo "script_var_value:$env:script_var" | & 'C:\Users\Janusz\Downloads\PortableGit\usr\bin\sed.exe' -i 's/./& /g'
+          Write-Output "script_var_value:$env:script_var" | & 'C:\Users\Janusz\Downloads\PortableGit\usr\bin\sed.exe' 's/./& /g'
 
       - name: Consume script id var2
         run: |
