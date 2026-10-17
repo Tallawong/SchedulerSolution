@@ -47,6 +47,7 @@ jobs:
       ################################################################
       ###### SHARING VARIABLES BETWEEN JOBS
   job1:
+    needs : build-vars-experiments
     runs-on: [self-hosted, windows, x64, gpu]
     outputs:
       my_output_var: ${{ steps.step1.outputs.VALUE }}
