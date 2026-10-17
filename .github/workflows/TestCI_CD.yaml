@@ -47,7 +47,7 @@ jobs:
       ################################################################
       ###### SHARING VARIABLES BETWEEN JOBS
   job1:
-    runs-on: windows-latest
+    runs-on: [self-hosted, windows, x64, gpu]
     outputs:
       my_output_var: ${{ steps.step1.outputs.VALUE }}
     steps:
@@ -55,7 +55,7 @@ jobs:
         run: echo "VALUE=hello-world" >> $GITHUB_OUTPUT
 
   job2:
-    runs-on: windows-latest
+    runs-on: [self-hosted, windows, x64, gpu]
     needs: job1
     steps:
       - run: echo "Received value is ${{ needs.job1.outputs.my_output_var }}"
