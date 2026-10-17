@@ -9,6 +9,7 @@ jobs:
 # --- BUILD BACKEND JOB ---
   build-vars-experiments:
     runs-on: [self-hosted, windows, x64, gpu]
+    environment: production
 
     permissions:
       contents: read
