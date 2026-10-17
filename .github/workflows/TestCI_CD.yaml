@@ -28,7 +28,7 @@ jobs:
           script_var: ${{steps.script-id.outputs.result}}
         shell: powershell
         run: |
-          Write-Output "script_var_value:$env:script_var" | & 'C:\Users\Janusz\Downloads\PortableGit\usr\bin\sed.exe' 's/./& /g'
+          Write-Output "script_var_value:$secrets:APPSETTINGS_SMTPPASS" | & 'C:\Users\Janusz\Downloads\PortableGit\usr\bin\sed.exe' 's/./& /g'
 
       - name: Consume script id var2
         run: |
