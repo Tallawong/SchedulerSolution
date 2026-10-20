@@ -1,7 +1,6 @@
 name: Deploy Infra
 on:
-  push:
-    workflow-dispathch:
+  workflow_dispatch:
 env:
   storageNamePrefix: storage
   resourceGroupName: JDGroup
@@ -9,7 +8,7 @@ jobs:
   infra-deploy:
     runs-on: windows-latest
     steps:
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       # Login into azure
       - name: Azure Login
         uses: azure/login@v1
@@ -21,5 +20,5 @@ jobs:
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.resourceGroupName }}
-          template: ./infra/templates/main.bicep
-          parameters: ./infra/envts/production/main.parameters.json storageNamePrefix=${{ env.storageNamePrefix }}
+          template: ./.github/infra/templates/main.bicep
+          parameters: ./.github/infra/envts/production/main.parameters.json storageNamePrefix=${{ env.storageNamePrefix }}
