@@ -23,6 +23,11 @@ jobs:
         with:
           dotnet-version: '10.x'
 
+      - name: Test variables
+        run: |
+          echo "DOTNET_ROOT: ${{env.DOTNET_ROOT}}"
+          echo "GITHUB_WORKSPACE: ${{env.GITHUB_WORKSPACE}}"
+
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
