@@ -20,5 +20,5 @@ jobs:
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.resourceGroupName }}
-          template: ./.github/infra/templates/main.bicep
+          template:   ./.github/infra/templates/main.bicep
           parameters: ./.github/infra/envts/production/main.parameters.json storageNamePrefix=${{ env.storageNamePrefix }}
