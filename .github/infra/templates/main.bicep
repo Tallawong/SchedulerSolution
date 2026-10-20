@@ -55,10 +55,9 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2024-11-01' = {
   dependsOn: []
 }
 
-resource name_resource 'Microsoft.Web/sites@2025-05-01' = {
+resource name_resource 'Microsoft.Web/sites@2024-04-01' = {
   name: app_name
   location: location
-  tags: null
   properties: {
     serverFarmId: hostingPlan.id
     clientAffinityEnabled: false
