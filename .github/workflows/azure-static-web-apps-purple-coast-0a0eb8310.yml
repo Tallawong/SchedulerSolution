@@ -1,4 +1,4 @@
-name: Static Web Apps
+name: Static Web App
 
 on:
   push:
