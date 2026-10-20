@@ -62,4 +62,4 @@ jobs:
           app-name: 'SchedulerApp'
           slot-name: 'Production'
           package: .
-          
+                    

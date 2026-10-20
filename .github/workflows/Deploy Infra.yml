@@ -1,0 +1,25 @@
+name: Deploy Infra
+on:
+  push:
+    workflow-dispathch:
+env:
+  storageNamePrefix: storage
+  resourceGroupName: JDGroup
+jobs:
+  infra-deploy:
+    runs-on: windows-latest
+    steps:
+        uses: actions/checkout@v3
+      # Login into azure
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      # Deploy bicep template
+      - name : Deploy Bicep Template
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.resourceGroupName }}
+          template: ./infra/templates/main.bicep
+          parameters: ./infra/envts/production/main.parameters.json storageNamePrefix=${{ env.storageNamePrefix }}
