@@ -30,7 +30,7 @@ describe('AccountService generated API wrapper', () => {
   const navigate = vi.fn().mockResolvedValue(true);
   const apiUrl = `${environment.apiUrl}/Accounts`;
 
-  function accountResponse() {
+  function accountResponse( ) {
     const payload = btoa(JSON.stringify({ exp: Math.floor(Date.now() / 1000) + 3600 }));
     return {
       id: 'account-1',
