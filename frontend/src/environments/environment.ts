@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://schedulerapp.azurewebsites.netschedulerapp.azurewebsites.net',
+  apiUrl: 'https://schedulerapp.azurewebsites.net',
 };
