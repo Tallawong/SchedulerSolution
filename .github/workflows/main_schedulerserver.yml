@@ -57,6 +57,13 @@ jobs:
         with:
           name: .net-app
 
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_6981EE39CDB44A4886EAAE0E3C5E6EE9 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7E079A6D7B1E4044AC16EC4E00C04749 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_84B3308530034895AB91739F1E7AF2BD }}
+
       - name: Update Azure App Settings with GitHub Secrets
         uses: azure/appservice-settings@v1
         with:
@@ -89,12 +96,6 @@ jobs:
                 "slotSetting": false
               },
             ]
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_6981EE39CDB44A4886EAAE0E3C5E6EE9 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7E079A6D7B1E4044AC16EC4E00C04749 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_84B3308530034895AB91739F1E7AF2BD }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
