@@ -94,7 +94,7 @@ jobs:
                 "name": "AppSettings:SpryngApiToken",
                 "value": "${{ secrets.APPSETTINGS__SPRYNGAITOKEN }}",
                 "slotSetting": false
-              },
+              }
             ]
 
       - name: Deploy to Azure Web App
