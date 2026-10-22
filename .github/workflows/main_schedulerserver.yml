@@ -67,7 +67,7 @@ jobs:
       - name: Update Azure App Settings with GitHub Secrets
         uses: azure/appservice-settings@v1
         with:
-          app-name: 'my-production-app'
+          app-name: 'SchedulerApp'
           app-settings-json: |
             [
               {
