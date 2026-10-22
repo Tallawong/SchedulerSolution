@@ -56,7 +56,39 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-      
+
+      - name: Update Azure App Settings with GitHub Secrets
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: 'my-production-app'
+          app-settings-json: |
+            [
+              {
+                "name": "Kestrel:Endpoints:Https:Url",
+                "value": "${{ secrets.APPSETTINGS_SMTPPASS }}",
+                "slotSetting": false
+              },
+              {
+                "name": "AppSettings:BrevoApiKey",
+                "value": "${{ secrets.APPSETTINGS__BREVOAPIKEY }}",
+                "slotSetting": false
+              },
+              {
+                "name": "AppSettings:JwtSecret",
+                "value": "${{ secrets.APPSETTINGS__JWTSECRET }}",
+                "slotSetting": false
+              },
+              {
+                "name": "AppSettings:SmtpPass",
+                "value": "${{ secrets.APPSETTINGS__SMTPPASS }}",
+                "slotSetting": false
+              },
+              {
+                "name": "AppSettings:SpryngApiToken",
+                "value": "${{ secrets.APPSETTINGS__SPRYNGAITOKEN }}",
+                "slotSetting": false
+              },
+            ]
       - name: Login to Azure
         uses: azure/login@v2
         with:
