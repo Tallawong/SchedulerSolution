@@ -25,13 +25,6 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: "Copy Testing folder"
-        #swa deploy ./Testing --deployment-token <YOUR_DEPLOYMENT_TOKEN>
-        #swa deploy ./Testing --app-name WEB-SchedulerApp
-        run: |
-          ls
-          mkdir -p ./dist/Testing
-          cp -R Testing/* ./dist/Testing/
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
