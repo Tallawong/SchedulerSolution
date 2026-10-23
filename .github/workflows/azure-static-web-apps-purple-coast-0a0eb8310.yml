@@ -39,6 +39,10 @@ jobs:
           output_location: "dist/frontend/browser" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
 
+     - name: "Copy SSL folder"
+        #swa deploy ./Testing --deployment-token <YOUR_DEPLOYMENT_TOKEN>
+        swa deploy ./Testing --app-name WEB-SchedulerApp
+
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest

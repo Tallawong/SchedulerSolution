@@ -45,6 +45,7 @@
     <PackageJsonDevdependenciesAngularBuild Condition="$(PackageJsonDevdependenciesAngularBuild) == ''">^22.0.4</PackageJsonDevdependenciesAngularBuild>
     <PackageJsonDevdependenciesAngularCli Condition="$(PackageJsonDevdependenciesAngularCli) == ''">^22.0.4</PackageJsonDevdependenciesAngularCli>
     <PackageJsonDevdependenciesAngularCompilerCli Condition="$(PackageJsonDevdependenciesAngularCompilerCli) == ''">^22.0.0</PackageJsonDevdependenciesAngularCompilerCli>
+    <PackageJsonDevdependenciesAzureStaticWebAppsCli Condition="$(PackageJsonDevdependenciesAzureStaticWebAppsCli) == ''">^2.1.0</PackageJsonDevdependenciesAzureStaticWebAppsCli>
     <PackageJsonDevdependenciesEslintJs Condition="$(PackageJsonDevdependenciesEslintJs) == ''">^10.0.1</PackageJsonDevdependenciesEslintJs>
     <PackageJsonDevdependenciesTypesExpress Condition="$(PackageJsonDevdependenciesTypesExpress) == ''">^5.0.1</PackageJsonDevdependenciesTypesExpress>
     <PackageJsonDevdependenciesTypesLuxon Condition="$(PackageJsonDevdependenciesTypesLuxon) == ''">^3.0.0</PackageJsonDevdependenciesTypesLuxon>
