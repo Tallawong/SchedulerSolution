@@ -42,7 +42,7 @@ jobs:
         #swa deploy ./Testing --deployment-token <YOUR_DEPLOYMENT_TOKEN>
         #swa deploy ./Testing --app-name WEB-SchedulerApp
         run: |
-          dir/w
+          ls
           mkdir -p dist/Testing
           cp -R Testing/* dist/Testing/
 
