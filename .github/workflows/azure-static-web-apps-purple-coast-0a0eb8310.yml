@@ -42,9 +42,9 @@ jobs:
         #swa deploy ./Testing --deployment-token <YOUR_DEPLOYMENT_TOKEN>
         #swa deploy ./Testing --app-name WEB-SchedulerApp
         run: |
-          ls
-          mkdir -p dist/Testing
-          cp -R Testing/* dist/Testing/
+          ls ./frontend
+          mkdir -p ./frontend/dist/Testing
+          cp -R Testing/* .frontend/dist/Testing/
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
