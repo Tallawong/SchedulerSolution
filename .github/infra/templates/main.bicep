@@ -9,6 +9,7 @@ param app_name string = 'SchedulerApp'
 param swa_name string = 'WEB-${app_name}'
 param repository_url string = ''
 param repository_branch string = 'main'
+param repositoryToken string = ${{env:REPOSITORY_TOKEN}}
 
 var stgacc_name = '${storageNamePrefix}${uniqueString(resourceGroup().id)}'
 
@@ -73,7 +74,7 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
     deploymentAuthPolicy: 'DeploymentToken'
     repositoryUrl: repository_url
     branch: repository_branch
-    repositoryToken: ${{env:REPOSITORY_TOKEN}}
+    repositoryToken: repositoryToken
     enterpriseGradeCdnStatus: enterpriseGradeCdnStatus
     provider: 'GitHub' // Use 'DevOps' if using Azure DevOps Pipelines
   }
