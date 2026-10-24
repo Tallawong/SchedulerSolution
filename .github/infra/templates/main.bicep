@@ -73,7 +73,7 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
     deploymentAuthPolicy: 'DeploymentToken'
     repositoryUrl: repository_url
     branch: repository_branch
-    repositoryToken: repositoryToken
+    repositoryToken: ${{env:REPOSITORY_TOKEN}}
     enterpriseGradeCdnStatus: enterpriseGradeCdnStatus
     provider: 'GitHub' // Use 'DevOps' if using Azure DevOps Pipelines
   }
