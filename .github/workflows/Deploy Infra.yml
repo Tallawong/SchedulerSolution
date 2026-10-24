@@ -1,12 +1,15 @@
+# This workflow deploys the infrastructure for the Scheduler Solution 
+# using Bicep templates.
+# We need to generate service principal to login to azure is a safe manner.
+# So the following command helps us to generate the service principal and store it in the secrets of the repository.
+# az ad sp create-for-rbac --name github-devops-app --role contributor --scopes /subscriptions/2a29b280-6d2c-4128-b420-4ae90d834382 --sdk-auth
 name: Deploy Infra
 on:
   workflow_dispatch:
-env:
-  storageNamePrefix: storage
-  resourceGroupName: JDGroup
 jobs:
   infra-deploy:
     runs-on: windows-latest
+    environment: Production
     steps:
       - uses: actions/checkout@v3
       # Login into azure
@@ -19,6 +22,6 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ env.resourceGroupName }}
+          resourceGroupName: ${{ vars.AZURE_RESOURCE_GROUP_NAME || 'JDGroup' }}
           template:   ./.github/infra/templates/main.bicep
-          parameters: ./.github/infra/envts/production/main.parameters.json storageNamePrefix=${{ env.storageNamePrefix }}
+          parameters: ./.github/infra/envts/production/main.parameters.json storageNamePrefix=${{ vars.STORAGE_NAME_PREFIX || 'storage' }} repositoryToken=${{ secrets.REPOSITORY_TOKEN }}
