@@ -9,7 +9,8 @@ param app_name string = 'SchedulerApp'
 param swa_name string = 'WEB-${app_name}'
 param repository_url string = ''
 param repository_branch string = 'main'
-param repositoryToken string = ${{env:REPOSITORY_TOKEN}}
+# param repositoryToken string = ${{env:REPOSITORY_TOKEN}}
+param repositoryToken string = readEnvironmentVariable('REPOSITORY_TOKEN')
 
 var stgacc_name = '${storageNamePrefix}${uniqueString(resourceGroup().id)}'
 
