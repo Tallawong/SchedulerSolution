@@ -65,16 +65,26 @@ resource name_resource 'Microsoft.Web/sites@2024-04-01' = {
   }
   dependsOn: []
 }
-resource staticWebApp 'Microsoft.Web/staticSites@2023-12-01' = if (repository_url != '') {
+
+resource name_resource 'Microsoft.Web/staticSites@2022-09-01' = {
   name: swa_name
   location: location
-  sku: {
-    name: sku_name
-    tier: sku_name
-  }
+  tags: {}
   properties: {
+    deploymentAuthPolicy: 'DeploymentToken'
     repositoryUrl: repository_url
     branch: repository_branch
+    repositoryToken: repositoryToken
+    # buildProperties: {
+    #   appLocation: appLocation
+    #   apiLocation: apiLocation
+    #   appArtifactLocation: appArtifactLocation
+    # }
+    enterpriseGradeCdnStatus: enterpriseGradeCdnStatus
     provider: 'GitHub' // Use 'DevOps' if using Azure DevOps Pipelines
+  }
+  sku: {
+    tier: sku
+    name: skucode
   }
 }
