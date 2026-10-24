@@ -24,4 +24,8 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ vars.AZURE_RESOURCE_GROUP_NAME || 'JDGroup' }}
           template:   ./.github/infra/templates/main.bicep
-          parameters: ./.github/infra/envts/production/main.parameters.json storageNamePrefix=${{ vars.STORAGE_NAME_PREFIX || 'storage' }} repositoryToken=${{ secrets.REPOSITORY_TOKEN }}
+          parameters: >-
+            ./.github/infra/envts/production/main.parameters.json
+            storageNamePrefix=${{ vars.STORAGE_NAME_PREFIX || 'storage' }}
+            repositoryToken=${{ secrets.REPOSITORY_TOKEN }}
+            repository_url=${{ vars.REPOSITORY_URL || 'https://github.com/Tallawong/SchedulerSolution' }}
