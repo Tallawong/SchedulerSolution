@@ -7,7 +7,6 @@ param asb_name string = 'schedservicebusasb'
 param asp_name string = 'ASP-${app_name}'
 param app_name string = 'SchedulerApp'
 param swa_name string = 'WEB-${app_name}'
-#param sku_name string = 'Standard'
 param repository_url string = ''
 param repository_branch string = 'main'
 
@@ -75,11 +74,6 @@ resource name_resource 'Microsoft.Web/staticSites@2022-09-01' = {
     repositoryUrl: repository_url
     branch: repository_branch
     repositoryToken: repositoryToken
-    # buildProperties: {
-    #   appLocation: appLocation
-    #   apiLocation: apiLocation
-    #   appArtifactLocation: appArtifactLocation
-    # }
     enterpriseGradeCdnStatus: enterpriseGradeCdnStatus
     provider: 'GitHub' // Use 'DevOps' if using Azure DevOps Pipelines
   }
