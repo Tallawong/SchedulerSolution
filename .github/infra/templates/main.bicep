@@ -65,7 +65,7 @@ resource name_resource 'Microsoft.Web/sites@2024-04-01' = {
   dependsOn: []
 }
 
-resource name_resource 'Microsoft.Web/staticSites@2022-09-01' = {
+resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
   name: swa_name
   location: location
   tags: {}
