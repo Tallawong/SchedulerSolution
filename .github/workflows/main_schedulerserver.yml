@@ -1,6 +1,14 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 #  ASP.Net Core app
+# 1. az role assignment list --assignee-object-id 0bc766eb-9a8c-4ef0-87e3-f5ff264da09c --all --query "[].{role:roleDefinitionName,scope:scope}" -o table
+# 2. If empty, assign Contributor on JDGroup:
+# 3. az role assignment create `
+#  --assignee-object-id 0bc766eb-9a8c-4ef0-87e3-f5ff264da09c `
+#  --assignee-principal-type ServicePrincipal `
+#  --role Contributor `
+#  --scope /subscriptions/2a29b280-6d2c-4128-b420-4ae90d834382/resourceGroups/JDGroup
+
 name: App Service
 
 on:
