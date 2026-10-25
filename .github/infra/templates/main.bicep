@@ -7,15 +7,19 @@ param asb_name string = 'schedservicebusasb'
 param asp_name string = 'ASP-${app_name}'
 param app_name string = 'SchedulerApp'
 param swa_name string = 'WEB-${app_name}'
-param repository_url string = ''
-param repository_branch string = 'main'
-param repositoryToken string = ''
+
+param tags object = {
+  environment: 'production'
+  project: 'SchedulerSolution'
+  managedBy: 'bicep'
+}
 
 var stgacc_name = '${storageNamePrefix}${uniqueString(resourceGroup().id)}'
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   name: stgacc_name
   location: location
+  tags: tags
   sku: {
     name: 'Standard_LRS'
   }
@@ -25,6 +29,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
 resource container_registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
   name: acr_name
   location: location
+  tags: tags
   sku: {
     name: 'Basic'
   }
@@ -35,6 +40,7 @@ properties: {
 resource asb 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
   name: asb_name
   location: location
+  tags: tags
   sku: {
     name: 'Standard'
     tier: 'Standard'
@@ -44,6 +50,7 @@ resource asb 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
 resource hostingPlan 'Microsoft.Web/serverfarms@2024-11-01' = {
   name: asp_name
   location: location
+  tags: tags
   kind: ''
   sku: {
     name: 'B1'
@@ -55,9 +62,10 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2024-11-01' = {
   dependsOn: []
 }
 
-resource name_resource 'Microsoft.Web/sites@2024-04-01' = {
+resource webApp  'Microsoft.Web/sites@2024-04-01' = {
   name: app_name
   location: location
+  tags: tags
   properties: {
     serverFarmId: hostingPlan.id
     clientAffinityEnabled: false
@@ -69,13 +77,7 @@ resource name_resource 'Microsoft.Web/sites@2024-04-01' = {
 resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
   name: swa_name
   location: location
-  tags: {}
-  properties: {
-    repositoryUrl: repository_url
-    branch: repository_branch
-    repositoryToken: repositoryToken
-    provider: 'GitHub' // Use 'DevOps' if using Azure DevOps Pipelines
-  }
+  tags: tags
   sku: {
     tier: 'Standard'
     name: 'Standard'

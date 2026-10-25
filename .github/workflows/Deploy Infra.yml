@@ -27,5 +27,3 @@ jobs:
           parameters: >-
             ./.github/infra/envts/production/main.parameters.json
             storageNamePrefix=${{ vars.STORAGE_NAME_PREFIX || 'storage' }}
-            repositoryToken=${{ secrets.REPOSITORY_TOKEN }}
-            repository_url=${{ vars.REPOSITORY_URL || 'https://github.com/Tallawong/SchedulerSolution' }}
