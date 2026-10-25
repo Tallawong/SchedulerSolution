@@ -74,10 +74,13 @@ resource webApp  'Microsoft.Web/sites@2024-04-01' = {
   dependsOn: []
 }
 
-resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
+resource staticWebApp 'Microsoft.Web/staticSites@2023-12-01' = {
   name: swa_name
   location: location
   tags: tags
+  properties: {
+    publicNetworkAccess: 'Enabled'
+  }
   sku: {
     tier: 'Standard'
     name: 'Standard'
