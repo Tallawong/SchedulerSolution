@@ -18,12 +18,12 @@ jobs:
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_6981EE39CDB44A4886EAAE0E3C5E6EE9 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7E079A6D7B1E4044AC16EC4E00C04749 }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_84B3308530034895AB91739F1E7AF2BD }}
       # Deploy bicep template
       - name : Deploy Bicep Template
         uses: azure/arm-deploy@v1
         with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          subscriptionId: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_84B3308530034895AB91739F1E7AF2BD }}
           resourceGroupName: ${{ vars.AZURE_RESOURCE_GROUP_NAME || 'JDGroup' }}
           template:   ./.github/infra/templates/main.bicep
           parameters: >-
