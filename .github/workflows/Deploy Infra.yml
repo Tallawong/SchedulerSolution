@@ -6,6 +6,7 @@ on:
 jobs:
   infra-deploy:
     runs-on: windows-latest
+    environment: Production
     permissions:
       id-token: write
       contents: read
