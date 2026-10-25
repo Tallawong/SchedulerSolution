@@ -6,7 +6,7 @@ param acr_name string = 'schedregistry2026'
 param asb_name string = 'schedservicebusasb'
 param asp_name string = 'ASP-${app_name}'
 param app_name string = 'SchedulerApp'
-param swa_name string = 'WEB-${app_name}'
+param swa_name string = 'web-${toLower(app_name)}'
 
 param tags object = {
   environment: 'production'

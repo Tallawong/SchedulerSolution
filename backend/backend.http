@@ -31,3 +31,7 @@ GET {{backend_HostAddress}}/accounts
 GET {{backend_HostAddress}}/accounts
 
 ###
+
+GET {{backend_HostAddress}}/accounts
+
+###
