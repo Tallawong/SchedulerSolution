@@ -72,10 +72,23 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7E079A6D7B1E4044AC16EC4E00C04749 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_84B3308530034895AB91739F1E7AF2BD }}
 
+      - name: Resolve App Service name from resource group
+        id: resolve-app-name
+        shell: pwsh
+        env:
+          RESOURCE_GROUP_NAME: ${{ vars.AZURE_RESOURCE_GROUP_NAME || 'JDGroup' }}
+        run: |
+          $appName = az resource list -g "$env:RESOURCE_GROUP_NAME" --resource-type "Microsoft.Web/sites" --query "[?starts_with(name, 'scheduler-api-')].name | [0]" -o tsv
+          if ([string]::IsNullOrWhiteSpace($appName)) {
+            Write-Error "No App Service matching 'scheduler-api-*' was found in resource group '$env:RESOURCE_GROUP_NAME'."
+            exit 1
+          }
+          "app_name=$appName" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
       - name: Update Azure App Settings with GitHub Secrets
         uses: azure/appservice-settings@v1
         with:
-          app-name: 'scheduler-api'
+          app-name: ${{ steps.resolve-app-name.outputs.app_name }}
           app-settings-json: |
             [
               {
@@ -109,7 +122,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'scheduler-api'
+          app-name: ${{ steps.resolve-app-name.outputs.app_name }}
           slot-name: 'Production'
           package: .
           

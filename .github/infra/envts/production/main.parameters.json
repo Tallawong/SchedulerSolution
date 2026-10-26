@@ -7,9 +7,6 @@
     },
     "asb_name": {
       "value": "schedservicebusasb"
-    },
-    "app_name": {
-      "value": "scheduler-api"
     }
   }
 }

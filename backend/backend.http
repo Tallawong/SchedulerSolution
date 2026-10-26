@@ -1,4 +1,4 @@
-﻿@backend_HostAddress = https://schedulerapp.azurewebsites.net
+﻿@backend_HostAddress = https://scheduler-api-jdgroup01.azurewebsites.net
 
 GET {{backend_HostAddress}}/accounts
 
