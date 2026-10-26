@@ -9,7 +9,7 @@
       "value": "schedservicebusasb"
     },
     "app_name": {
-      "value": "SchedulerApp"
+      "value": "scheduler-api"
     }
   }
 }
