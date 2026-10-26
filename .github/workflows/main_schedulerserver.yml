@@ -75,7 +75,7 @@ jobs:
       - name: Update Azure App Settings with GitHub Secrets
         uses: azure/appservice-settings@v1
         with:
-          app-name: 'SchedulerApp'
+          app-name: 'scheduler-api'
           app-settings-json: |
             [
               {
@@ -109,7 +109,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'SchedulerApp'
+          app-name: 'scheduler-api'
           slot-name: 'Production'
           package: .
           
