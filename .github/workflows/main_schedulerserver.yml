@@ -68,6 +68,17 @@ jobs:
         with:
           name: .net-app
 
+
+# •	Workflow sends client-id, tenant-id, subscription-id
+# •	GitHub provides an OIDC token
+# •	Azure validates it against federated credential
+# •	Azure CLI session is established for that identity
+# So after login, subsequent steps run with that service principal’s permissions.
+# •	Because the service principal already exists in Entra ID
+# •	Login obtains access tokens for it
+# •	Commands run under its permissions for this workflow run
+# So login is authentication, not identity creation. If the service principal didn’t exist, login would fail (as you saw earlier).
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
