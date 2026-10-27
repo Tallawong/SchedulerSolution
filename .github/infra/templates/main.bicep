@@ -6,7 +6,7 @@ param acr_name string = 'schedregistry2026'
 param asb_name string = 'schedservicebusasb'
 param asp_name string = 'ASP-${app_name}'
 param app_name string = 'scheduler-api-${substring(uniqueString(subscription().id, resourceGroup().id), 0, 8)}'
-param swa_name string = 'scheduler-staticwebapp${substring(uniqueString(subscription().id, resourceGroup().id), 0, 8)}'
+param swa_name string = 'scheduler-staticwebapp-${substring(uniqueString(subscription().id, resourceGroup().id), 0, 8)}'
 
 param tags object = {
   environment: 'production'
