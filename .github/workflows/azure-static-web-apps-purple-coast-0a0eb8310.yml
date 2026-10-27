@@ -14,6 +14,7 @@ on:
     paths:
       - 'frontend/**'
       - '.github/workflows/azure-static-web-apps-purple-coast-0a0eb8310.yml'
+  workflow_dispatch:
 
 jobs:
   build_and_deploy_job:
