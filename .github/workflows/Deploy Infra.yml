@@ -11,7 +11,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v3
-      # Login into azure
+      # Login using OIDC
       - name: Azure Login
         uses: azure/login@v2
         with:
@@ -28,3 +28,5 @@ jobs:
           parameters: >-
             ./.github/infra/envts/production/main.parameters.json
             storageNamePrefix=${{ vars.STORAGE_NAME_PREFIX || 'storage' }}
+
+
