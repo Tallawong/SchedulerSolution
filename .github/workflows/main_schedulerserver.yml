@@ -106,18 +106,13 @@ jobs:
           app-settings-json: |
             [
               {
-                "name": "Kestrel:Endpoints:Https:Url",
-                "value": "${{ secrets.APPSETTINGS_SMTPPASS }}",
+                "name": "AppSettings:Secret",
+                "value": "${{ secrets.APPSETTINGS__JWTSECRET }}",
                 "slotSetting": false
               },
               {
                 "name": "AppSettings:BrevoApiKey",
                 "value": "${{ secrets.APPSETTINGS__BREVOAPIKEY }}",
-                "slotSetting": false
-              },
-              {
-                "name": "AppSettings:JwtSecret",
-                "value": "${{ secrets.APPSETTINGS__JWTSECRET }}",
                 "slotSetting": false
               },
               {
@@ -127,7 +122,7 @@ jobs:
               },
               {
                 "name": "AppSettings:SpryngApiToken",
-                "value": "${{ secrets.APPSETTINGS__SPRYNGAITOKEN }}",
+                "value": "${{ secrets.APPSETTINGS__SPRYNGAPITOKEN }}",
                 "slotSetting": false
               }
             ]
