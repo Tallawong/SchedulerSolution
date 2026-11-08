@@ -9,6 +9,7 @@ param app_name string = 'scheduler-api-${substring(uniqueString(subscription().i
 param swa_name string = 'scheduler-staticwebapp-${substring(uniqueString(subscription().id, resourceGroup().id), 0, 8)}'
 
 param tags object = {
+  Purpose: 'Learning'
   environment: 'production'
   project: 'SchedulerSolution'
   managedBy: 'bicep'
@@ -40,7 +41,7 @@ properties: {
 resource asb 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
   name: asb_name
   location: location
-  tags: tags
+  tags: tags [
   sku: {
     name: 'Standard'
     tier: 'Standard'

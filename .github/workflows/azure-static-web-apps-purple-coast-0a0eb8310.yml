@@ -1,4 +1,4 @@
-name: Static Web App (Angular)
+name: Static Web App 
 
 on:
   push:
