@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { DateTime } from 'luxon';
 import { EMPTY, of, Subject, throwError } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MfaResponse } from '../dto/responses/mfa-response';
@@ -89,7 +88,7 @@ describe('LoginPromptComponent', () => {
       password: 'password',
       dob: '2000-01-01',
     });
-    component['#dob'].setValue(DateTime.local(2026, 9, 22));
+    component.loginModel.update((model) => ({ ...model, dob: '2026-09-22' }));
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -314,7 +313,7 @@ describe('LoginPromptComponent', () => {
   it('clears the MFA challenge on cancellation', () => {
     component.showMfa = true;
     component.mfaEmail = 'user@example.test';
-    component.loading = true;
+    component.loading.set(true);
 
     component.onMfaCancelled();
 
