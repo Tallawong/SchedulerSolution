@@ -23,11 +23,38 @@ on:
 # So unlike App Service workflow (azure/login@v2), SWA deploy does not require an explicit Azure login step.
 
 jobs:
+  quality_checks_job:
+    if: github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch'
+      || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Quality Checks Job
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Lint
+        working-directory: ./frontend
+        run: npm run lint
+
+      - name: Test
+        working-directory: ./frontend
+        run: npm run test -- --watch=false
+
   build_and_deploy_job:
     if: github.event_name == 'push' || 
       github.event_name == 'workflow_dispatch' 
       || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
+    needs: quality_checks_job
     name: Build and Deploy Job
     steps:
       - uses: actions/checkout@v3

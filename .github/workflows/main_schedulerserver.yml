@@ -22,11 +22,40 @@ on:
   workflow_dispatch:
 
 jobs:
+  quality_checks:
+    if: github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch'
+      || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Verify formatting with dotnet format
+        run: dotnet format --verify-no-changes
+
+      - name: Test with dotnet
+        run: dotnet test --configuration Release --no-build
+
   build:
     if: github.event_name == 'push' || 
       github.event_name == 'workflow_dispatch' 
       || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: windows-latest
+    needs: quality_checks
     permissions:
       contents: read #This is required for actions/checkout
 
