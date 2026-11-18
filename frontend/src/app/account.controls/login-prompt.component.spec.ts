@@ -38,7 +38,6 @@ describe('LoginPromptComponent', () => {
 
   it('renders login again after a successful login and route recreation', () => {
 
-    debugger;;
     const response: MfaResponse = { dob: '01-01-2000', mfaRequired: false, jwtToken: 'jwt' };
     login.mockReturnValue(of(response));
 
@@ -63,7 +62,6 @@ describe('LoginPromptComponent', () => {
 
   it('continues to honor visibility changes while the login component is active', async () => {
 
-    debugger;;
     modalService.hideLogin();
     fixture.detectChanges();
     await fixture.whenStable();
