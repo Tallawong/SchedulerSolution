@@ -7,7 +7,7 @@
     "start:dev": "ng serve --host=localhost --ssl --ssl-cert \"./ssl/cert-from-pfx.pem\" --ssl-key \"./ssl/key-from-pfx.pem\" --configuration development",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "vitest",
     "test:debug": "node --inspect-brk --enable-source-maps ./node_modules/vitest/vitest.mjs run --maxWorkers=1",
     "test:debug:login-prompt": "node --inspect-brk --enable-source-maps ./node_modules/vitest/vitest.mjs run src/app/account.controls/login-prompt.component.spec.ts --maxWorkers=1",
     "test:ng:login-prompt": "ng test --include src/app/account.controls/login-prompt.component.spec.ts --watch=false",
@@ -50,6 +50,7 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@analogjs/vite-plugin-angular": "^2.9.7",
     "@angular/build": "^22.0.4",
     "@angular/cli": "^22.0.4",
     "@angular/compiler-cli": "^22.0.0",
@@ -64,6 +65,6 @@
     "prettier": "^3.9.9",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.71.0",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.12"
   }
 }

@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { LoginPromptComponent } from '../../app/account.controls/login-prompt.component';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('LoginPromptComponent', () => {
   beforeEach(async () => {

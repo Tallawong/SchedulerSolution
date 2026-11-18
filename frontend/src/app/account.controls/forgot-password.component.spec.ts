@@ -25,6 +25,7 @@ describe('ForgotPasswordComponent', () => {
   });
 
   it('displays the requested message only when submission succeeds', async () => {
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
     const response = new Subject<void>();
     forgotPassword.mockReturnValue(response);
     const submitted = vi.fn();
@@ -58,6 +59,7 @@ describe('ForgotPasswordComponent', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('[role="alertdialog"]')).toBeNull();
     expect(cancelled).toHaveBeenCalledOnce();
+    expect(navigate).toHaveBeenCalledWith(['/account/login']);
   });
 
   it('shows an error rather than success when submission fails', () => {

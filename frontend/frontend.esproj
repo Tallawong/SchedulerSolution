@@ -1,9 +1,11 @@
 ﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.1635611">
   <PropertyGroup>
+    <JavaScriptTestFramework>Vitest</JavaScriptTestFramework>
+    <JavaScriptTestRoot>src\</JavaScriptTestRoot>
     <!-- The command executed when you click 'Start' or press F5 in Visual Studio -->
     <StartupCommand>npm run start:dev</StartupCommand>
     <!-- JavaScript testing framework configured for the project -->
-    <JavaScriptTestFramework>Jasmine</JavaScriptTestFramework>
+    <!--JavaScriptTestFramework>Jasmine</JavaScriptTestFramework-->
     <!-- Ensures standard VS builds don't run production compilation sequentially during active debugging -->
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
     <!-- Specifies where Angular places production-compiled assets (Matches angular.json output) -->

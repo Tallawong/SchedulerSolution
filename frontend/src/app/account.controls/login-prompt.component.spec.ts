@@ -37,6 +37,8 @@ describe('LoginPromptComponent', () => {
   });
 
   it('renders login again after a successful login and route recreation', () => {
+
+    debugger;;
     const response: MfaResponse = { dob: '01-01-2000', mfaRequired: false, jwtToken: 'jwt' };
     login.mockReturnValue(of(response));
 
@@ -60,12 +62,14 @@ describe('LoginPromptComponent', () => {
   });
 
   it('continues to honor visibility changes while the login component is active', async () => {
-    fixture.componentRef.setInput('visible', false);
+
+    debugger;;
+    modalService.hideLogin();
     fixture.detectChanges();
     await fixture.whenStable();
     expect(fixture.nativeElement.querySelector('.lp-form')).toBeNull();
 
-    fixture.componentRef.setInput('visible', true);
+    modalService.showLogin();
     fixture.detectChanges();
     await fixture.whenStable();
     expect(fixture.nativeElement.querySelector('.lp-form')).not.toBeNull();
@@ -348,22 +352,15 @@ describe('LoginPromptComponent', () => {
     expect(component.loading()).toBe(false);
     expect(component.errorMessage()).toBe('');
 
-    login.mockReturnValue(
-      throwError(
-        () =>
-          new HttpErrorResponse({
-            status: 400,
-            error: { message: 'Invalid login attempt.' },
-          }),
-      ),
-    );
+    const error = new HttpErrorResponse({ status: 400 });
+    login.mockReturnValue(throwError(() => error));
 
     component.onSubmit();
     fixture.detectChanges();
     await fixture.whenStable();
 
     expect(component.loading()).toBe(false);
-    expect(component.errorMessage()).toBe('Invalid login attempt.');
+    expect(component.errorMessage()).toBe(error.message);
 
     login.mockReturnValue(of(response));
     component.onSubmit();

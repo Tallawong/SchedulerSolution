@@ -2,3 +2,4 @@
 /.github/workflows/azure-static-web-apps-kind-ground-0f54aa200.yml
 NON_CHECKIN
 /.github/workflows/experimenting
+/frontend/obj

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, signal } from '@angular/core';
 import { form, FormField } from '@angular/forms/signals';
 
 import {
@@ -72,6 +72,7 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
     private accountService: AccountService,
     private router: Router,
     private modalService: AccountModalService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     console.log('LoginPromptComponent initialized');
   }
@@ -86,6 +87,7 @@ export class LoginPromptComponent implements OnInit, OnDestroy {
       // Sync visibility with shared modal service
       this.modalService.loginVisible$.subscribe((v) => {
         this.visible = v;
+        this.changeDetectorRef.markForCheck();
       }),
     );
   }
