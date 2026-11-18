@@ -41,7 +41,7 @@ namespace Backend.Services
 
                 // Read from configured providers, including user secrets and environment variables.
                 var apiKey = _configuration["AppSettings:BrevoApiKey"];
-                
+
                 if (string.IsNullOrWhiteSpace(apiKey))
                 {
                     log.LogError("Brevo API key is not configured at AppSettings:BrevoApiKey");

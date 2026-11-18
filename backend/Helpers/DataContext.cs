@@ -61,7 +61,7 @@ namespace WebApi.Helpers
             {
                 AgentTaskStr = "Acolyte",
                 IsGroup = false,
-            }) ;
+            });
             modelBuilder.Entity<AgentTaskConfig>().HasData(
             new AgentTaskConfig
             {

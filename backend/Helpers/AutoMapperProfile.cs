@@ -25,7 +25,7 @@ namespace WebApi.Helpers
             //.ForMember(dest => dest.Dob, opt => opt.MapFrom(src => src));
 
             CreateMap<Account, AuthenticateResponse>();
-                //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.AccountId));
+            //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.AccountId));
 
             CreateMap<Account, MfaResponse>()
                 .IncludeBase<Account, AuthenticateResponse>();
@@ -34,7 +34,7 @@ namespace WebApi.Helpers
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
 
             CreateMap<CreateRequest, Account>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email+ src.Dob.ToString().Replace('/', '_').Replace(':', '_').Replace(' ', '_')
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email + src.Dob.ToString().Replace('/', '_').Replace(':', '_').Replace(' ', '_')
                 ));
 
             CreateMap<UpdateScheduleRequest, Schedule>();
@@ -75,5 +75,5 @@ namespace WebApi.Helpers
             //CreateMap<Account, UpdateRequest>();
         }
     }
-   
+
 }

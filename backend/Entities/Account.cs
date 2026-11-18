@@ -8,14 +8,14 @@ namespace WebApi.Entities
 {
     public class Account : IdentityUser
     {
-        
+
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         //public int RowId { get; set; }
         public string Title { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         /* Email and passwordHash ... are in IdentityUser  */
-        
+
         public bool AcceptTerms { get; set; }
         public Role Role { get; set; }
         public string VerificationToken { get; set; }
@@ -42,7 +42,7 @@ namespace WebApi.Entities
         public List<AgentTask> UserFunctions { get; set; }
         public List<RefreshToken> RefreshTokens { get; set; }
 
-        public bool OwnsToken(string token) 
+        public bool OwnsToken(string token)
         {
             return this.RefreshTokens?.Find(x => x.Token == token) != null;
         }

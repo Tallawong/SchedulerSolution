@@ -6,9 +6,9 @@ namespace WebApi.Models.Accounts
 {
     public class SchedulePoolElementsResponse
     {
-       public int Id { get; set; }
-        
-        
+        public int Id { get; set; }
+
+
         public List<SchedulePoolElement> SchedulePoolElements { get; set; }
     }
 }

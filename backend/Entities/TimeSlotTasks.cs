@@ -8,7 +8,7 @@ namespace WebApi.Entities
     {
         public int TimeSlotTasksId { get; set; }
         public string Date { get; set; }
-        
+
         public string Tasks { get; set; }
     }
 }

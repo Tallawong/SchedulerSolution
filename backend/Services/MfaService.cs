@@ -35,7 +35,7 @@ namespace WebApi.Services
             {
                 // Generate a 6-digit code
                 var code = GenerateRandomNumericCode(CODE_LENGTH);
-                
+
                 var entry = new MfaCodeEntry
                 {
                     Code = code,
@@ -124,7 +124,7 @@ namespace WebApi.Services
             {
                 var code = await GenerateMfaCodeAsync(userId);
                 var sent = await _smsService.SendSmsVerificationCodeAsync(phoneNumber, code);
-                
+
                 if (sent)
                 {
                     log.LogInformation("MFA code sent via SMS to user {0}", userId);

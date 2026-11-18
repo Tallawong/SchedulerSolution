@@ -256,9 +256,9 @@ namespace WebApi.Services
                         return IdentityResult.Success;
                     }
 
-                    
+
                     //var user1 = Activator.CreateInstance<Account>();
-                
+
                     // map model to new account object
                     user = _mapper.Map<Account>(model);
 
@@ -271,7 +271,7 @@ namespace WebApi.Services
                     user.VerificationToken = randomTokenString();
 
                     // hash password
-                    user.PasswordHash = BC.HashPassword(model.Password,12);
+                    user.PasswordHash = BC.HashPassword(model.Password, 12);
 
                     var result = _userManager.CreateAsync(user).GetAwaiter().GetResult();
                     Debug.Assert(result != null && IdentityResult.Success.Succeeded == result.Succeeded);
@@ -283,7 +283,7 @@ namespace WebApi.Services
                     transaction.Commit();
                     log.LogWarning("Registration successful for = '{0}' ", model.Email);
                     return result;
-                 
+
 
                     /*
                     // map model to new account object
@@ -759,7 +759,7 @@ namespace WebApi.Services
                 try
                 {
                     var schedules = _context.Accounts.Include(x => x.Schedules).Include(x => x.UserFunctions).
-                        Select(account => account.Schedules).SelectMany(s => s.Where(s=> s.Date.Equals(dateStr))).ToArray();
+                        Select(account => account.Schedules).SelectMany(s => s.Where(s => s.Date.Equals(dateStr))).ToArray();
                     _context.Schedules.RemoveRange(schedules);
 
                     _context.SaveChanges();
@@ -857,13 +857,13 @@ namespace WebApi.Services
                     var account = getAccount(id);
                     var newSchedule = new Schedule();
                     newSchedule = _mapper.Map<Schedule>(scheduleReq);
-                    var collection = account.Schedules.FindAll(s => s.Date == scheduleReq.Date 
+                    var collection = account.Schedules.FindAll(s => s.Date == scheduleReq.Date
                                     && s.UserFunction == scheduleReq.UserFunction
                                     && s.ScheduleGroup == scheduleReq.ScheduleGroup);
-                    if(collection.Count > 0)
+                    if (collection.Count > 0)
                     {
-                        throw new AppException(String.Format("Schedule for {0} {1} {2} is already defined for this account", 
-                            "Date: "+scheduleReq.Date,
+                        throw new AppException(String.Format("Schedule for {0} {1} {2} is already defined for this account",
+                            "Date: " + scheduleReq.Date,
                             "Task: " + scheduleReq.UserFunction,
                             (String.IsNullOrEmpty(scheduleReq.ScheduleGroup) ? "" : "Group: " + scheduleReq.ScheduleGroup)));
                     }
@@ -989,7 +989,8 @@ namespace WebApi.Services
                                       .Where(s => s.UserFunction.Equals(task.UserFunction))
                                       .ToArray();
 
-                    if (schedules.Length != 0) {
+                    if (schedules.Length != 0)
+                    {
                         return (null, String.Format("Function is still being used by {0} schedule(s). Remove schedule(s) first", schedules.Length));
                         //throw new AppException(String.Format("Function is still being used by {0} schedule(s). Remove schedule(s) first", schedules.Length));
                     }
@@ -1041,7 +1042,7 @@ namespace WebApi.Services
                 {
                     var account = getAccount(id);
                     AgentTask t = account.UserFunctions.Find((t) => t.Equals(task));
-                    if(t == null)
+                    if (t == null)
                     {
                         var newTask = new AgentTask();
                         newTask = _mapper.Map<AgentTask>(task);
@@ -1411,7 +1412,7 @@ namespace WebApi.Services
 
                     pdf.SetDefaultPageSize(PageSize.A4.Rotate());
                     Document document = new Document(pdf);
-                    
+
                     using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
                     {
                         try
@@ -1447,7 +1448,7 @@ namespace WebApi.Services
                                     Table table = new Table(UnitValue.CreatePercentArray(5)).UseAllAvailableWidth();
                                     table.SetKeepTogether(true);
                                     table.SetMarginBottom(10);
-                                    
+
 
                                     var boldFont = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.TIMES_ROMAN);
                                     var color = new DeviceRgb(210, 210, 210);
@@ -1490,7 +1491,7 @@ namespace WebApi.Services
                                     document.Add(table);
                                 }
                                 index++;
-                                if(index < sortedList.Count)
+                                if (index < sortedList.Count)
                                     document.Add(new AreaBreak());
                             }
                             document.Close();
@@ -1556,11 +1557,12 @@ namespace WebApi.Services
                 try
                 {
                     AgentTaskConfig cfg = _context.AgentTaskConfigs.Where(task => task.AgentTaskStr.Equals(agentTaskConfigReq.AgentTaskStr)).SingleOrDefault();
-                    if(cfg == null) // Agent task def not found
+                    if (cfg == null) // Agent task def not found
                     {
                         cfg = agentTaskConfigReq;
                         _context.AgentTaskConfigs.Add(cfg);
-                    } else
+                    }
+                    else
                     {
                         cfg.IsGroup = agentTaskConfigReq.IsGroup;
                         _context.AgentTaskConfigs.Update(cfg);
@@ -1594,7 +1596,7 @@ namespace WebApi.Services
                 try
                 {
                     AgentTaskConfig cfg = _context.AgentTaskConfigs.Where(task => task.AgentTaskStr.Equals(id)).SingleOrDefault();
-                    Debug.Assert(cfg != null, "Configuration for AgentTaskStr="+id+" does not exist");
+                    Debug.Assert(cfg != null, "Configuration for AgentTaskStr=" + id + " does not exist");
                     _context.AgentTaskConfigs.RemoveRange(cfg);
                     _context.SaveChanges();
                     transaction.Commit();
@@ -1752,10 +1754,11 @@ namespace WebApi.Services
                                   .Where(task => task.Date.Equals(slotFromClient.Date)).FirstOrDefault();
                 try
                 {
-                    if(slot == null)
+                    if (slot == null)
                     {
                         _context.TimeSlotsTasks.Add(slotFromClient);
-                    } else
+                    }
+                    else
                     {
                         slot.Tasks = slotFromClient.Tasks;
                     }
@@ -2455,7 +2458,7 @@ namespace WebApi.Services
 
                         /* Tasks */
                         StringBuilder taskString = new StringBuilder();
-                        
+
                         var arr = new ArrayList();
 
                         for (int i = 0; i < account.UserFunctions.Count; i++)
@@ -2509,7 +2512,7 @@ namespace WebApi.Services
 
         private void WriteGroupAgentRecords(StringBuilder outputString)
         {
-            foreach(string gt in GetGroupTasksArray())
+            foreach (string gt in GetGroupTasksArray())
             {
                 /* groupTaskAccount e.g. "Cleaner" */
                 var groupTaskAccounts = _context.Accounts
@@ -2542,7 +2545,7 @@ namespace WebApi.Services
                     /* Retrieve Group name (as a key) belonging to group task (A/B/C ect) */
                     //var key = account.UserFunctions.Where(uf => uf.UserFunction.Equals(tg)).FirstOrDefault().Group;
                     var accountAgentTasks = account.UserFunctions.Where(uf => uf.UserFunction.Equals(gt)).ToList();
-                    foreach (AgentTask agentTask in accountAgentTasks) 
+                    foreach (AgentTask agentTask in accountAgentTasks)
                     {
                         if (map.ContainsKey(agentTask))
                         {
@@ -2565,7 +2568,8 @@ namespace WebApi.Services
                      * "To obtain more efficient assignments list the more flexible agents in a group last" - 
                      * stated by James Bremner
                      */
-                    keyValuePair.Value.Sort((Account a1, Account a2) => {
+                    keyValuePair.Value.Sort((Account a1, Account a2) =>
+                    {
                         return a1.UserFunctions.Count.CompareTo(a2.UserFunctions.Count);
                     });
                     foreach (var a in keyValuePair.Value)
@@ -2766,7 +2770,7 @@ namespace WebApi.Services
             int rows = worksheet.Cells.MaxDataRow;
             int cols = worksheet.Cells.MaxDataColumn;
 
-            Dictionary<string, List<AgentTask>> user2Functions = new ();
+            Dictionary<string, List<AgentTask>> user2Functions = new();
             List<AgentTask> functions = new List<AgentTask>();
             CreateRequest request = new CreateRequest();
 
@@ -3175,13 +3179,13 @@ namespace WebApi.Services
             */
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            
+
             var claims = new List<Claim> { new Claim("id", account.Id.ToString()) };
             if (isTemp)
             {
                 claims.Add(new Claim("temp", "true"));
             }
-            
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),

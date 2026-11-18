@@ -9,7 +9,7 @@ namespace WebApi.Entities
         {
             UserFunction = function;
             Date = date;
-            Users = new List<User>(); 
+            Users = new List<User>();
         }
         public int Id { get; set; }
         public string Date;

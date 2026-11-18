@@ -16,7 +16,7 @@ namespace WebApi.Helpers
         public string Tasks { get; set; }
         public string GroupTasks { get; set; }
         public string ClientTimeZoneId { get; set; }
-        
+
         // Spryng SMS Settings
         public string SpryngApiToken { get; set; }
         public string SpryngSender { get; set; }

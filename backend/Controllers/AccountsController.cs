@@ -1,4 +1,4 @@
-﻿﻿using Aspose.Pdf.Operators;
+﻿using Aspose.Pdf.Operators;
 using Backend.Interfaces;
 using AutoMapper;
 using iText.Kernel.Pdf;
@@ -80,9 +80,9 @@ namespace WebApi.Controllers
                 log.LogInformation("Authenticating user with MFA {0} for ipaddress: {1}",
                     model.Email,
                     ipAddress());
-                
+
                 var response = await _accountService.AuthenticateWithMfaAsync(model, ipAddress());
-                
+
                 if (response.MfaRequired)
                 {
                     log.LogInformation("MFA required for user {0}", model.Email);
@@ -110,7 +110,7 @@ namespace WebApi.Controllers
             try
             {
                 log.LogInformation("Verifying MFA for user {0}", model.Email);
-                
+
                 var response = await _accountService.VerifyMfaAsync(model, ipAddress());
                 setTokenCookie(response.RefreshToken);
 
@@ -219,7 +219,7 @@ namespace WebApi.Controllers
                     return Unauthorized(new { message = "Unauthorized" });
 
                 await _accountService.EnableMfaAsync(id, model.PhoneNumber);
-                
+
                 log.LogInformation("MFA enabled for user {0}", id);
                 return Ok(new { message = "MFA enabled successfully. You will receive SMS verification codes for future logins." });
             }
@@ -241,7 +241,7 @@ namespace WebApi.Controllers
                     return Unauthorized(new { message = "Unauthorized" });
 
                 await _accountService.DisableMfaAsync(id);
-                
+
                 log.LogInformation("MFA disabled for user {0}", id);
                 return Ok(new { message = "MFA disabled successfully." });
             }
@@ -263,7 +263,7 @@ namespace WebApi.Controllers
                     return Unauthorized(new { message = "Unauthorized" });
 
                 var mfaEnabled = _accountService.IsMfaEnabled(id);
-                
+
                 return Ok(new { mfaEnabled = mfaEnabled });
             }
             catch (Exception ex)

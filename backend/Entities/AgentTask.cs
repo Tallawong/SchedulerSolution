@@ -23,9 +23,9 @@ namespace WebApi.Entities
                 return UserFunction.CompareTo(other.UserFunction);
             }
             else
-            { 
-                return Group.CompareTo(other.Group); 
-            } 
+            {
+                return Group.CompareTo(other.Group);
+            }
         }
 
         public override bool Equals(object obj)
