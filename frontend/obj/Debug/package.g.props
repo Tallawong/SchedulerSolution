@@ -9,6 +9,11 @@
     <PackageJsonScriptsBuild Condition="$(PackageJsonScriptsBuild) == ''">ng build</PackageJsonScriptsBuild>
     <PackageJsonScriptsWatch Condition="$(PackageJsonScriptsWatch) == ''">ng build --watch --configuration development</PackageJsonScriptsWatch>
     <PackageJsonScriptsTest Condition="$(PackageJsonScriptsTest) == ''">ng test</PackageJsonScriptsTest>
+    <PackageJsonScriptsTestDebug Condition="$(PackageJsonScriptsTestDebug) == ''">node --inspect-brk --enable-source-maps ./node_modules/vitest/vitest.mjs run --maxWorkers=1</PackageJsonScriptsTestDebug>
+    <PackageJsonScriptsTestDebugLoginPrompt Condition="$(PackageJsonScriptsTestDebugLoginPrompt) == ''">node --inspect-brk --enable-source-maps ./node_modules/vitest/vitest.mjs run src/app/account.controls/login-prompt.component.spec.ts --maxWorkers=1</PackageJsonScriptsTestDebugLoginPrompt>
+    <PackageJsonScriptsTestNgLoginPrompt Condition="$(PackageJsonScriptsTestNgLoginPrompt) == ''">ng test --include src/app/account.controls/login-prompt.component.spec.ts --watch=false</PackageJsonScriptsTestNgLoginPrompt>
+    <PackageJsonScriptsTestNgLoginPromptDebug Condition="$(PackageJsonScriptsTestNgLoginPromptDebug) == ''">ng test --include src/app/account.controls/login-prompt.component.spec.ts</PackageJsonScriptsTestNgLoginPromptDebug>
+    <PackageJsonScriptsTestNgLoginPromptDebugSingle Condition="$(PackageJsonScriptsTestNgLoginPromptDebugSingle) == ''">node --inspect=0 --enable-source-maps ./node_modules/@angular/cli/bin/ng.js test --include src/app/account.controls/login-prompt.component.spec.ts --watch</PackageJsonScriptsTestNgLoginPromptDebugSingle>
     <PackageJsonScriptsMigrateControlFlow Condition="$(PackageJsonScriptsMigrateControlFlow) == ''">ng generate @angular/core:control-flow --path=src --format=true</PackageJsonScriptsMigrateControlFlow>
     <PackageJsonScriptsFormat Condition="$(PackageJsonScriptsFormat) == ''">prettier --write "src/**/*.{ts,html,css,scss,less,json}"</PackageJsonScriptsFormat>
     <PackageJsonScriptsFormatCheck Condition="$(PackageJsonScriptsFormatCheck) == ''">prettier --check "src/**/*.{ts,html,css,scss,less,json}"</PackageJsonScriptsFormatCheck>
@@ -19,14 +24,14 @@
     <PackageJsonPrivate Condition="$(PackageJsonPrivate) == ''">true</PackageJsonPrivate>
     <PackageJsonPackagemanager Condition="$(PackageJsonPackagemanager) == ''">npm@11.16.0</PackageJsonPackagemanager>
     <PackageJsonDependenciesAngularAnimations Condition="$(PackageJsonDependenciesAngularAnimations) == ''">^22.1.6</PackageJsonDependenciesAngularAnimations>
-    <PackageJsonDependenciesAngularCdk Condition="$(PackageJsonDependenciesAngularCdk) == ''">^22.1.6</PackageJsonDependenciesAngularCdk>
+    <PackageJsonDependenciesAngularCdk Condition="$(PackageJsonDependenciesAngularCdk) == ''">22.2.7</PackageJsonDependenciesAngularCdk>
     <PackageJsonDependenciesAngularCommon Condition="$(PackageJsonDependenciesAngularCommon) == ''">^22.0.0</PackageJsonDependenciesAngularCommon>
     <PackageJsonDependenciesAngularCompiler Condition="$(PackageJsonDependenciesAngularCompiler) == ''">^22.0.0</PackageJsonDependenciesAngularCompiler>
     <PackageJsonDependenciesAngularCore Condition="$(PackageJsonDependenciesAngularCore) == ''">^22.0.0</PackageJsonDependenciesAngularCore>
     <PackageJsonDependenciesAngularForms Condition="$(PackageJsonDependenciesAngularForms) == ''">^22.0.0</PackageJsonDependenciesAngularForms>
     <PackageJsonDependenciesAngularLocalize Condition="$(PackageJsonDependenciesAngularLocalize) == ''">22.1.6</PackageJsonDependenciesAngularLocalize>
-    <PackageJsonDependenciesAngularMaterial Condition="$(PackageJsonDependenciesAngularMaterial) == ''">^22.1.6</PackageJsonDependenciesAngularMaterial>
-    <PackageJsonDependenciesAngularMaterialLuxonAdapter Condition="$(PackageJsonDependenciesAngularMaterialLuxonAdapter) == ''">^22.1.7</PackageJsonDependenciesAngularMaterialLuxonAdapter>
+    <PackageJsonDependenciesAngularMaterial Condition="$(PackageJsonDependenciesAngularMaterial) == ''">22.2.7</PackageJsonDependenciesAngularMaterial>
+    <PackageJsonDependenciesAngularMaterialLuxonAdapter Condition="$(PackageJsonDependenciesAngularMaterialLuxonAdapter) == ''">22.2.7</PackageJsonDependenciesAngularMaterialLuxonAdapter>
     <PackageJsonDependenciesAngularPlatformBrowser Condition="$(PackageJsonDependenciesAngularPlatformBrowser) == ''">^22.1.6</PackageJsonDependenciesAngularPlatformBrowser>
     <PackageJsonDependenciesAngularPlatformServer Condition="$(PackageJsonDependenciesAngularPlatformServer) == ''">^22.0.0</PackageJsonDependenciesAngularPlatformServer>
     <PackageJsonDependenciesAngularRouter Condition="$(PackageJsonDependenciesAngularRouter) == ''">^22.0.0</PackageJsonDependenciesAngularRouter>

@@ -16,6 +16,21 @@
       "request": "launch",
 
       "url": "https://localhost:9876/debug.html"
+    },
+    {
+      "name": "vitest (single file)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
+      "args": [
+        "run",
+        "src/app/account.controls/login-prompt.component.spec.ts"
+      ],
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
     }
   ]
 }
