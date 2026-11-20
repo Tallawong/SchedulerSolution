@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AgentTaskDefinitionComponent } from './agent-task-definition/agent-task-definition.component';
 import { FunctionComponent } from './function.component';
 import { ListComponent } from './list.component';
 import { MainSchedulerComponent } from './main-scheduler/main-scheduler.component';
 import { ScheduleAllocatorComponent } from './schedule.allocator.component';
-import { UploadAccountsComponent } from './upload-accounts/upload-accounts.component';
 import { TimeSlotTasksEditorComponent } from './time-slot-tasks-editor/time-slot-tasks-editor.component';
-import { AgentTaskDefinitionComponent } from './agent-task-definition/agent-task-definition.component';
-import { ManualRegistrationComponent } from './manual-registration/manual-registration.component';
+import { UploadAccountsComponent } from './upload-accounts/upload-accounts.component';
 
 const routes: Routes = [
   { path: '', component: ListComponent },
