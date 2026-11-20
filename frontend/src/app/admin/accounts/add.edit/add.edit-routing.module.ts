@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddEditComponent } from './add-edit.component';
+import { ManualRegistrationComponent } from '../manual-registration/manual-registration.component';
 
 const routes: Routes = [
-  { path: 'add', component: AddEditComponent },
-  { path: 'edit/:id', component: AddEditComponent },
+  { path: 'add', component: ManualRegistrationComponent },
+  { path: 'edit/:id', component: ManualRegistrationComponent },
 ];
 
 @NgModule({

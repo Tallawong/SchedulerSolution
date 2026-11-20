@@ -1,0 +1,139 @@
+:host {
+  display: block;
+}
+
+.manual-registration {
+  max-width: 60rem;
+  margin: 1.5rem auto;
+}
+
+.manual-registration-header {
+  padding: 1.25rem 1.5rem;
+  color: #fff;
+  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+}
+
+.manual-registration-header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.manual-registration-header p {
+  margin: 0.25rem 0 0;
+  opacity: 0.95;
+}
+
+.manual-registration-form {
+  padding: 1.5rem;
+  background: linear-gradient(180deg, #fff 0%, #fbfdff 100%);
+}
+
+.manual-registration fieldset {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+
+.manual-registration .form-label {
+  color: #333;
+  font-weight: 600;
+}
+
+.manual-registration :is(.form-control, .form-select) {
+  min-height: 44px;
+  border: 1px solid #e0e6f0;
+  border-radius: 6px;
+}
+
+.manual-registration :is(input, select, button, a):focus-visible {
+  outline: 2px solid #2575fc;
+  outline-offset: 2px;
+}
+
+.password-hint {
+  margin-bottom: 0.5rem;
+  color: #6c757d;
+}
+
+.field-error {
+  margin-top: 0.25rem;
+  color: #a00;
+}
+
+.page-error,
+.page-success {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border: 1px solid;
+  border-radius: 4px;
+}
+
+.page-error {
+  color: #a00;
+  background: #ffecec;
+  border-color: #f5c6cb;
+}
+
+.page-success {
+  color: #155724;
+  background: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.related-actions,
+.manual-registration-actions {
+  margin-top: 1.5rem;
+}
+
+.related-actions h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.manual-registration-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.page-primary,
+.page-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0 0.9rem;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.page-primary {
+  color: #fff;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  border: 0;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(37, 117, 252, 0.25);
+}
+
+.page-primary:disabled {
+  opacity: 0.7;
+  box-shadow: none;
+}
+
+.page-secondary {
+  color: #212529;
+  border: 1px solid #d6dbe8;
+}
+
+@media (max-width: 575px) {
+  .manual-registration {
+    margin: 1rem 0;
+  }
+
+  .manual-registration-header,
+  .manual-registration-form {
+    padding: 1rem;
+  }
+}

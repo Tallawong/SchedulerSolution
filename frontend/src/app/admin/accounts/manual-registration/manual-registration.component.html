@@ -1,0 +1,119 @@
+<section class="manual-registration" aria-labelledby="manual-registration-title">
+  <header class="manual-registration-header">
+    <h1 id="manual-registration-title">{{ isAddMode ? 'Create Account' : 'Edit Account' }}</h1>
+    <p>{{ isAddMode ? 'Enter the account details below.' : 'Update account details and access.' }}</p>
+  </header>
+
+  <form class="manual-registration-form" (submit)="onSubmit(); $event.preventDefault()" [attr.aria-busy]="loading() || loadingAccount()" novalidate>
+    @if (loadingAccount()) {
+      <p role="status">Loading account details...</p>
+    }
+
+    <fieldset [disabled]="loading() || loadingAccount() || loadFailed()">
+      <div class="row g-3">
+        <div class="col-12 col-sm-6">
+          <label for="manual-title" class="form-label">Title</label>
+          <select id="manual-title" class="form-select" [formField]="form.title" [attr.aria-invalid]="form.title().invalid() && form.title().touched()">
+            <option value="">Select</option>
+            <option value="Mr">Mr</option>
+            <option value="Mrs">Mrs</option>
+            <option value="Miss">Miss</option>
+            <option value="Ms">Ms</option>
+          </select>
+          @if (form.title().invalid() && form.title().touched()) {
+            <div class="field-error">Title is required.</div>
+          }
+        </div>
+        <div class="col-12 col-sm-6">
+          <label for="manual-phone" class="form-label">Phone</label>
+          <input id="manual-phone" type="tel" class="form-control" [formField]="form.phoneNumber" autocomplete="tel" />
+        </div>
+        <div class="col-12 col-sm-6">
+          <label for="manual-first-name" class="form-label">First Name</label>
+          <input id="manual-first-name" type="text" class="form-control" [formField]="form.firstName" autocomplete="given-name" [attr.aria-invalid]="form.firstName().invalid() && form.firstName().touched()" />
+          @if (form.firstName().invalid() && form.firstName().touched()) {
+            <div class="field-error">First name is required.</div>
+          }
+        </div>
+        <div class="col-12 col-sm-6">
+          <label for="manual-last-name" class="form-label">Last Name</label>
+          <input id="manual-last-name" type="text" class="form-control" [formField]="form.lastName" autocomplete="family-name" [attr.aria-invalid]="form.lastName().invalid() && form.lastName().touched()" />
+          @if (form.lastName().invalid() && form.lastName().touched()) {
+            <div class="field-error">Last name is required.</div>
+          }
+        </div>
+        <div class="col-12 col-sm-6">
+          <label for="manual-email" class="form-label">Email</label>
+          <input id="manual-email" type="email" class="form-control" [formField]="form.email" autocomplete="email" [attr.aria-invalid]="form.email().invalid() && form.email().touched()" />
+          @if (form.email().invalid() && form.email().touched()) {
+            <div class="field-error">Enter a valid email address.</div>
+          }
+        </div>
+        <div class="col-12 col-sm-6">
+          <label for="manual-dob" class="form-label">Date of birth</label>
+          <input id="manual-dob" type="date" class="form-control" [formField]="form.dob" autocomplete="bday" [attr.aria-invalid]="form.dob().invalid() && form.dob().touched()" />
+          @if (form.dob().invalid() && form.dob().touched()) {
+            <div class="field-error">Enter a valid date of birth.</div>
+          }
+        </div>
+        <div class="col-12 col-sm-6">
+          <label for="manual-role" class="form-label">Role</label>
+          <select id="manual-role" class="form-select" [formField]="form.role" [attr.aria-invalid]="form.role().invalid() && form.role().touched()">
+            @for (role of roles; track role) {
+              <option [value]="role">{{ role }}</option>
+            }
+          </select>
+          @if (form.role().invalid() && form.role().touched()) {
+            <div class="field-error">Role is required.</div>
+          }
+        </div>
+        <div class="col-12">
+          @if (!isAddMode) {
+            <p class="password-hint">Leave the password fields blank to keep the current password.</p>
+          }
+          <label for="manual-password" class="form-label">Password</label>
+          <input id="manual-password" type="password" class="form-control" [formField]="form.password" autocomplete="new-password" [attr.aria-invalid]="form.password().invalid() && form.password().touched()" />
+          @if (form.password().invalid() && form.password().touched()) {
+            <div class="field-error">{{ !form.password().value() ? 'Password is required.' : 'Password must be at least 6 characters.' }}</div>
+          }
+        </div>
+        <div class="col-12">
+          <label for="manual-confirm-password" class="form-label">Confirm Password</label>
+          <input id="manual-confirm-password" type="password" class="form-control" [formField]="form.confirmPassword" autocomplete="new-password" [attr.aria-invalid]="form.confirmPassword().invalid() && form.confirmPassword().touched()" />
+          @if (form.confirmPassword().invalid() && form.confirmPassword().touched()) {
+            <div class="field-error">Passwords must match.</div>
+          }
+        </div>
+      </div>
+    </fieldset>
+
+    @if (errorMessage()) {
+      <div class="page-error" role="alert">{{ errorMessage() }}</div>
+    }
+    @if (successMessage()) {
+      <div class="page-success" role="status">{{ successMessage() }}</div>
+    }
+
+    @if (account(); as currentAccount) {
+      @if (currentAccount.role !== Role.Admin) {
+        <section class="related-actions" aria-labelledby="manual-related-heading">
+          <h2 id="manual-related-heading">Related</h2>
+          <div class="d-flex flex-wrap gap-2">
+            <button type="button" class="btn btn-outline-primary" [routerLink]="['/admin/accounts/function', currentAccount.id]" [disabled]="!currentAccount.isVerified">Tasks</button>
+            <button type="button" class="btn btn-outline-primary" [routerLink]="['/admin/accounts/schedule', currentAccount.id]" [disabled]="!currentAccount.isVerified">Schedule</button>
+          </div>
+        </section>
+      }
+    }
+
+    <div class="manual-registration-actions">
+      <button type="submit" class="page-primary" [disabled]="loading() || loadingAccount() || loadFailed()">
+        @if (loading()) {
+          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+        }
+        {{ isAddMode ? 'Create Account' : 'Save Changes' }}
+      </button>
+      <a class="page-secondary" routerLink="/admin/accounts">Back</a>
+    </div>
+  </form>
+</section>

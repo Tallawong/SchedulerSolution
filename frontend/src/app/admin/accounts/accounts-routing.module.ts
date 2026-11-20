@@ -8,6 +8,7 @@ import { ScheduleAllocatorComponent } from './schedule.allocator.component';
 import { UploadAccountsComponent } from './upload-accounts/upload-accounts.component';
 import { TimeSlotTasksEditorComponent } from './time-slot-tasks-editor/time-slot-tasks-editor.component';
 import { AgentTaskDefinitionComponent } from './agent-task-definition/agent-task-definition.component';
+import { ManualRegistrationComponent } from './manual-registration/manual-registration.component';
 
 const routes: Routes = [
   { path: '', component: ListComponent },
@@ -16,7 +17,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./add.edit/add.edit.module').then(
         (x) => x.AddEditModule,
-      ) /* component: AddEditComponent */,
+      ),
   },
   { path: 'import-accounts', component:  UploadAccountsComponent },
   {
