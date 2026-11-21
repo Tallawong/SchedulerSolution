@@ -74,6 +74,39 @@ describe('ListComponent schedule actions', () => {
     };
   }
 
+  it('enables Delete Accounts only when accounts exist and schedule actions are not busy', () => {
+    const generation = new Subject<boolean>();
+    generateSchedules.mockReturnValue(generation);
+    getAllDates.mockReturnValue(of(availableDates));
+    render();
+    const deleteButton: HTMLButtonElement = fixture.nativeElement.querySelector('button[title="Delete Accounts"]');
+    expect(deleteButton.disabled).toBe(true);
+
+    component.accounts.set([new Account()]);
+    fixture.detectChanges();
+    expect(deleteButton.disabled).toBe(false);
+
+    buttons().generate.click();
+    fixture.detectChanges();
+    expect(deleteButton.disabled).toBe(true);
+
+    generation.next(true);
+    fixture.detectChanges();
+    expect(deleteButton.disabled).toBe(false);
+
+    buttons().view.click();
+    fixture.detectChanges();
+    expect(deleteButton.disabled).toBe(true);
+
+    download.complete();
+    fixture.detectChanges();
+    expect(deleteButton.disabled).toBe(false);
+
+    component.accounts.set([]);
+    fixture.detectChanges();
+    expect(deleteButton.disabled).toBe(true);
+  });
+
   it('disables modify and view for an empty schedule list but permits generation', () => {
     render();
     expect(buttons().modify.disabled).toBe(true);

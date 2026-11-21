@@ -26,7 +26,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
         <p>
           <span [innerHTML]="bodyInfoStr"></span>
 
-          <span class="text-danger">This operation can not be undone.</span>
+          <span class="text-danger"> This operation can not be undone.</span>
         </p>
       </div>
       <div class="modal-footer">

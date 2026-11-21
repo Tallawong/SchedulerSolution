@@ -1,68 +1,57 @@
-@if (isLoaded) {
-  <form [formGroup]="form">
-    <fieldset>
-      <legend>Date & Tasks:</legend>
-      <div class="container">
-        <div class="row">
-          <div class="mb-3 col-3">
-            <app-schedule-date-time
-              formControlName="scheduledDate"
-              (dateChange)="onChangeDateTime($event)"
-            >
-            </app-schedule-date-time>
-          </div>
-          <div class="mb-3 col-sm">
-            <mat-label class="day-label">{{ getDayStrFromDate }}</mat-label>
-          </div>
-        </div>
+<section class="time-slot-page container-fluid">
+  <header class="time-slot-page-header">
+    <h1>Time Slots</h1>
+    <p class="text-muted mb-0">Manage time slots and their tasks.</p>
+  </header>
+
+  @if (isLoaded) {
+    <form class="time-slot-form" [formGroup]="form">
+      <h2>Date &amp; Tasks</h2>
+      <div class="time-slot-date">
+        <app-schedule-date-time
+          formControlName="scheduledDate"
+          (dateChange)="onChangeDateTime($event)"
+        >
+        </app-schedule-date-time>
+        <span class="day-label">{{ getDayStrFromDate }}</span>
       </div>
-      <div class="container-fluid">
+      <div class="task-counters">
         @for (task of newTasksArr; track task; let index = $index) {
-          <div class="row">
-            @for (col of newTasksArr[index]; track col; let index = $index) {
-              <div class="col-sm-2">
-                <div class="mb-3 me-1 col-1">
-                  <label>{{ col.agentTaskStr }}:</label>
-                  <input
-                    formControlName="{{ col.agentTaskStr }}"
-                    type="Number"
-                    min="0"
-                    max="10"
-                    step="1"
-                    value="6"
-                    size="6"
-                  />
-                </div>
-              </div>
-            }
-          </div>
+          @for (col of newTasksArr[index]; track col) {
+            <label class="task-counter">
+              <span>{{ col.agentTaskStr }}</span>
+              <input
+                class="form-control"
+                formControlName="{{ col.agentTaskStr }}"
+                type="number"
+                min="0"
+                max="10"
+                step="1"
+              />
+            </label>
+          }
         }
       </div>
-      <div class="mb-3">
-        <button
-          type="button"
-          (click)="onAddUpdateTimeSlot()"
-          class="btn3d btn btn-primary"
-          [ngClass]="{ disabled: !form.valid }"
-        >
-          @if (isAdding) {
-            <span class="spinner-border spinner-border-sm mr-1"></span>
-          }
-          Add/Update
-        </button>
-        &nbsp;
-      </div>
-    </fieldset>
-  </form>
-}
+      <button
+        type="button"
+        (click)="onAddUpdateTimeSlot()"
+        class="btn btn-primary time-slot-action"
+        [disabled]="!form.valid"
+      >
+        @if (isAdding) {
+          <span class="spinner-border spinner-border-sm mr-1"></span>
+        }
+        Add/Update
+      </button>
+    </form>
+  }
 
-<div class="row">
-  <div class="col-12">
-    <fieldset style="overflow: auto">
-      <legend>Time Slot Dates</legend>
+  <main class="time-slot-list">
+    <h2>Time Slot Dates</h2>
+    <div class="time-slot-table-region">
       <mat-table
         #table
-        class="lessons-table mat-elevation-z8"
+        class="lessons-table time-slot-table"
         [dataSource]="dataSource"
         matSort
         (matSortChange)="sortData($event)"
@@ -85,11 +74,11 @@
           <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
           <mat-cell *matCellDef="let row">
             <button
-              class="btn3d btn btn-sm btn-danger btn-delete-account"
+              class="btn btn-sm btn-danger btn-delete-account"
               type="button"
               #button
               (click)="onDeleteTimeSlotTasks($event, row)"
-              [ngClass]="{ disabled: row.isDeleting }"
+              [disabled]="row.isDeleting"
             >
               @if (row.isDeleting) {
                 <span class="spinner-border spinner-border-sm mr-1"></span>
@@ -110,7 +99,7 @@
       </mat-table>
       <mat-paginator
         #paginator
-        class="lessons-table mat-elevation-z8"
+        class="lessons-table time-slot-paginator"
         [length]="timeSlots().length"
         [pageSizeOptions]="[5, 10, 20, 50, 100]"
         pageSize="{{ pageSize }}"
@@ -118,9 +107,9 @@
         showFirstLastButtons
       >
       </mat-paginator>
-    </fieldset>
+    </div>
+  </main>
+  <div class="time-slot-actions">
+    <a routerLink="../" class="btn btn-primary time-slot-action">Back</a>
   </div>
-</div>
-<div class="col px-md-2">
-  <a routerLink="../" class="btn3d btn btn-primary">Back</a>
-</div>
+</section>

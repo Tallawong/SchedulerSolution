@@ -1,54 +1,34 @@
-@if (isLoaded) {
-  <form [formGroup]="form" (ngSubmit)="onAddUpdateTask()">
-    <fieldset>
-      <legend>Agent Task</legend>
-      <div class="">
-        <div class="row">
-          <div class="col-2">
-            <mat-form-field appearance="outline">
-              <mat-label>Agent Task Name</mat-label>
-              <input matInput formControlName="agentTaskName" />
-            </mat-form-field>
-          </div>
-          <div class="col-2">
-            <section class="section">
-              <mat-checkbox
-                class="margin"
-                formControlName="isGroupBox"
-                [ngClass]="{ disabled: f['agentTaskName'].value.length <= 0 }"
-                >Is Group Task</mat-checkbox
-              >
-            </section>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-2">
-            <button
-              type="button"
-              (click)="onAddUpdateTask()"
-              class="btn3d btn btn-primary"
-              [ngClass]="{ disabled: !form.valid }"
-            >
-              @if (isAdding) {
-                <span class="spinner-border spinner-border-sm mr-1"></span>
-              }
-              Add/Update
-            </button>
-          </div>
-        </div>
-        &nbsp;
-      </div>
-    </fieldset>
-  </form>
-}
+<section class="task-page container-fluid">
+  <header class="task-page-header">
+    <h1>Agent Tasks</h1>
+    <p class="text-muted mb-0">Manage agent task names and groups.</p>
+  </header>
 
-<div class="row">
-  <div class="col-12">
-    <fieldset style="overflow: auto">
-      <legend>Agent Task Names</legend>
+  @if (isLoaded) {
+    <form class="task-form" [formGroup]="form" (ngSubmit)="onAddUpdateTask()">
+      <h2>Agent Task</h2>
+      <div class="task-form-fields">
+        <mat-form-field appearance="outline">
+          <mat-label>Agent Task Name</mat-label>
+          <input matInput formControlName="agentTaskName" />
+        </mat-form-field>
+        <mat-checkbox formControlName="isGroupBox">Is Group Task</mat-checkbox>
+      </div>
+      <button type="submit" class="btn btn-primary task-action" [disabled]="!form.valid || isAdding">
+        @if (isAdding) {
+          <span class="spinner-border spinner-border-sm mr-1"></span>
+        }
+        Add/Update
+      </button>
+    </form>
+  }
+
+  <main class="task-list">
+    <h2>Agent Task Names</h2>
+    <div class="task-table-region">
       <mat-table
         #table
-        class="lessons-table mat-elevation-z8"
+        class="lessons-table task-table"
         [dataSource]="dataSource"
         matSort
         (matSortChange)="sortData($event)"
@@ -75,11 +55,11 @@
           <mat-header-cell *matHeaderCellDef> {{ displayedColumns[2] }} </mat-header-cell>
           <mat-cell *matCellDef="let row">
             <button
-              class="btn3d btn btn-sm btn-danger btn-delete-account"
+              class="btn btn-sm btn-danger btn-delete-account"
               type="button"
               #button
               (click)="onDeleteAgentTaskConfig($event, row)"
-              [ngClass]="{ disabled: row.isDeleting }"
+              [disabled]="row.isDeleting"
             >
               @if (row.isDeleting) {
                 <span class="spinner-border spinner-border-sm mr-1"></span>
@@ -100,7 +80,7 @@
       </mat-table>
       <mat-paginator
         #paginator
-        class="lessons-table mat-elevation-z8"
+        class="lessons-table task-paginator"
         [length]="agentTaskConfigs().length"
         pageSize="{{ pageSize }}"
         (page)="onChangePageProperties($event)"
@@ -108,9 +88,9 @@
         showFirstLastButtons
       >
       </mat-paginator>
-    </fieldset>
+    </div>
+  </main>
+  <div class="task-actions">
+    <a routerLink="../" class="btn btn-primary task-action">Back</a>
   </div>
-</div>
-<div class="col px-md-2">
-  <a routerLink="../" class="btn3d btn btn-primary">Back</a>
-</div>
+</section>

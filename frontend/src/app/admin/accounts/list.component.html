@@ -350,7 +350,7 @@
       type="button"
       class="btn btn-outline-danger delete-accounts-action"
       title="Delete Accounts"
-      [disabled]="generatingSchedules || downloadingSchedules"
+      [disabled]="generatingSchedules || downloadingSchedules || accounts().length === 0"
     >
       Delete Accounts
       @if (isDeleting) {

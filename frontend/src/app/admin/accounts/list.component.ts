@@ -175,7 +175,7 @@ export class ListComponent implements OnInit, AfterViewInit {
     modalRef.componentInstance.bodyQuestionStr =
       'Are you sure you want to delete user account profile?';
     modalRef.componentInstance.bodyInfoStr =
-      'All information associated with the user profile will be permanently deleted.';
+      'All information associated with the user profile will be permanently deleted (except Administrator accounts).';
     modalRef.result
       .then(() => {
         const account = this.accounts().find((x) => x.id === id);
@@ -214,7 +214,7 @@ export class ListComponent implements OnInit, AfterViewInit {
     modalRef.componentInstance.bodyQuestionStr =
       'Are you sure you want to delete user account profiles?';
     modalRef.componentInstance.bodyInfoStr =
-      'All information associated with the user profiles will be permanently deleted.';
+      'All information associated with the user profiles will be permanently deleted (except Administrator accounts) (except Administrator accounts).';
 
     modalRef.result
       .then(() => {
