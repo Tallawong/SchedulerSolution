@@ -1,9 +1,11 @@
-import { AfterViewInit, Component, OnInit, ViewChild, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, DestroyRef, OnInit, ViewChild, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort, SortDirection } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Account, Role } from 'src/app/entities';
 import { AccountService, AlertService } from 'src/app/services';
@@ -45,6 +47,9 @@ const COLUMNS_SCHEMA = [
 })
 export class ListComponent implements OnInit, AfterViewInit {
   private modalService = inject(NgbModal);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly changeDetector = inject(ChangeDetectorRef);
+  private scheduleAvailabilityRequest?: Subscription;
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -53,6 +58,7 @@ export class ListComponent implements OnInit, AfterViewInit {
   columnsSchema = COLUMNS_SCHEMA;
 
   accounts = signal<Account[]>([]);
+  readonly hasSchedules = signal(false);
   autoEmail: boolean = false;
   isDeleting: boolean = false;
 
@@ -68,7 +74,9 @@ export class ListComponent implements OnInit, AfterViewInit {
     private alertService: AlertService,
     private router: Router,
   ) {}
-  ngOnInit() {}
+  ngOnInit() {
+    this.refreshScheduleAvailability();
+  }
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.dataSource = new MatTableDataSource();
@@ -124,6 +132,19 @@ export class ListComponent implements OnInit, AfterViewInit {
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSource.filter = filterValue;
   }
+
+  private refreshScheduleAvailability() {
+    this.scheduleAvailabilityRequest?.unsubscribe();
+    this.hasSchedules.set(false);
+    this.scheduleAvailabilityRequest = this.accountService
+      .getAllDates()
+      .pipe(first(), takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (dates) => this.hasSchedules.set(dates.scheduleDateTimes.length > 0),
+        error: (error) => this.alertService.error(error),
+      });
+  }
+
   private refreshList() {
     this.accountService
       .getAll()
@@ -166,6 +187,7 @@ export class ListComponent implements OnInit, AfterViewInit {
           .subscribe({
             next: () => {
               this.refreshList();
+              this.refreshScheduleAvailability();
             },
             complete: () => {
               //this.alertService.info("Data Saved");
@@ -209,6 +231,7 @@ export class ListComponent implements OnInit, AfterViewInit {
           .subscribe({
             next: (accounts) => {
               this.refreshList();
+              this.refreshScheduleAvailability();
               console.log(accounts);
             },
             complete: () => {
@@ -262,13 +285,17 @@ export class ListComponent implements OnInit, AfterViewInit {
       .pipe(first())
       .subscribe({
         complete: () => {
+          this.refreshScheduleAvailability();
           this.generatingSchedules = false;
+          this.changeDetector.markForCheck();
           modalRef.close();
         },
         error: (error) => {
           modalRef.close();
           this.alertService.error(error);
+          this.refreshScheduleAvailability();
           this.generatingSchedules = false;
+          this.changeDetector.markForCheck();
         },
       });
   }
@@ -299,11 +326,13 @@ export class ListComponent implements OnInit, AfterViewInit {
       complete: () => {
         //this.router.navigate(['../'], { relativeTo: this.route });
         this.downloadingSchedules = false;
+        this.changeDetector.markForCheck();
         modalRef.close();
       },
       error: (error) => {
         this.alertService.error(error);
         this.downloadingSchedules = false;
+        this.changeDetector.markForCheck();
         modalRef.close();
       },
     });

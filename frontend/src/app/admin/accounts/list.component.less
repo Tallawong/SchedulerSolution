@@ -68,16 +68,6 @@
   color: #1d4ed8;
 }
 
-.accounts-nav-danger {
-  color: #b91c1c;
-}
-
-.accounts-nav-danger:hover,
-.accounts-nav-danger:focus-visible {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
 .accounts-nav .dropdown-menu {
   min-width: 100%;
 }
@@ -113,6 +103,56 @@
 }
 
 .accounts-paginator {
+  box-shadow: none;
+}
+
+.accounts-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #d6dbe8;
+}
+
+.schedule-action,
+.delete-accounts-action {
+  min-height: 44px;
+  padding: 0 0.9rem;
+  border: 0;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.schedule-action {
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-color: #fff;
+  --bs-btn-disabled-color: #fff;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  box-shadow: 0 6px 18px rgba(37, 117, 252, 0.25);
+}
+
+.delete-accounts-action {
+  --bs-btn-color: #9f1239;
+  --bs-btn-hover-color: #9f1239;
+  --bs-btn-active-color: #9f1239;
+  --bs-btn-disabled-color: #9f1239;
+  background: linear-gradient(90deg, #fff1f2, #fecdd3);
+  box-shadow: 0 6px 18px rgba(190, 18, 60, 0.15);
+}
+
+.schedule-action:disabled {
+  --bs-btn-disabled-color: #475569;
+  background: #f8fafc;
+  border: 1px dashed #64748b;
+  font-style: italic;
+  opacity: 1;
+  box-shadow: none;
+}
+
+.delete-accounts-action:disabled {
+  opacity: 0.7;
   box-shadow: none;
 }
 

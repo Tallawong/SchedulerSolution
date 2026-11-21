@@ -5,32 +5,35 @@ import { AuthGuard } from './core/helpers/auth.guard';
 import { Role } from './entities/role';
 import { FloatingSchedulesComponent } from './floating-schedules/floating-schedules.component';
 
-// const accountModule = () => import('./account/account.module').then((x) => x.AccountModule);
 const adminModule = () => import('./admin/admin.module').then((x) => x.AdminModule);
 const profileModule = () => import('./profile/profile.module').then((x) => x.ProfileModule);
-// const scheduleModule = () => import('./schedule/schedule.module').then((x) => x.ScheduleModule);
 
 export const routes: Routes = [
-  //{ path: '', redirectTo: 'login', pathMatch: 'full' },
-
+  // empty-path (or default) 
+  {
+    path: '', component: HomeComponent, canActivate: [AuthGuard]
+  },
   // Referencing the account feature router:
   {
     path: 'account',
     loadChildren: () => import('./account.controls/account.routes').then((m) => m.ACCOUNT_ROUTES),
   },
-  // { path: 'account', loadChildren: accountModule },
-  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'profile', loadChildren: profileModule, canActivate: [AuthGuard] },
+  {
+    path: 'profile', loadChildren: profileModule, canActivate: [AuthGuard]
+  },
   {
     path: 'admin',
     loadChildren: adminModule,
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin] },
   },
-  { path: 'floating', component: FloatingSchedulesComponent },
-
-  // otherwise redirect to home
-  { path: '**', redirectTo: '' },
+  {
+    path: 'floating', component: FloatingSchedulesComponent
+  },
+  // wildcard route (catch-all route)
+  {
+    path: '**', redirectTo: ''
+  },
 ];
 
 @NgModule({
