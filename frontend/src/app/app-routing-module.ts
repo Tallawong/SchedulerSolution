@@ -6,7 +6,8 @@ import { FloatingSchedulesComponent } from './floating-schedules/floating-schedu
 
 const profileModule = () => import('./profile/profile.module').then((x) => x.ProfileModule);
 const accountsModule = () => import('./admin/accounts/accounts.module').then((x) => x.AccountsModule);
-
+const scheduleModule = () =>
+  import('./schedule/schedule.module').then((x) => x.ScheduleModule);
 export const routes: Routes = [
   // empty-path (or default) 
   {
@@ -22,6 +23,9 @@ export const routes: Routes = [
   },
   {
     path: 'accounts', loadChildren: accountsModule
+  },
+  {
+    path: 'schedule', loadChildren: scheduleModule
   },
   {
     path: 'floating', component: FloatingSchedulesComponent

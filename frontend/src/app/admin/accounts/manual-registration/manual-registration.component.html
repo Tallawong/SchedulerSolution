@@ -99,8 +99,8 @@
         <section class="related-actions" aria-labelledby="manual-related-heading">
           <h2 id="manual-related-heading">Related</h2>
           <div class="d-flex flex-wrap gap-2">
-            <button type="button" class="btn btn-outline-primary" [routerLink]="['/admin/accounts/function', currentAccount.id]" [disabled]="!currentAccount.isVerified">Tasks</button>
-            <button type="button" class="btn btn-outline-primary" [routerLink]="['/admin/accounts/schedule', currentAccount.id]" [disabled]="!currentAccount.isVerified">Schedule</button>
+            <button type="button" class="btn btn-outline-primary" [routerLink]="['/accounts/function', currentAccount.id]" [disabled]="!currentAccount.isVerified">Tasks</button>
+            <button type="button" class="btn btn-outline-primary" [routerLink]="['/accounts/schedule', currentAccount.id]" [disabled]="!currentAccount.isVerified">Schedule</button>
           </div>
         </section>
       }

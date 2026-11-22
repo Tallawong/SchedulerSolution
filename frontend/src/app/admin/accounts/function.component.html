@@ -1,4 +1,13 @@
-@if (isLoaded && !isAdmin) {
+@if (loadFailed()) {
+  <div class="container" role="alert">
+    <p>Unable to load account tasks.</p>
+    <a [routerLink]="['/accounts/add-edit/edit', id]" class="btn btn-primary">Back</a>
+  </div>
+} @else if (!isLoaded()) {
+  <div class="container" role="status">Loading account tasks...</div>
+}
+
+@if (isLoaded() && !isAdmin) {
   <form [formGroup]="form" (ngSubmit)="onAddTask()">
     <fieldset>
       <legend>Tasks</legend>
@@ -27,13 +36,12 @@
                 <div class="col-2 me-5">
                   <div class="ngx-timepicker-field-example">
                     <label for="timepicker">Preferred time</label>
-                    <ngx-timepicker-field
+                    <input
                       id="timepicker"
-                      [format]="24"
-                      (timeChanged)="onChangeHour($event)"
+                      type="time"
+                      class="form-control"
                       formControlName="preferredTime"
-                      #openTime
-                    ></ngx-timepicker-field>
+                    />
                   </div>
                 </div>
                 @if (isGroupTaskSelected) {
@@ -130,10 +138,10 @@
   </form>
 }
 
-@if (isLoaded) {
+@if (isLoaded()) {
   <div class="container">
     <div class="mb-3">
-      <a routerLink="/admin/accounts/add-edit/edit/{{ account.id }}" class="btn3d btn btn-primary"
+      <a routerLink="/accounts/add-edit/edit/{{ account.id }}" class="btn3d btn btn-primary"
         >Back</a
       >
     </div>

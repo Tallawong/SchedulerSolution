@@ -27,7 +27,6 @@ import { AgentTaskConfig } from 'src/app/entities/agenttaskconfig';
 import { Task } from 'src/app/entities/task';
 import { AccountService, AlertService } from 'src/app/services';
 import { NgbdModalConfirmComponent } from './ngbd-modal-confirm/ngbd-modal-confirm.component';
-import { NgxTimepickerFieldComponent } from 'ngx-material-timepicker';
 import { toDateTime } from '../../core/helpers/date-time';
 
 const COLUMNS_SCHEMA = [
@@ -62,9 +61,20 @@ const COLUMNS_SCHEMA = [
   },
 })
 export class FunctionComponent implements OnInit, AfterViewInit {
-  @ViewChild('paginator') paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild('openTime') openTime?: NgxTimepickerFieldComponent;
+  @ViewChild('paginator') set paginatorView(paginator: MatPaginator | undefined) {
+    if (paginator) {
+      this.paginator = paginator;
+      this.dataSource.paginator = paginator;
+    }
+  }
+  @ViewChild(MatSort) set sortView(sort: MatSort | undefined) {
+    if (sort) {
+      this.sort = sort;
+      this.dataSource.sort = sort;
+    }
+  }
+  paginator!: MatPaginator;
+  sort!: MatSort;
 
   private modalService = inject(NgbModal);
 
@@ -89,8 +99,8 @@ export class FunctionComponent implements OnInit, AfterViewInit {
   lastSelectedContact: Task | null = null;
   highlighted: boolean = false;
 
-  isLoaded: boolean = false;
-  preferredTimeInitialized: boolean = false;
+  readonly isLoaded = signal(false);
+  readonly loadFailed = signal(false);
 
   // JD Test
   injector: Injector = inject(Injector);
@@ -108,20 +118,11 @@ export class FunctionComponent implements OnInit, AfterViewInit {
     this.form = this.formBuilder.group({
       function: ['', [Validators.required, this.functionValidator]],
       groupTask: ['', [this.groupValidator.bind(this)]],
-      preferredTime: ['9:00 am', [Validators.required]],
+      preferredTime: [new Date().toTimeString().slice(0, 5), [Validators.required]],
     });
   }
   ngAfterViewInit(): void {}
 
-  ngDoCheck(): void {
-    if (this.openTime != undefined && !this.preferredTimeInitialized) {
-      const date = new Date();
-      this.preferredTimeInitialized = true;
-
-      this.openTime.changeHour(date.getHours());
-      this.openTime.changeMinute(date.getMinutes());
-    }
-  }
   // JD Test
   onToObservable() {
     const numbers = signal(0);
@@ -182,14 +183,16 @@ export class FunctionComponent implements OnInit, AfterViewInit {
                     ? parseInt(account.userFunctions[account.userFunctions.length - 1].id)
                     : 0;
 
-                this.isLoaded = true;
+                this.isLoaded.set(true);
               },
               error: (error) => {
+                this.loadFailed.set(true);
                 this.alertService.error(error);
               },
             });
         },
         error: (error) => {
+          this.loadFailed.set(true);
           this.alertService.error(error);
         },
       });
@@ -449,9 +452,8 @@ export class FunctionComponent implements OnInit, AfterViewInit {
       this.f['function'].setValue(contact.userFunction);
       this.f['groupTask'].setValue(contact.group);
 
-      const date = toDateTime(contact.preferredTime, 'HH:mm').toJSDate();
-      this.openTime?.changeHour(date.getHours());
-      this.openTime?.changeMinute(date.getMinutes());
+      const time = toDateTime(contact.preferredTime, 'H:mm');
+      this.f['preferredTime'].setValue(time.isValid ? time.toFormat('HH:mm') : '');
     }
   }
 
@@ -462,8 +464,5 @@ export class FunctionComponent implements OnInit, AfterViewInit {
       t1.group == t2.group &&
       t1.preferredTime == t2.preferredTime
     );
-  }
-  onChangeHour(event: unknown) {
-    console.log(event);
   }
 }
