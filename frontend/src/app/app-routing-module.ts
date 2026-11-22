@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './core/controls/home/home.component';
 import { AuthGuard } from './core/helpers/auth.guard';
-import { Role } from './entities/role';
 import { FloatingSchedulesComponent } from './floating-schedules/floating-schedules.component';
 
-const adminModule = () => import('./admin/admin.module').then((x) => x.AdminModule);
 const profileModule = () => import('./profile/profile.module').then((x) => x.ProfileModule);
 const accountsModule = () => import('./admin/accounts/accounts.module').then((x) => x.AccountsModule);
 
