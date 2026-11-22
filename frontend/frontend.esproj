@@ -12,6 +12,10 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\frontend\browser\</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="src\app\admin\admin-routing.module.ts" />
+    <None Remove="src\app\admin\admin.module.ts" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include=".vscode\tasks.json" />
   </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@ import { FloatingSchedulesComponent } from './floating-schedules/floating-schedu
 
 const adminModule = () => import('./admin/admin.module').then((x) => x.AdminModule);
 const profileModule = () => import('./profile/profile.module').then((x) => x.ProfileModule);
+const accountsModule = () => import('./admin/accounts/accounts.module').then((x) => x.AccountsModule);
 
 export const routes: Routes = [
   // empty-path (or default) 
@@ -22,10 +23,7 @@ export const routes: Routes = [
     path: 'profile', loadChildren: profileModule, canActivate: [AuthGuard]
   },
   {
-    path: 'admin',
-    loadChildren: adminModule,
-    canActivate: [AuthGuard],
-    data: { roles: [Role.Admin] },
+    path: 'accounts', loadChildren: accountsModule
   },
   {
     path: 'floating', component: FloatingSchedulesComponent
